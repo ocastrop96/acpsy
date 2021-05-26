@@ -1,23 +1,32 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="shortcut icon" type="image/x-icon" href="public/views/resources/img/acpsy-icono.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ACPSI-Web | Dashboard</title>
-
+  <title>ACPSI-Web | HNSEB</title>
+  <!-- CSS -->
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="public/views/plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Datatables -->
+  <link rel="stylesheet" href="public/views/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
+  <link rel="stylesheet" href="public/views/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="public/views/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
   <!-- Tempusdominus Bootstrap 4 -->
   <link rel="stylesheet" href="public/views/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <!-- iCheck -->
   <link rel="stylesheet" href="public/views/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- JQVMap -->
-  <link rel="stylesheet" href="public/views/plugins/jqvmap/jqvmap.min.css">
+  <!-- Sweetalert -->
+  <link rel="stylesheet" href="public/views/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="public/views/resources/css/adminlte.css">
   <!-- overlayScrollbars -->
@@ -26,38 +35,21 @@
   <link rel="stylesheet" href="public/views/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="public/views/plugins/summernote/summernote-bs4.min.css">
-</head>
-
-<body class="hold-transition sidebar-mini layout-fixed">
-  <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="public/views/resources/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-  </div>
-  <div class="wrapper">
-    <?php
-    include('pages/header.php');
-    include('pages/menu.php');
-    include('pages/inicio.php');
-    include('pages/footer.php');
-    ?>
-  </div>
-  <!-- ./wrapper -->
-
-  <!-- jQuery -->
+  <!-- CSS -->
+  <!-- JS -->
   <script src="public/views/plugins/jquery/jquery.min.js"></script>
   <!-- jQuery UI 1.11.4 -->
   <script src="public/views/plugins/jquery-ui/jquery-ui.min.js"></script>
   <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
   <!-- Bootstrap 4 -->
   <script src="public/views/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- ChartJS -->
-  <script src="public/views/plugins/chart.js/Chart.min.js"></script>
-  <!-- Sparkline -->
-  <script src="public/views/plugins/sparklines/sparkline.js"></script>
-  <!-- JQVMap -->
-  <script src="public/views/plugins/jqvmap/jquery.vmap.min.js"></script>
-  <script src="public/views/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-  <!-- jQuery Knob Chart -->
-  <script src="public/views/plugins/jquery-knob/jquery.knob.min.js"></script>
+  <!-- Datatables -->
+  <script src="public/views/plugins/datatables/jquery.dataTables.js"></script>
+  <script src="public/views/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+  <script src="public/views/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="public/views/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <!-- Sweetalert -->
+  <script src="public/views/plugins/sweetalert2/sweetalert2.min.js"></script>
   <!-- daterangepicker -->
   <script src="public/views/plugins/moment/moment.min.js"></script>
   <script src="public/views/plugins/daterangepicker/daterangepicker.js"></script>
@@ -67,8 +59,53 @@
   <script src="public/views/plugins/summernote/summernote-bs4.min.js"></script>
   <!-- overlayScrollbars -->
   <script src="public/views/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+  <!-- jquery-validation -->
+  <script src="public/views/plugins/jquery-validation/jquery.validate.min.js"></script>
+  <script src="public/views/plugins/jquery-validation/additional-methods.min.js"></script>
   <!-- AdminLTE App -->
   <script src="public/views/resources/js/adminlte.js"></script>
+  <!-- JS -->
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+  <?php
+  if (isset($_SESSION["loginACPSY"]) && $_SESSION["loginACPSY"] == "ok") {
+    echo '<div class="wrapper">';
+    include('pages/header.php');
+    include('pages/menu.php');
+
+    if (isset($_GET["ruta"])) {
+      if (
+        $_GET["ruta"] == "dashboard" ||
+        $_GET["ruta"] == "usuarios" ||
+        $_GET["ruta"] == "profesionales" ||
+        $_GET["ruta"] == "diagnosticos" ||
+        $_GET["ruta"] == "atenciones" ||
+        $_GET["ruta"] == "familiares" ||
+        $_GET["ruta"] == "seguimiento" ||
+        $_GET["ruta"] == "reporte-general" ||
+        $_GET["ruta"] == "reporte-jefatura" ||
+        $_GET["ruta"] == "reporte-profesional" ||
+        $_GET["ruta"] == "logout"
+      ) {
+        include "pages/" . $_GET["ruta"] . ".php";
+      } else {
+        include "pages/404.php";
+      }
+    } else {
+      include "pages/dashboard.php";
+    }
+    include('pages/footer.php');
+    echo '</div>';
+  } else {
+    include "pages/login.php";
+  }
+  ?>
+  <!-- Scripts JS Propios -->
+  <script type="text/javascript" src="public/js/login.js"></script>
+  <script type="text/javascript" src="public/js/usuarios.js"></script>
+
+  <!-- Scripts JS Propios -->
 </body>
 
 </html>

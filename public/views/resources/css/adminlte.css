@@ -35406,6 +35406,10 @@ a.close.disabled, a.disabled.mailbox-attachment-close {
   color: #495057;
 }
 
+.login-page {
+  background: url("../img/acpsy-fondo-main.jpg") no-repeat center center fixed;
+  background-size: cover;
+  }
 .login-page,
 .register-page {
   -webkit-align-items: center;
