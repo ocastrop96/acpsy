@@ -24,7 +24,24 @@
         </button>
       </div>
       <div class="card-body">
-        tablas
+      <table id="datatableAtenciones" class="table table-bordered table-hover dt-responsive datatableAtenciones">
+          <thead>
+            <tr>
+              <th style="width: 10px">#</th>
+              <th>F.Registro</th>
+              <th>N°Cuenta</th>
+              <th>N°HC</th>
+              <th>N°Doc</th>
+              <th>F.Ingreso</th>
+              <th>Estado Paciente</th>
+              <th>Apellidos y Nombres</th>
+              <th>Servicio</th>
+              <th>Financiamiento</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+        </table>
       </div>
     </div>
   </section>

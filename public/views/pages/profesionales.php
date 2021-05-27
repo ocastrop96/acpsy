@@ -24,7 +24,19 @@
         </button>
       </div>
       <div class="card-body">
-        tablas
+        <table id="datatableProfesionales" class="table table-bordered table-hover dt-responsive datatableProfesionales">
+          <thead>
+            <tr>
+              <th style="width: 10px">#</th>
+              <th>DNI N°</th>
+              <th>CPsP N°</th>
+              <th>Nombres</th>
+              <th>Apellidos</th>
+              <th>Condición Laboral</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+        </table>
       </div>
     </div>
   </section>

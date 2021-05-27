@@ -102,8 +102,15 @@ session_start();
   }
   ?>
   <!-- Scripts JS Propios -->
+  <script type="text/javascript" src="public/js/main.js"></script>
   <script type="text/javascript" src="public/js/login.js"></script>
   <script type="text/javascript" src="public/js/usuarios.js"></script>
+  <script type="text/javascript" src="public/js/profesionales.js"></script>
+  <script type="text/javascript" src="public/js/diagnosticos.js"></script>
+  <script type="text/javascript" src="public/js/atenciones.js"></script>
+  <script type="text/javascript" src="public/js/familiares.js"></script>
+  <script type="text/javascript" src="public/js/seguimiento.js"></script>
+
 
   <!-- Scripts JS Propios -->
 </body>

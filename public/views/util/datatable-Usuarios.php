@@ -18,17 +18,35 @@ class DatatableUsuarios
             "data": [';
 
         for ($i = 0; $i < count($usuarios); $i++) {
+
+            // Perfil con iconos
+            if ($usuarios[$i]["idPerfil"] == 1) {
+                $perfil = "<i class='fas fa-user-cog'></i>&nbsp" . $usuarios[$i]["detallePerfil"] . "";
+            } else if ($usuarios[$i]["idPerfil"] == 2) {
+                $perfil = "<i class='fas fa-user-tie'></i>&nbsp" . $usuarios[$i]["detallePerfil"] . "";
+            } else {
+                $perfil = "<i class='fas fa-hospital-user'></i>&nbsp" . $usuarios[$i]["detallePerfil"] . "";
+            }
+            // Botones de Estado
+            if (($usuarios[$i]["idEstado"] != 0)) {
+                $estado = "<button type='button' class='btn btn-block btn-success btnHabilitar' idUsuario='" . $usuarios[$i]["idUsuario"] . "' estadoUsuario='2'><i class='fas fa-user-check'></i>HABILITADO</button>";
+            } else {
+                $estado = "<button type='button' class='btn btn-block btn-danger btnHabilitar' idUsuario='" . $usuarios[$i]["idUsuario"] . "' estadoUsuario='1'><i class='fas fa-user-minus'></i>INHABILITADO</button>";
+            }
+            // Botones de Opciones
+            $botones = "<div class='btn-group'><button class='btn btn-warning btnEditarUsuario' idUsuario='" . $usuarios[$i]["idUsuario"] . "' data-toggle='modal' data-target='#modal-editar-usuario'><i class='fas fa-edit'></i></button><button class='btn btn-info btnDesbloquearUsuario' data-toggle='tooltip' data-placement='left' title='Desbloquear Usuario' idUsuario='" . $usuarios[$i]["idUsuario"] . "'><i class='fas fa-unlock-alt'></i></button><button class='btn btn-danger btnEliminarUsuario' data-toggle='tooltip' data-placement='left' title='Eliminar Usuario' idUsuario='" . $usuarios[$i]["idUsuario"] . "'><i class='fas fa-trash-alt'></i></button></div>";
+
             $datos_json .= '[
                 "' . ($i + 1) . '",
                 "' . $usuarios[$i]["dniUsuario"] . '",
                 "' . $usuarios[$i]["nombresUsuario"] . '",
                 "' . $usuarios[$i]["apellidosUsuario"] . '",
-                "' . $usuarios[$i]["detallePerfil"] . '",
+                "' . $perfil . '",
                 "' . $usuarios[$i]["correoUsuario"] . '",
                 "' . $usuarios[$i]["cuentaUsuario"] . '",
                 "' . $usuarios[$i]["fechaAlta"] . '",
-                "' . $usuarios[$i]["detalleEstadoU"] . '",
-                "' . $usuarios[$i]["dniUsuario"] . '"
+                "' . $estado . '",
+                "' . $botones . '"
             ],';
         }
         $datos_json = substr($datos_json, 0, -1);

@@ -24,7 +24,16 @@
         </button>
       </div>
       <div class="card-body">
-        tablas
+        <table id="datatableDiagnosticos" class="table table-bordered table-hover dt-responsive datatableDiagnosticos">
+          <thead>
+            <tr>
+              <th style="width: 10px">#</th>
+              <th>Cie 10</th>
+              <th>Detalle de Diagnóstico</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+        </table>
       </div>
     </div>
   </section>
