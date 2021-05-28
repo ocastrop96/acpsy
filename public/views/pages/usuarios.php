@@ -44,3 +44,207 @@
     </div>
   </section>
 </div>
+<div id="modal-registrar-usuario" class="modal fade" role="dialog" aria-modal="true" style="padding-right: 17px;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form action="" role="form" id="formRegUs" method="post">
+        <div class="modal-header text-center" style="background: #5D646C; color: white">
+          <h4 class="modal-title">Registrar Usuario</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-3">
+              <div class="form-group">
+                <label for="">N° DNI &nbsp;</label>
+                <i class="fas fa-id-card"></i> *
+                <div class="input-group">
+                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese N° DNI" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+            <div class="col-4" id="btnDNIUsuario">
+              <div class="form-group">
+                <label>Búsqueda:<span class="text-danger">&nbsp;*</span></label>
+                <div class="input-group">
+                  <button type="button" class="btn btn-block btn-info" id="btnDNIU"><i class="fas fa-search"></i>&nbsp;Consulta DNI</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <div class="form-group">
+                <label for="">Nombres &nbsp;</label>
+                <i class="fas fa-signature"></i> *
+                <div class="input-group">
+                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese nombres" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label for="">Apellidos &nbsp;</label>
+                <i class="fas fa-signature"></i> *
+                <div class="input-group">
+                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese apellidos" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label for="">Perfil &nbsp;</label>
+                <i class="fas fa-signature"></i> *
+                <div class="input-group">
+                  <select class="form-control" style="width: 100%;" name="" id="">
+                    <option value="0">Seleccione perfil</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <div class="form-group">
+                <label for="">Correo &nbsp;</label>
+                <i class="fas fa-at"></i> *
+                <div class="input-group">
+                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese correo" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label for="">Usuario &nbsp;</label>
+                <i class="fas fa-user"></i> *
+                <div class="input-group">
+                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese usuario" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label for="">Contraseña &nbsp;</label>
+                <i class="fas fa-key"></i> *
+                <div class="input-group">
+                  <input type="password" name="" id="" class="form-control" placeholder="Ingrese contraseña" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="submit" class="btn btn-secondary" id="btnRegUsu"><i class="fas fa-save"></i> Guardar</button>
+          <button type="reset" class="btn btn-danger"><i class="fas fa-eraser"></i> Limpiar</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Editar Usuario -->
+<div id="modal-editar-usuario" class="modal fade" role="dialog" aria-modal="true" style="padding-right: 17px;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form action="" role="form" id="formRegUs" method="post">
+        <div class="modal-header text-center" style="background: #5D646C; color: white">
+          <h4 class="modal-title">Editar Usuario</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-3">
+              <div class="form-group">
+                <label for="">N° DNI &nbsp;</label>
+                <i class="fas fa-id-card"></i> *
+                <div class="input-group">
+                  <input type="text" name="" id="" class="form-control" required autocomplete="off" autofocus="autofocus">
+                </div>
+                <input type="hidden" name="" id="">
+              </div>
+            </div>
+            <div class="col-4" id="btnEdtDNIUsuario">
+              <div class="form-group">
+                <label>Búsqueda:<span class="text-danger">&nbsp;*</span></label>
+                <div class="input-group">
+                  <button type="button" class="btn btn-block btn-info" id="btnDNIUEdt"><i class="fas fa-search"></i>&nbsp;Consulta DNI</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <div class="form-group">
+                <label for="">Nombres &nbsp;</label>
+                <i class="fas fa-signature"></i> *
+                <div class="input-group">
+                  <input type="text" name="" id="" class="form-control" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label for="">Apellidos &nbsp;</label>
+                <i class="fas fa-signature"></i> *
+                <div class="input-group">
+                  <input type="text" name="" id="" class="form-control" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label for="">Perfil &nbsp;</label>
+                <i class="fas fa-signature"></i> *
+                <div class="input-group">
+                  <select class="form-control" style="width: 100%;" name="" id="">
+                    <option id=""></option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <div class="form-group">
+                <label for="">Correo &nbsp;</label>
+                <i class="fas fa-at"></i> *
+                <div class="input-group">
+                  <input type="text" name="" id="" class="form-control" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label for="">Usuario &nbsp;</label>
+                <i class="fas fa-user"></i> *
+                <div class="input-group">
+                  <input type="text" name="" id="" class="form-control" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label for="">Contraseña &nbsp;</label>
+                <i class="fas fa-key"></i> *
+                <div class="input-group">
+                  <input type="password" name="" id="" class="form-control" required autocomplete="off" autofocus="autofocus">
+                  <input type="hidden" name="" id="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="submit" class="btn btn-secondary" id="btnEdtUsu"><i class="fas fa-save"></i> Guardar cambios</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Editar Usuario -->
