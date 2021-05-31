@@ -13,6 +13,10 @@ class UsuariosControlador
 
                 $rptLogin = UsuariosModelo::mdlLoginUsuario($usuario);
                 if ($rptLogin["cuentaUsuario"] == $_POST["usuarioLog"] && $rptLogin["claveUsuario"] == $encriptaPass) {
+
+                    // Validación de habilitación
+                    
+                    // Validación de habilitación
                     $_SESSION["loginACPSY"] = "ok";
                     $_SESSION["loginId"] = $rptLogin["idUsuario"];
                     $_SESSION["loginPerfil"] = $rptLogin["idPerfil"];
