@@ -28,10 +28,10 @@ class DatatableUsuarios
                 $perfil = "<i class='fas fa-hospital-user'></i>&nbsp" . $usuarios[$i]["detallePerfil"] . "";
             }
             // Botones de Estado
-            if (($usuarios[$i]["idEstado"] != 0)) {
-                $estado = "<button type='button' class='btn btn-block btn-success btnHabilitar' idUsuario='" . $usuarios[$i]["idUsuario"] . "' estadoUsuario='2'><i class='fas fa-user-check'></i>HABILITADO</button>";
+            if (($usuarios[$i]["idEstado"] != 2)) {
+                $estado = "<button type='button' class='btn btn-block btn-success btnHabilitar' idUsuario='" . $usuarios[$i]["idUsuario"] . "' idEstado='2'><i class='fas fa-user-check'></i>HABILITADO</button>";
             } else {
-                $estado = "<button type='button' class='btn btn-block btn-danger btnHabilitar' idUsuario='" . $usuarios[$i]["idUsuario"] . "' estadoUsuario='1'><i class='fas fa-user-minus'></i>INHABILITADO</button>";
+                $estado = "<button type='button' class='btn btn-block btn-danger btnHabilitar' idUsuario='" . $usuarios[$i]["idUsuario"] . "' idEstado='1'><i class='fas fa-user-minus'></i>INHABILITADO</button>";
             }
             // Botones de Opciones
             $botones = "<div class='btn-group'><button class='btn btn-warning btnEditarUsuario' idUsuario='" . $usuarios[$i]["idUsuario"] . "' data-toggle='modal' data-target='#modal-editar-usuario'><i class='fas fa-edit'></i></button><button class='btn btn-info btnDesbloquearUsuario' data-toggle='tooltip' data-placement='left' title='Desbloquear Usuario' idUsuario='" . $usuarios[$i]["idUsuario"] . "'><i class='fas fa-unlock-alt'></i></button><button class='btn btn-danger btnEliminarUsuario' data-toggle='tooltip' data-placement='left' title='Eliminar Usuario' idUsuario='" . $usuarios[$i]["idUsuario"] . "'><i class='fas fa-trash-alt'></i></button></div>";

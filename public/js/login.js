@@ -28,3 +28,31 @@ $("#btnLogin").on("click", function () {
     ValidarLogin()
 });
 // Validación de campos
+// Validacion de cuenta existente
+$("#usuarioLog").change(function () {
+    var cuenta = $(this).val();
+    var datos = new FormData();
+
+    datos.append("validarCuentaLog", cuenta);
+
+    $.ajax({
+        url: "public/views/src/ajaxUsuarios.php",
+        method: "POST",
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        success: function (respuesta) {
+            if (respuesta) {
+                $("#usuarioPass").focus();
+                $("#mensajeLog").addClass("d-none");
+            } else {
+                $("#usuarioLog").val("");
+                $("#usuarioLog").focus();
+                $("#mensajeLog").removeClass("d-none");
+            }
+        },
+    });
+});
+// Validacion de cuenta existente
