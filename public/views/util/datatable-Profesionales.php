@@ -18,6 +18,13 @@ class DatatableProfesionales
 
         for ($i = 0; $i < count($profesionales); $i++) {
 
+            // Estado Profesional
+            if (($profesionales[$i]["idEstado"] != 2)) {
+                $estado = "<button type='button' class='btn btn-block btn-success btnAltaBajaProf' idProfesional='" . $profesionales[$i]["idProfesional"] . "' idEstado='2'><i class='fas fa-arrow-up'></i>&nbsp; ALTA</button>";
+            } else {
+                $estado = "<button type='button' class='btn btn-block btn-danger btnAltaBajaProf' idProfesional='" . $profesionales[$i]["idProfesional"] . "' idEstado='1'><i class='fas fa-arrow-down'></i>&nbsp; BAJA</button>";
+            }
+            // Estado Profesional
             // Botones de Opciones
             $botones = "<div class='btn-group'><button class='btn btn-warning btnEditarProfesional' idProfesional='" . $profesionales[$i]["idProfesional"] . "' data-toggle='modal' data-target='#modal-editar-profesional'><i class='fas fa-edit'></i></button><button class='btn btn-danger btnEliminarProfesional' data-toggle='tooltip' data-placement='left' title='Eliminar Profesional' idProfesional='" . $profesionales[$i]["idProfesional"] . "'><i class='fas fa-trash-alt'></i></button></div>";
 
@@ -28,6 +35,7 @@ class DatatableProfesionales
                 "' . $profesionales[$i]["nombresProfesional"] . '",
                 "' . $profesionales[$i]["apellidosProfesional"] . '",
                 "' . $profesionales[$i]["detaCondicion"] . '",
+                "' . $estado . '",
                 "' . $botones . '"
             ],';
         }

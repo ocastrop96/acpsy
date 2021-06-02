@@ -32,7 +32,8 @@
               <th>CPsP N°</th>
               <th>Nombres</th>
               <th>Apellidos</th>
-              <th>Condición Laboral</th>
+              <th>Condición</th>
+              <th>Estado</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -47,7 +48,7 @@
     <div class="modal-content">
       <form action="" role="form" id="formRegProf" method="post">
         <div class="modal-header text-center" style="background: #5D646C; color: white">
-          <h4 class="modal-title">Registrar Profesional</h4>
+          <h4 class="modal-title">Registrar Profesional &nbsp; <i class="fas fa-user-md"></i></h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
@@ -56,19 +57,64 @@
           <div class="row">
             <div class="col-3">
               <div class="form-group">
-                <label for="">CIE 10 &nbsp;</label>
-                <i class="fas fa-hashtag"></i> *
+                <label for="rgpDni">DNI N° &nbsp;</label>
+                <i class="fas fa-id-card"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese CIE 10" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgpDni" id="rgpDni" class="form-control" placeholder="Ingrese N° DNI" required autocomplete="off" autofocus="autofocus" minlength="8" maxlength="12">
                 </div>
               </div>
             </div>
-            <div class="col-9">
+            <div class="col-3" id="btnDNIUsuario">
               <div class="form-group">
-                <label for="">Descripción de Diagnóstico &nbsp;</label>
-                <i class="fas fa-laptop-medical"></i> *
+                <label>Búsqueda:<span class="text-danger">&nbsp;*</span></label>
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese detalle de diagnóstico" required autocomplete="off" autofocus="autofocus">
+                  <button type="button" class="btn btn-block btn-info" id="btnDNIP"><i class="fas fa-search"></i>&nbsp;Consulta DNI</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <label for="rgpCpsp">CPsP N° &nbsp;</label>
+                <i class="fas fa-id-card"></i> *
+                <div class="input-group">
+                  <input type="text" name="rgpCpsp" id="rgpCpsp" class="form-control" placeholder="Ingrese N° CPsP" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <div class="form-group">
+                <label for="rgpNombres">Nombres Profesional&nbsp;</label>
+                <i class="fas fa-signature"></i> *
+                <div class="input-group">
+                  <input type="text" name="rgpNombres" id="rgpNombres" class="form-control" placeholder="Ingrese nombres" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+            <div class="col-5">
+              <div class="form-group">
+                <label for="rgpApellidos">Apellidos Profesional&nbsp;</label>
+                <i class="fas fa-signature"></i> *
+                <div class="input-group">
+                  <input type="text" name="rgpApellidos" id="rgpApellidos" class="form-control" placeholder="Ingrese apellidos" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <label for="rgpCondicion">Condición Laboral &nbsp;</label>
+                <i class="fas fa-id-card-alt"></i> *
+                <div class="input-group">
+                  <select class="form-control" style="width: 100%;" name="rgpCondicion" id="rgpCondicion">
+                    <option value="0">Sel. condición</option>
+                    <?php
+                    $condP = ProfesionalesControlador::ctrListarCondicion();
+                    foreach ($condP as $key => $value) {
+                      echo '<option value="' . $value["idCondicion"] . '">' . $value["detaCondicion"] . '</option>';
+                    }
+                    ?>
+                  </select>
                 </div>
               </div>
             </div>
@@ -79,6 +125,10 @@
           <button type="reset" class="btn btn-danger"><i class="fas fa-eraser"></i> Limpiar</button>
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
         </div>
+        <?php
+        $registroProfesional = new ProfesionalesControlador();
+        $registroProfesional->ctrRegistrarProfesional();
+        ?>
       </form>
     </div>
   </div>
@@ -91,7 +141,7 @@
     <div class="modal-content">
       <form action="" role="form" id="formEdtProf" method="post">
         <div class="modal-header text-center" style="background: #5D646C; color: white">
-          <h4 class="modal-title">Editar Profesional</h4>
+          <h4 class="modal-title">Editar Profesional &nbsp; <i class="fas fa-user-md"></i></h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
@@ -100,27 +150,72 @@
           <div class="row">
             <div class="col-3">
               <div class="form-group">
-                <label for="">CIE 10 &nbsp;</label>
-                <i class="fas fa-hashtag"></i> *
+                <label for="edtpDni">DNI N° &nbsp;</label>
+                <i class="fas fa-id-card"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese CIE 10" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="edtpDni" id="edtpDni" class="form-control" required autocomplete="off" autofocus="autofocus" minlength="8" maxlength="12">
+                  <input type="hidden" name="idProfesional" id="idProfesional">
                 </div>
               </div>
             </div>
-            <div class="col-9">
+            <div class="col-3" id="btnDNIUsuario">
               <div class="form-group">
-                <label for="">Descripción de Diagnóstico &nbsp;</label>
-                <i class="fas fa-laptop-medical"></i> *
+                <label>Búsqueda:<span class="text-danger">&nbsp;*</span></label>
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese detalle de diagnóstico" required autocomplete="off" autofocus="autofocus">
+                  <button type="button" class="btn btn-block btn-info" id="btnDNIEdtP"><i class="fas fa-search"></i>&nbsp;Consulta DNI</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <label for="edtpCpsp">CPsP N° &nbsp;</label>
+                <i class="fas fa-id-card"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtpCpsp" id="edtpCpsp" class="form-control" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <div class="form-group">
+                <label for="edtpNombres">Nombres Profesional&nbsp;</label>
+                <i class="fas fa-signature"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtpNombres" id="edtpNombres" class="form-control" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+            <div class="col-5">
+              <div class="form-group">
+                <label for="edtpApellidos">Apellidos Profesional&nbsp;</label>
+                <i class="fas fa-signature"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtpApellidos" id="edtpApellidos" class="form-control" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <label for="edtpCondicion1">Condición Laboral &nbsp;</label>
+                <i class="fas fa-id-card-alt"></i> *
+                <div class="input-group">
+                  <select class="form-control" style="width: 100%;" name="edtpCondicion" id="edtpCondicion1">
+                    <option id="edtpCondicion"></option>
+                    <?php
+                    $condP = ProfesionalesControlador::ctrListarCondicion();
+                    foreach ($condP as $key => $value) {
+                      echo '<option value="' . $value["idCondicion"] . '">' . $value["detaCondicion"] . '</option>';
+                    }
+                    ?>
+                  </select>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer justify-content-center">
-          <button type="submit" class="btn btn-secondary" id="btnEdtProf"><i class="fas fa-save"></i> Guardar</button>
-          <button type="reset" class="btn btn-danger"><i class="fas fa-eraser"></i> Limpiar</button>
+          <button type="submit" class="btn btn-secondary" id="btnEdtProf"><i class="fas fa-save"></i> Guarda cambios</button>
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
         </div>
       </form>
