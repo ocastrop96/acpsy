@@ -269,7 +269,6 @@ $("#rgDni").change(function () {
                 $("#rgApellidos").val("");
                 $("#btnDNIU").on("click", function () {
                     var dni = $("#rgDni").val();
-
                     if (dni.length = 8) {
                         $.ajax({
                             type: "GET",
@@ -398,32 +397,72 @@ $(".datatableUsuarios tbody").on("click", ".btnEditarUsuario", function () {
 $(".datatableUsuarios tbody").on("click", ".btnHabilitar", function () {
     var idUsuario2 = $(this).attr("idUsuario");
     var idEstado = $(this).attr("idEstado");
-
     var datos = new FormData();
     datos.append("idUsuario2", idUsuario2);
     datos.append("idEstado", idEstado);
-
     $.ajax({
-        url: "lib/ajaxUsuarios.php",
+        url: "public/views/src/ajaxUsuarios.php",
         method: "POST",
         data: datos,
         cache: false,
         contentType: false,
         processData: false,
         success: function (respuesta) {
-          if (window.matchMedia("(max-width:767px)").matches) {
-            swal({
-              title: "El estado del usuario ha sido actualizado",
-              type: "success",
-              confirmButtonText: "¡Cerrar!",
-            }).then(function (result) {
-              if (result.value) {
-                window.location = "usuarios";
-              }
-            });
-          }
+            if (idEstado == 1) {
+                toastr.success("¡La cuenta de usuario ha sido habilitada!");
+            }
+            else {
+                toastr.error("¡La cuenta de usuario ha sido inhabilitada!");
+            }
         },
+    });
+    if (idEstado == 2) {
+        $(this).removeClass("btn-success");
+        $(this).addClass("btn-danger");
+        $(this).html('<i class="fas fa-user-minus"></i>INHABILITADO');
+        $(this).attr("idEstado", 1);
+    } else {
+        $(this).addClass("btn-success");
+        $(this).removeClass("btn-danger");
+        $(this).html('<i class="fas fa-user-check"></i>HABILITADO');
+        $(this).attr("idEstado", 2);
+    }
+});
+// Habilitacion de Usuario
+// Desbloqueo de Usuario
+$(".datatableUsuarios tbody").on("click", ".btnDesbloquearUsuario", function () {
+    var idUsuario3 = $(this).attr("idUsuario");
+    var datos = new FormData();
+    datos.append("idUsuario3", idUsuario3);
+    $.ajax({
+        url: "public/views/src/ajaxUsuarios.php",
+        method: "POST",
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (respuesta) {
+            toastr.info("¡La cuenta de usuario ha sido desbloqueada!");
+        },
+    });
+});
+// Desbloqueo de Usuario
+// Eliminar Usuario
+$(".datatableUsuarios tbody").on("click", ".btnEliminarUsuario", function () {
+    var idUsuario4 = $(this).attr("idUsuario");
+    Swal.fire({
+        title: "¿Está seguro de eliminar al usuario?",
+        text: "¡Si no lo está, puede cancelar la acción!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#343a40",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "¡Sí, eliminar Usuario!",
+        cancelButtonText: "¡No, cancelar",
+      }).then(function (result) {
+        if (result.value) {
+          window.location = "index.php?ruta=usuarios&idUsuario=" + idUsuario4;
+        }
       });
 });
-
-// Habilitacion de Usuario
+// Eliminar Usuario

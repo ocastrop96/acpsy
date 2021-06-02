@@ -263,8 +263,18 @@
           <button type="submit" class="btn btn-secondary" id="btnEdtUsu"><i class="fas fa-save"></i> Guardar cambios</button>
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
         </div>
+        <?php
+        $editarUsuario = new UsuariosControlador();
+        $editarUsuario->ctrEditarUsuario();
+        ?>
       </form>
     </div>
   </div>
 </div>
 <!-- Editar Usuario -->
+<!-- Eliminar Usuario -->
+<?php
+$eliminarUsuario = new UsuariosControlador();
+$eliminarUsuario->ctrEliminarUsuario();
+?>
+<!-- Eliminar Usuario -->

@@ -25,7 +25,7 @@ class UsuariosControlador
                             echo '<script>
                                 Swal.fire({
                                     icon: "success",
-                                    title: "Acceso concedido...¡Bienvenido!",
+                                    title: "Acceso concedido...¡Bienvenido(a)! <br>' . $_SESSION["loginNombres"] . '",
                                     showConfirmButton: false,
                                     timer: 1500
                                 });
@@ -193,4 +193,125 @@ class UsuariosControlador
         }
     }
     // Registro de Usuarios
+    // Modificación de Usuarios
+    static public function ctrEditarUsuario()
+    {
+        if (isset($_POST["edtDni"]) && isset($_POST["edtUsuario"])) {
+            if (
+                preg_match('/^[0-9]+$/', $_POST["edtDni"]) &&
+                preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ]+$/', $_POST["edtUsuario"])
+            ) {
+                if ($_POST["edtClave"] != "") {
+                    if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ].{7,15}+$/', $_POST["edtClave"])) {
+                        $encriptacionEdt = crypt($_POST["edtClave"], '$2a$07$usesomesillystringforsalt$');
+                    } else {
+                        echo '<script>
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "La contraseña no debe contener letras especiales",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                                function redirect(){
+                                    window.location = "usuarios";
+                                }
+                                setTimeout(redirect,1500);
+                            </script>';
+                    }
+                } else {
+                    $encriptacionEdt = $_POST["passActual"];
+                }
+
+                $datos = array(
+                    "idUsuario" => $_POST["idUsuario"],
+                    "dniUsuario" => $_POST["edtDni"],
+                    "apellidosUsuario" => $_POST["edtApellidos"],
+                    "nombresUsuario" => $_POST["edtNombres"],
+                    "cuentaUsuario" => $_POST["edtUsuario"],
+                    "correoUsuario" => $_POST["edtCorreo"],
+                    "idPerfil" => $_POST["edtPerfil"],
+                    "claveUsuario" => $encriptacionEdt
+                );
+
+                $rptEditarU = UsuariosModelo::mdlEditarUsuario($datos);
+                if ($rptEditarU == "ok") {
+                    echo '<script>
+                            Swal.fire({
+                                icon: "success",
+                                title: "El usuario ha sido modificado con éxito",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            function redirect(){
+                                window.location = "usuarios";
+                            }
+                            setTimeout(redirect,1300);
+                      </script>';
+                } else {
+                    echo '<script>
+                      Swal.fire({
+                        icon: "error",
+                        title: "Ingrese correctamente sus datos",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    function redirect(){
+                        window.location = "usuarios";
+                    }
+                    setTimeout(redirect,1200);
+                </script>';
+                }
+            } else {
+                echo '<script>
+                      Swal.fire({
+                        icon: "error",
+                        title: "Ingrese correctamente sus datos",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    function redirect(){
+                        window.location = "usuarios";
+                    }
+                    setTimeout(redirect,1200);
+                </script>';
+            }
+        }
+    }
+    // Modificación de Usuarios
+    // Eliminación de Usuarios
+    static public function ctrEliminarUsuario()
+    {
+        if (isset($_GET["idUsuario"])) {
+            $datos = $_GET["idUsuario"];
+            $rptEliminaUs = UsuariosModelo::mdlEliminarUsuario($datos);
+            if ($rptEliminaUs == "ok") {
+                echo '<script>
+                        Swal.fire({
+                            icon: "success",
+                            title: "¡El usuario ha sido eliminado con éxito!",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        function redirect(){
+                            window.location = "usuarios";
+                        }
+                        setTimeout(redirect,1200);
+                    </script>';
+            } else {
+                echo '<script>
+                        Swal.fire({
+                            icon: "error",
+                            title: "¡El usuario ha podido ser eliminado!",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        function redirect(){
+                            window.location = "usuarios";
+                        }
+                        setTimeout(redirect,1200);
+                    </script>';
+            }
+        }
+    }
+    // Eliminación de Usuarios
 }

@@ -27,6 +27,8 @@ session_start();
   <link rel="stylesheet" href="public/views/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Sweetalert -->
   <link rel="stylesheet" href="public/views/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="public/views/plugins/toastr/toastr.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="public/views/resources/css/adminlte.css">
   <!-- overlayScrollbars -->
@@ -50,6 +52,8 @@ session_start();
   <script src="public/views/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
   <!-- Sweetalert -->
   <script src="public/views/plugins/sweetalert2/sweetalert2.min.js"></script>
+  <!-- Toastr -->
+  <script src="public/views/plugins/toastr/toastr.min.js"></script> 
   <!-- daterangepicker -->
   <script src="public/views/plugins/moment/moment.min.js"></script>
   <script src="public/views/plugins/daterangepicker/daterangepicker.js"></script>

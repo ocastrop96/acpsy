@@ -103,13 +103,61 @@ class UsuariosModelo
         $stmt->close();
         $stmt = null;
     }
+    static public function mdlEditarUsuario($datos)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL EDITAR_USUARIO(:idUsuario,:idPerfil,:dniUsuario,:apellidosUsuario,:nombresUsuario,:cuentaUsuario,:correoUsuario,:claveUsuario)");
+        $stmt->bindParam(":idUsuario", $datos["idUsuario"], PDO::PARAM_INT);
+        $stmt->bindParam(":idPerfil", $datos["idPerfil"], PDO::PARAM_INT);
+        $stmt->bindParam(":dniUsuario", $datos["dniUsuario"], PDO::PARAM_STR);
+        $stmt->bindParam(":apellidosUsuario", $datos["apellidosUsuario"], PDO::PARAM_STR);
+        $stmt->bindParam(":nombresUsuario", $datos["nombresUsuario"], PDO::PARAM_STR);
+        $stmt->bindParam(":cuentaUsuario", $datos["cuentaUsuario"], PDO::PARAM_STR);
+        $stmt->bindParam(":correoUsuario", $datos["correoUsuario"], PDO::PARAM_STR);
+        $stmt->bindParam(":claveUsuario", $datos["claveUsuario"], PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
+    }
     static public function mdlActualizarUsuario($idUsuario, $idEstado)
     {
         $stmt = Conexion::conectar()->prepare("CALL HABILITAR_USUARIO(:idUsuario,:idEstado)");
         $stmt->bindParam(":idUsuario", $idUsuario, PDO::PARAM_STR);
         $stmt->bindParam(":idEstado", $idEstado, PDO::PARAM_STR);
-        $stmt->execute();
-        return $stmt->fetch();
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
+    }
+    static public function mdlDesbloquearUsuario($idUsuario)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL DESBLOQUEAR_USUARIO(:idUsuario)");
+        $stmt->bindParam(":idUsuario", $idUsuario, PDO::PARAM_STR);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
+    }
+
+    static public function mdlEliminarUsuario($dato)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL ELIMINAR_USUARIO(:idUsuario)");
+        $stmt->bindParam(":idUsuario", $dato, PDO::PARAM_STR);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
         $stmt->close();
         $stmt = null;
     }

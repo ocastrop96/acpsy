@@ -39,8 +39,24 @@ class ajaxUsuarios
     // Habilitar Usuario
     public $idUsuario2;
     public $idEstado;
-    public function HabilitarUsuario(){}
+    public function HabilitarUsuario()
+    {
+        $valor1 = $this->idUsuario2;
+        $valor2 = $this->idEstado;
+        $respuesta = UsuariosModelo::mdlActualizarUsuario($valor1, $valor2);
+        echo json_encode($respuesta);
+    }
     // Habilitar Usuario
+    // Desbloquear Usuario
+    public $idUsuario3;
+    public function ajaxDesbloquearUsuario()
+    {
+        $valor = $this->idUsuario3;
+        $respuesta = UsuariosModelo::mdlDesbloquearUsuario($valor);
+        echo json_encode($respuesta);
+    }
+    // Desbloquear Usuario
+
 }
 // Validar Cuenta Login
 if (isset($_POST["validarCuentaLog"])) {
@@ -63,5 +79,17 @@ if (isset($_POST["idUsuario"])) {
     $list1->ajaxListarUsuario();
 }
 // Habilitar Usuario
-
+if (isset($_POST["idEstado"])) {
+    $activarEst = new ajaxUsuarios();
+    $activarEst->idEstado = $_POST["idEstado"];
+    $activarEst->idUsuario2 = $_POST["idUsuario2"];
+    $activarEst->HabilitarUsuario();
+}
 // Habilitar Usuario
+// Desbloquear Usuario
+if (isset($_POST["idUsuario3"])) {
+    $list1 = new ajaxUsuarios();
+    $list1->idUsuario3 = $_POST["idUsuario3"];
+    $list1->ajaxDesbloquearUsuario();
+}
+// Desbloquear Usuario
