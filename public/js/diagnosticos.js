@@ -162,8 +162,6 @@ $("#edtdCie").change(function () {
                 $("#edtdCie").val("");
                 $("#edtdCie").focus();
                 $("#edtdDescripcion").val("");
-            } else {
-                $("#edtdDescripcion").val("");
             }
         },
     });
@@ -183,7 +181,6 @@ $(".datatableDiagnosticos tbody").on("click", ".btnEditarDiagnostico", function 
         processData: false,
         dataType: "json",
         success: function (respuesta) {
-            console.log(respuesta);
             $("#idDiagnostico").val(respuesta["idDiagnostico"]);
             $("#edtdCie").val(respuesta["cieDiagnostico"]);
             $("#edtdDescripcion").val(respuesta["detaDiagnostico"]);
@@ -191,3 +188,22 @@ $(".datatableDiagnosticos tbody").on("click", ".btnEditarDiagnostico", function 
     });
 });
 // Editar Profesional
+// Eliminar Profesional
+$(".datatableDiagnosticos tbody").on("click", ".btnEliminarDiagnostico", function () {
+    var idDiagnostico4 = $(this).attr("idDiagnostico");
+    Swal.fire({
+        title: "¿Está seguro de eliminar al diagnóstico?",
+        text: "¡Si no lo está, puede cancelar la acción!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#343a40",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "¡Sí, eliminar Diagnóstico!",
+        cancelButtonText: "¡No, cancelar",
+    }).then(function (result) {
+        if (result.value) {
+            window.location = "index.php?ruta=diagnosticos&idDiagnostico=" + idDiagnostico4;
+        }
+    });
+});
+// Eliminar Profesional

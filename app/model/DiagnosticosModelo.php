@@ -25,4 +25,43 @@ class DiagnosticosModelo
         $stmt->close();
         $stmt = null;
     }
+    static public function mdlRegistrarDiagnostico($datos)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL REGISTRAR_DIAGNOSTICO(:cieDiagnostico,:detaDiagnostico)");
+        $stmt->bindParam(":cieDiagnostico", $datos["cieDiagnostico"], PDO::PARAM_STR);
+        $stmt->bindParam(":detaDiagnostico", $datos["detaDiagnostico"], PDO::PARAM_STR);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
+    }
+    static public function mdlEditarDiagnostico($datos)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL EDITAR_DIAGNOSTICO(:idDiagnostico,:cieDiagnostico,:detaDiagnostico)");
+        $stmt->bindParam(":idDiagnostico", $datos["idDiagnostico"], PDO::PARAM_INT);
+        $stmt->bindParam(":cieDiagnostico", $datos["cieDiagnostico"], PDO::PARAM_STR);
+        $stmt->bindParam(":detaDiagnostico", $datos["detaDiagnostico"], PDO::PARAM_STR);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
+    }
+    static public function mdlEliminarDiagnostico($dato)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL ELIMINAR_DIAGNOSTICO(:idDiagnostico)");
+        $stmt->bindParam(":idDiagnostico", $dato, PDO::PARAM_STR);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
+    }
 }

@@ -76,6 +76,10 @@
           <button type="reset" class="btn btn-danger"><i class="fas fa-eraser"></i> Limpiar</button>
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
         </div>
+        <?php
+        $registroDiag = new DiagnosticosControlador();
+        $registroDiag->ctrRegistrarDiagnostico();
+        ?>
       </form>
     </div>
   </div>
@@ -99,7 +103,7 @@
                 <label for="edtdCie">CIE 10 &nbsp;</label>
                 <i class="fas fa-hashtag"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="edtdCie" class="form-control" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="edtdCie" id="edtdCie" class="form-control" required autocomplete="off" autofocus="autofocus">
                   <input type="hidden" name="idDiagnostico" id="idDiagnostico">
                 </div>
               </div>
@@ -119,8 +123,16 @@
           <button type="submit" class="btn btn-secondary" id="btnEdtDiag"><i class="fas fa-save"></i> Guardar</button>
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Cancelar</button>
         </div>
+        <?php
+        $editarDiagnostico = new DiagnosticosControlador();
+        $editarDiagnostico->ctrEditarDiagnostico();
+        ?>
       </form>
     </div>
   </div>
 </div>
 <!-- Editar de Diagnóstico -->
+<?php
+$eliminarDiagnostico = new DiagnosticosControlador();
+$eliminarDiagnostico->ctrEliminarDiagnostico();
+?>
