@@ -218,8 +218,16 @@
           <button type="submit" class="btn btn-secondary" id="btnEdtProf"><i class="fas fa-save"></i> Guarda cambios</button>
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
         </div>
+        <?php
+        $editarProfesional = new ProfesionalesControlador();
+        $editarProfesional->ctrEditarProfesional();
+        ?>
       </form>
     </div>
   </div>
 </div>
 <!-- Editar Profesionales -->
+<?php
+$eliminarProfesional = new ProfesionalesControlador();
+$eliminarProfesional->ctrEliminarProfesional();
+?>

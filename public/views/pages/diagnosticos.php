@@ -44,7 +44,7 @@
     <div class="modal-content">
       <form action="" role="form" id="formRegDiag" method="post">
         <div class="modal-header text-center" style="background: #5D646C; color: white">
-          <h4 class="modal-title">Registrar Diagnóstico</h4>
+          <h4 class="modal-title">Registrar Diagnóstico&nbsp; <i class="fas fa-stethoscope"></i></h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
@@ -53,19 +53,19 @@
           <div class="row">
             <div class="col-3">
               <div class="form-group">
-                <label for="">CIE 10 &nbsp;</label>
+                <label for="rgdCie">CIE 10 &nbsp;</label>
                 <i class="fas fa-hashtag"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese CIE 10" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgdCie" id="rgdCie" class="form-control" placeholder="Ingrese CIE 10" required autocomplete="off" autofocus="autofocus">
                 </div>
               </div>
             </div>
             <div class="col-9">
               <div class="form-group">
-                <label for="">Descripción de Diagnóstico &nbsp;</label>
+                <label for="rgdDescripcion">Descripción de Diagnóstico &nbsp;</label>
                 <i class="fas fa-laptop-medical"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese detalle de diagnóstico" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgdDescripcion" id="rgdDescripcion" class="form-control" placeholder="Ingrese detalle de diagnóstico" required autocomplete="off" autofocus="autofocus">
                 </div>
               </div>
             </div>
@@ -87,7 +87,7 @@
     <div class="modal-content">
       <form action="" role="form" id="formEdtDiag" method="post">
         <div class="modal-header text-center" style="background: #5D646C; color: white">
-          <h4 class="modal-title">Editar Diagnóstico</h4>
+          <h4 class="modal-title">Editar Diagnóstico&nbsp; <i class="fas fa-stethoscope"></i></h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
@@ -96,19 +96,20 @@
           <div class="row">
             <div class="col-3">
               <div class="form-group">
-                <label for="">CIE 10 &nbsp;</label>
+                <label for="edtdCie">CIE 10 &nbsp;</label>
                 <i class="fas fa-hashtag"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="" id="edtdCie" class="form-control" required autocomplete="off" autofocus="autofocus">
+                  <input type="hidden" name="idDiagnostico" id="idDiagnostico">
                 </div>
               </div>
             </div>
             <div class="col-9">
               <div class="form-group">
-                <label for="">Descripción de Diagnóstico &nbsp;</label>
+                <label for="edtdDescripcion">Descripción de Diagnóstico &nbsp;</label>
                 <i class="fas fa-laptop-medical"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="edtdDescripcion" id="edtdDescripcion" class="form-control" required autocomplete="off" autofocus="autofocus">
                 </div>
               </div>
             </div>

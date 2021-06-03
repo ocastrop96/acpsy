@@ -459,10 +459,10 @@ $(".datatableUsuarios tbody").on("click", ".btnEliminarUsuario", function () {
         cancelButtonColor: "#d33",
         confirmButtonText: "¡Sí, eliminar Usuario!",
         cancelButtonText: "¡No, cancelar",
-      }).then(function (result) {
+    }).then(function (result) {
         if (result.value) {
-          window.location = "index.php?ruta=usuarios&idUsuario=" + idUsuario4;
+            window.location = "index.php?ruta=usuarios&idUsuario=" + idUsuario4;
         }
-      });
+    });
 });
 // Eliminar Usuario

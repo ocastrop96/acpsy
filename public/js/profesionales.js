@@ -39,17 +39,11 @@ $("#rgpNombres").keyup(function () {
 $("#rgpApellidos").keyup(function () {
     this.value = (this.value + "").replace(/[^a-zA-ZñÑáéíóúüÁÉÍÓÚÜ ]/g, "");
 });
-$("#rgpUsuario").keyup(function () {
-    this.value = (this.value + "").replace(/[^a-zA-ZñÑáéíóúÁÉÍÓÚ]/g, "");
-});
 $("#edtpNombres").keyup(function () {
     this.value = (this.value + "").replace(/[^a-zA-ZñÑáéíóúüÁÉÍÓÚÜ ]/g, "");
 });
 $("#edtpApellidos").keyup(function () {
     this.value = (this.value + "").replace(/[^a-zA-ZñÑáéíóúüÁÉÍÓÚÜ ]/g, "");
-});
-$("#edtpUsuario").keyup(function () {
-    this.value = (this.value + "").replace(/[^a-zA-ZñÑáéíóúÁÉÍÓÚ]/g, "");
 });
 $("#rgpNombres").keyup(function () {
     var u4 = $(this).val();
@@ -337,7 +331,6 @@ $(".datatableProfesionales tbody").on("click", ".btnEditarProfesional", function
         processData: false,
         dataType: "json",
         success: function (respuesta) {
-            console.log(respuesta);
             $("#idProfesional").val(respuesta["idProfesional"]);
             $("#edtpDni").val(respuesta["dniProfesional"]);
             $("#edtpCpsp").val(respuesta["cpspProfesional"]);
@@ -385,3 +378,22 @@ $(".datatableProfesionales tbody").on("click", ".btnAltaBajaProf", function () {
     }
 });
 // Alta y Baja Profesional
+// Eliminar Usuario
+$(".datatableProfesionales tbody").on("click", ".btnEliminarProfesional", function () {
+    var idProfesional4 = $(this).attr("idProfesional");
+    Swal.fire({
+        title: "¿Está seguro de eliminar al profesional?",
+        text: "¡Si no lo está, puede cancelar la acción!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#343a40",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "¡Sí, eliminar Profesional!",
+        cancelButtonText: "¡No, cancelar",
+    }).then(function (result) {
+        if (result.value) {
+            window.location = "index.php?ruta=profesionales&idProfesional=" + idProfesional4;
+        }
+    });
+});
+// Eliminar Usuario
