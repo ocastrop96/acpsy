@@ -78,7 +78,7 @@ class DiagnosticosControlador
                     echo '<script>
                             Swal.fire({
                                 icon: "success",
-                                title: "¡El diagnóstico ha sido registrado con éxito!",
+                                title: "¡El diagnóstico ha sido editado con éxito!",
                                 showConfirmButton: false,
                                 timer: 1500
                             });
