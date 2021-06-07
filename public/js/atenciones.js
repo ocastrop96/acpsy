@@ -1,5 +1,5 @@
 $(".datatableAtenciones").DataTable({
-    // ajax: "public/views/util/datatable-Usuarios.php",
+    ajax: "public/views/util/datatable-Atenciones.php",
     deferRender: true,
     retrieve: true,
     processing: true,
@@ -7,6 +7,9 @@ $(".datatableAtenciones").DataTable({
     lengthChange: true,
     searching: true,
     ordering: true,
+    order: [
+        [1, "desc"]
+    ],
     info: true,
     autoWidth: false,
     language: {
