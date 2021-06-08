@@ -222,7 +222,7 @@
           </div>
         </div>
         <div class="modal-footer justify-content-center">
-          <button type="submit" class="btn btn-secondary" id=""><i class="fas fa-save"></i> Seleccionar</button>
+          <button type="submit" class="btn btn-secondary" id=""><i class="fas fa-save"></i> Guardar</button>
           <button type="reset" class="btn btn-danger"><i class="fas fa-eraser"></i> Limpiar</button>
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
         </div>
@@ -233,41 +233,45 @@
 <!-- Registrar Atención -->
 <!-- Busqueda de cuentas -->
 <div id="modal-busqueda-cuenta" class="modal fade" role="dialog" aria-modal="true" style="padding-right: 17px;">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
-      <form action="" role="form" id="formBusCuenta" method="post">
-        <div class="modal-header text-center" style="background: #7EB2C2; color: white">
-          <h4 class="modal-title">Búsqueda de Paciente&nbsp; <i class="fas fa-hospital-user"></i></h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <!-- <div class="col-3">
-              <div class="form-group">
-                <label for="">N° de Cuenta &nbsp;</label>
-                <i class="fas fa-hashtag"></i> *
-                <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese N° Cuenta" required autocomplete="off" autofocus="autofocus">
-                </div>
+      <div class="modal-header text-center" style="background: #7EB2C2; color: white">
+        <h4 class="modal-title">Búsqueda de Paciente&nbsp; <i class="fas fa-hospital-user"></i></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+            <div class="form-group">
+              <label for="">N° de Cuenta &nbsp;</label>
+              <i class="fas fa-hashtag"></i> *
+              <div class="input-group">
+                <input type="text" name="searchCuenta" id="searchCuenta" class="form-control" placeholder="Ingrese N° Cuenta del Paciente" required autocomplete="off" autofocus="autofocus">
               </div>
             </div>
-            <div class="col-2" id="btnCuentaPac1">
-              <div class="form-group">
-                <label>Búsqueda:<span class="text-danger">&nbsp;*</span></label>
-                <div class="input-group">
-                  <button type="button" class="btn btn-block btn-info" id="btnCuentaPac"><i class="fas fa-search"></i> Consultar</button>
-                </div>
-              </div>
-            </div> -->
           </div>
         </div>
-        <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-secondary" id=""><i class="fas fa-save"></i> Seleccionar</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
-        </div>
-      </form>
+      </div>
+      <div class="modal-body">
+        <div id="dataCuenta"></div>
+        <!-- <table class="table  table-responsive p-0 table-hover text-nowrap">
+          <thead>
+            <tr>
+              <th>N° HC</th>
+              <th>N° Doc</th>
+              <th>Paciente</th>
+              <th>Fecha de Ingreso</th>
+              <th>Estado</th>
+              <th>Opción</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table> -->
+      </div>
     </div>
   </div>
 </div>

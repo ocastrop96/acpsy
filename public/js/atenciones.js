@@ -16,3 +16,26 @@ $(".datatableAtenciones").DataTable({
         url: "public/views/resources/js/dataTables.spanish.lang",
     },
 });
+$("#searchCuenta").keyup(function () {
+    var cuenta = $(this).val();
+    if (cuenta != "") {
+        buscarPaciente(cuenta)
+    }
+    else {
+        alert("Ingrese número de cuenta a buscar")
+    }
+});
+
+function buscarPaciente(cuenta) {
+    $.ajax({
+        url: "public/views/src/ajaxCuentas.php",
+        type: "POST",
+        dataType: "html",
+        data: { cuenta: cuenta }
+    }).done(function (respuesta) {
+        console.log(respuesta);
+        $("#dataCuenta").html(respuesta);
+    }).fail(function () {
+        console.log("error");
+    })
+}

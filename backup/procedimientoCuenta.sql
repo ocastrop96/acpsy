@@ -1,9 +1,10 @@
 ALTER PROCEDURE [dbo].[LISTAR_DATOS_CUENTA_PSICO]
-  @IdCuentaAtencion INT 
+  @IdCuentaAtencion INT
 AS
 BEGIN
 	SELECT
-	Atenciones.IdAtencion, 
+	Atenciones.IdAtencion,
+	EpisodioAtencion.NumEpisodio, 
 	EpisodioAtencion.IdEpisodio,
 	FORMAT(EpisodioAtencion.FechaIngreso,'dd/MM/yyyy') AS FechaIngreso, 
 	Atenciones.IdCuentaAtencion, 
@@ -16,8 +17,8 @@ BEGIN
 	Pacientes.NroDocumento, 
 	Pacientes.ApellidoPaterno, 
 	Pacientes.ApellidoMaterno, 
-	Pacientes.PrimerNombre, 
-	Pacientes.SegundoNombre, 
+	Pacientes.PrimerNombre,
+	UPPER(Pacientes.SegundoNombre) AS SegundoNombre, 
 	EpisodioAtencion.IdservicioIngreso, 
 	Servicios.Nombre, 
 	Pacientes.IdDistritoDomicilio, 
@@ -65,6 +66,7 @@ FROM
 		EpisodioAtencion.IdservicioIngreso = Servicios.IdServicio
 WHERE
 	YEAR(EpisodioAtencion.FechaIngreso) = YEAR(GETDATE()) AND Atenciones.IdCuentaAtencion = @IdCuentaAtencion
+ORDER BY EpisodioAtencion.FechaIngreso DESC
 END
 
 
