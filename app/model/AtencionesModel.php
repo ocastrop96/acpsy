@@ -13,6 +13,16 @@ class AtencionesModelo
         $stmt->close();
         $stmt = null;
     }
+    static public function mdlCargarDatosCuenta($IdCuentaAtencion, $IdEpisodio)
+    {
+        $stmt = ConexionConsulta::conectar()->prepare("exec LISTAR_DATOS_CUENTA_PSICO_FORM @IdCuentaAtencion = :IdCuentaAtencion, @IdEpisodio = :IdEpisodio");
+        $stmt->bindParam(":IdCuentaAtencion", $IdCuentaAtencion, PDO::PARAM_STR);
+        $stmt->bindParam(":IdEpisodio", $IdEpisodio, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetch();
+        $stmt->close();
+        $stmt = null;
+    }
     static public function mdlListarAtenciones($item, $valor)
     {
         if ($item != null) {
@@ -65,6 +75,22 @@ class AtencionesModelo
             return $stmt->fetchAll();
         }
         //Cerramos la conexion por seguridad
+        $stmt->close();
+        $stmt = null;
+    }
+    static public function mdlListarSexo()
+    {
+        $stmt = Conexion::conectar()->prepare("CALL LISTAR_SEXO()");
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
+    static public function mdlListarEstadoPac()
+    {
+        $stmt = Conexion::conectar()->prepare("CALL LISTAR_ESTADOS_PACIENTE()");
+        $stmt->execute();
+        return $stmt->fetchAll();
         $stmt->close();
         $stmt = null;
     }

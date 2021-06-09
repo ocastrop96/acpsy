@@ -67,16 +67,19 @@ FROM
 WHERE
 	YEAR(EpisodioAtencion.FechaIngreso) = YEAR(GETDATE()) AND Atenciones.IdCuentaAtencion = @IdCuentaAtencion
 ORDER BY EpisodioAtencion.FechaIngreso DESC
+OFFSET 0 ROWS
+FETCH NEXT 1 ROWS ONLY
 END
 
 
--- Datos formulario
+
 ALTER PROCEDURE [dbo].[LISTAR_DATOS_CUENTA_PSICO_FORM]
   @IdCuentaAtencion INT, @IdEpisodio INT
 AS
 BEGIN
 	SELECT
-	Atenciones.IdAtencion, 
+	Atenciones.IdAtencion,
+	EpisodioAtencion.NumEpisodio, 
 	EpisodioAtencion.IdEpisodio,
 	FORMAT(EpisodioAtencion.FechaIngreso,'dd/MM/yyyy') AS FechaIngreso, 
 	Atenciones.IdCuentaAtencion, 
@@ -88,9 +91,8 @@ BEGIN
 	TiposDocIdentidad.DescripcionAbrev, 
 	Pacientes.NroDocumento, 
 	Pacientes.ApellidoPaterno, 
-	Pacientes.ApellidoMaterno, 
-	Pacientes.PrimerNombre, 
-	Pacientes.SegundoNombre, 
+	Pacientes.ApellidoMaterno,
+	CONCAT(Pacientes.PrimerNombre,' ',UPPER(Pacientes.SegundoNombre)) AS PrimerNombre, 
 	EpisodioAtencion.IdservicioIngreso, 
 	Servicios.Nombre, 
 	Pacientes.IdDistritoDomicilio, 

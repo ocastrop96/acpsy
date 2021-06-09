@@ -61,19 +61,19 @@
           <div class="row">
             <div class="col-3">
               <div class="form-group">
-                <label for="">N° de Cuenta &nbsp;</label>
+                <label for="rgaNCuenta">N° de Cuenta &nbsp;</label>
                 <i class="fas fa-hashtag"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese N° Cuenta" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgaNCuenta" id="rgaNCuenta" class="form-control" placeholder="Ingrese N° Cuenta" required autocomplete="off" autofocus="autofocus" readonly>
                   <input type="hidden" name="usuRegAte" id="usuRegAte" value="<?php echo $_SESSION["loginId"]; ?>">
                 </div>
               </div>
             </div>
-            <div class="col-2" id="btnCuentaPac1">
+            <div class="col-4" id="btnCuentaPac1">
               <div class="form-group">
                 <label>Búsqueda:<span class="text-danger">&nbsp;*</span></label>
                 <div class="input-group">
-                  <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modal-busqueda-cuenta" id="btnCuentaPac"><i class="fas fa-search"></i> Consultar</button>
+                  <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modal-busqueda-cuenta" id="btnCuentaPac"><i class="fas fa-search"></i> Consultar Datos Cuenta</button>
                 </div>
               </div>
             </div>
@@ -81,37 +81,37 @@
           <div class="row">
             <div class="col-12 col-sm-3 col-md-3 col-lg-3">
               <div class="form-group">
-                <label for="">N° de Historia &nbsp;</label>
+                <label for="rgaNHC">N° de Historia &nbsp;</label>
                 <i class="fas fa-file-medical-alt"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese N° HC" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgaNHC" id="rgaNHC" class="form-control" placeholder="Ingrese N° HC" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
               </div>
             </div>
             <div class="col-12 col-sm-3 col-md-3 col-lg-3">
               <div class="form-group">
-                <label for="">F.Nacimiento</label>
+                <label for="rgaFNac">F.Nacimiento</label>
                 <i class="fas fa-calendar-alt"></i>
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese F. Nacimiento" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgaFNac" id="rgaFNac" class="form-control" placeholder="Ingrese F. Nacimiento" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
               </div>
             </div>
             <div class="col-12 col-sm-3 col-md-3 col-lg-3">
               <div class="form-group">
-                <label for="">T.Doc &nbsp;</label>
+                <label for="rgaTdoc">T.Doc &nbsp;</label>
                 <i class="fas fa-id-card"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese N° HC" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgaTdoc" id="rgaTdoc" class="form-control" placeholder="Ingrese T.Doc" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
               </div>
             </div>
             <div class="col-12 col-sm-3 col-md-3 col-lg-3">
               <div class="form-group">
-                <label for="">N.Doc &nbsp;</label>
+                <label for="rgaNDoc">N.Doc &nbsp;</label>
                 <i class="fas fa-id-card"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese N° HC" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgaNDoc" id="rgaNDoc" class="form-control" placeholder="Ingrese N° Doc" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
               </div>
             </div>
@@ -119,28 +119,28 @@
           <div class="row">
             <div class="col-12 col-sm-4 col-md-4 col-lg-4">
               <div class="form-group">
-                <label for="">Apellido Paterno &nbsp;</label>
+                <label for="rgaAPaterno">Apellido Paterno &nbsp;</label>
                 <i class="fas fa-file-medical-alt"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese N° HC" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgaAPaterno" id="rgaAPaterno" class="form-control" placeholder="Ingrese Apellido Paterno" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
               </div>
             </div>
             <div class="col-12 col-sm-4 col-md-4 col-lg-4">
               <div class="form-group">
-                <label for="">Apellido Materno &nbsp;</label>
+                <label for="rgaAMaterno">Apellido Materno &nbsp;</label>
                 <i class="fas fa-file-medical-alt"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese N° HC" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgaAMaterno" id="rgaAMaterno" class="form-control" placeholder="Ingrese Apellido Materno" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
               </div>
             </div>
             <div class="col-12 col-sm-4 col-md-4 col-lg-4">
               <div class="form-group">
-                <label for="">Nombres &nbsp;</label>
+                <label for="rgaNombres">Nombres &nbsp;</label>
                 <i class="fas fa-file-medical-alt"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese N° HC" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgaNombres" id="rgaNombres" class="form-control" placeholder="Ingrese Nombres" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
               </div>
             </div>
@@ -148,81 +148,100 @@
           <div class="row">
             <div class="col-12 col-sm-2 col-md-2 col-lg-2">
               <div class="form-group">
-                <label for="">Edad</label>
+                <label for="rgaEdad">Edad</label>
                 <i class="fas fa-file-medical-alt"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese N° HC" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgaEdad" id="rgaEdad" class="form-control" placeholder="Ingrese Edad" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
               </div>
             </div>
             <div class="col-12 col-sm-3 col-md-3 col-lg-3">
               <div class="form-group">
-                <label for="">Sexo &nbsp;</label>
+                <label for="rgaSexo">Sexo &nbsp;</label>
                 <i class="fas fa-file-medical-alt"></i> *
                 <div class="input-group">
-                  <select class="form-control" style="width: 100%;" name="rgPerfil" id="rgPerfil">
-                    <option value="0">Seleccione Sexo</option>
-                    <option value="0">MASCULINO</option>
-                    <option value="0">FEMENINO</option>
+                  <select class="form-control" style="width: 100%;" name="rgaSexo" id="rgaSexo">
+                    <option value="0" id="setSex">Seleccione Sexo</option>
+                    <?php
+                    $sexPac = AtencionesControlador::ctrListarSexo();
+                    foreach ($sexPac as $key => $value) {
+                      echo '<option value="' . $value["idTipSexo"] . '">' . $value["detaTipSexo"] . '</option>';
+                    }
+                    ?>
                   </select>
                 </div>
               </div>
             </div>
             <div class="col-12 col-sm-3 col-md-3 col-lg-3">
               <div class="form-group">
-                <label for="">Financimiento &nbsp;</label>
+                <label for="rgaFinancia">Financimiento &nbsp;</label>
                 <i class="fas fa-file-medical-alt"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese N° HC" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgaFinancia" id="rgaFinancia" class="form-control" placeholder="Ingrese Financiamiento" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
               </div>
             </div>
             <div class="col-12 col-sm-4 col-md-4 col-lg-4">
               <div class="form-group">
-                <label for="">Distrito &nbsp;</label>
+                <label for="rgaDistrito">Distrito &nbsp;</label>
                 <i class="fas fa-file-medical-alt"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese N° HC" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgaDistrito" id="rgaDistrito" class="form-control" placeholder="Ingrese Distrito" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
               <div class="form-group">
-                <label for="">Estado Paciente &nbsp;</label>
+                <label for="rgaEstadoPac">Estado Paciente &nbsp;</label>
                 <i class="fas fa-file-medical-alt"></i> *
                 <div class="input-group">
-                  <select class="form-control" style="width: 100%;" name="rgPerfil" id="rgPerfil">
-                    <option value="0">Seleccione Estado</option>
-                    <option value="0">MASCULINO</option>
-                    <option value="0">FEMENINO</option>
+                  <select class="form-control" style="width: 100%;" name="rgaEstadoPac" id="rgaEstadoPac">
+                    <option value="0" id="setEstado">Seleccione Estado</option>
+                    <?php
+                    $estadoPac = AtencionesControlador::ctrListarEstadosPaciente();
+                    foreach ($estadoPac as $key => $value) {
+                      echo '<option value="' . $value["idEstadoPacAtencion"] . '">' . $value["detaEstadoPacAtencion"] . '</option>';
+                    }
+                    ?>
                   </select>
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-5 col-md-5 col-lg-5">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
               <div class="form-group">
-                <label for="">Servicio Ing. &nbsp;</label>
+                <label for="rgaCama">Cama &nbsp;</label>
                 <i class="fas fa-file-medical-alt"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese N° HC" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgaCama" id="rgaCama" class="form-control" placeholder="Ingrese N° Cama (Opcional)" required autocomplete="off" autofocus="autofocus">
                 </div>
               </div>
             </div>
+          </div>
+          <div class="row">
             <div class="col-12 col-sm-4 col-md-4 col-lg-4">
               <div class="form-group">
-                <label for="">Cama &nbsp;</label>
+                <label for="rgaFIngServicio">Fecha de Ingreso &nbsp;</label>
+                <i class="fas fa-calendar-alt"></i> *
+                <div class="input-group">
+                  <input type="text" name="rgaFIngServicio" id="rgaFIngServicio" class="form-control" placeholder="Ingrese Fecha de Ingreso" required autocomplete="off" autofocus="autofocus" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+              <div class="form-group">
+                <label for="rgaServicio">Servicio Ingresado &nbsp;</label>
                 <i class="fas fa-file-medical-alt"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese N° HC" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgaServicio" id="rgaServicio" class="form-control" placeholder="Ingrese Servicio" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer justify-content-center">
-          <button type="submit" class="btn btn-secondary" id=""><i class="fas fa-save"></i> Guardar</button>
+          <button type="submit" class="btn btn-secondary" id="btnRegAte"><i class="fas fa-save"></i> Guardar</button>
           <button type="reset" class="btn btn-danger"><i class="fas fa-eraser"></i> Limpiar</button>
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
         </div>
@@ -256,23 +275,216 @@
       </div>
       <div class="modal-body">
         <div id="dataCuenta"></div>
-        <!-- <table class="table  table-responsive p-0 table-hover text-nowrap">
-          <thead>
-            <tr>
-              <th>N° HC</th>
-              <th>N° Doc</th>
-              <th>Paciente</th>
-              <th>Fecha de Ingreso</th>
-              <th>Estado</th>
-              <th>Opción</th>
-            </tr>
-          </thead>
-          <tbody>
-            
-          </tbody>
-        </table> -->
       </div>
+      <!-- <div class="modal-footer justify-content-center">
+        <button type="submit" class="btn btn-secondary" id="btnSelPac"><i class="fas fa-mouse-pointer"></i> Seleccionar</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
+      </div> -->
     </div>
   </div>
 </div>
 <!-- Busqueda de cuentas -->
+<!-- Editar Atención -->
+<div id="modal-editar-atencion" class="modal fade" role="dialog" aria-modal="true" style="padding-right: 17px;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form action="" role="form" id="formEdtAte" method="post">
+        <div class="modal-header text-center" style="background: #5D646C; color: white">
+          <h4 class="modal-title">Editar Atención de Paciente&nbsp; <i class="fas fa-hospital-user"></i></h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-3">
+              <div class="form-group">
+                <label for="edtaNCuenta">N° de Cuenta &nbsp;</label>
+                <i class="fas fa-hashtag"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtaNCuenta" id="edtaNCuenta" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
+                  <input type="hidden" name="usuEdtAte" id="usuEdtAte" value="<?php echo $_SESSION["loginId"]; ?>">
+                  <input type="hidden" name="idAtencion" id="idAtencion">
+                </div>
+              </div>
+            </div>
+            <div class="col-4" id="btnCuentaPac2">
+              <div class="form-group">
+                <label>Búsqueda:<span class="text-danger">&nbsp;*</span></label>
+                <div class="input-group">
+                  <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modal-busqueda-cuenta2" id="btnCuentaPac2"><i class="fas fa-search"></i> Consultar Datos Cuenta</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+              <div class="form-group">
+                <label for="edtaNHC">N° de Historia &nbsp;</label>
+                <i class="fas fa-file-medical-alt"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtaNHC" id="edtaNHC" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+              <div class="form-group">
+                <label for="edtaFNac">F.Nacimiento</label>
+                <i class="fas fa-calendar-alt"></i>
+                <div class="input-group">
+                  <input type="text" name="edtaFNac" id="edtaFNac" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+              <div class="form-group">
+                <label for="edtaTdoc">T.Doc &nbsp;</label>
+                <i class="fas fa-id-card"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtaTdoc" id="edtaTdoc" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+              <div class="form-group">
+                <label for="edtaNDoc">N.Doc &nbsp;</label>
+                <i class="fas fa-id-card"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtaNDoc" id="edtaNDoc" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label for="edtaAPaterno">Apellido Paterno &nbsp;</label>
+                <i class="fas fa-file-medical-alt"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtaAPaterno" id="edtaAPaterno" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label for="edtaAMaterno">Apellido Materno &nbsp;</label>
+                <i class="fas fa-file-medical-alt"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtaAMaterno" id="edtaAMaterno" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label for="edtaNombres">Nombres &nbsp;</label>
+                <i class="fas fa-file-medical-alt"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtaNombres" id="edtaNombres" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-2 col-md-2 col-lg-2">
+              <div class="form-group">
+                <label for="edtaEdad">Edad</label>
+                <i class="fas fa-file-medical-alt"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtaEdad" id="edtaEdad" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+              <div class="form-group">
+                <label for="edtaSexo">Sexo &nbsp;</label>
+                <i class="fas fa-file-medical-alt"></i> *
+                <div class="input-group">
+                  <select class="form-control" style="width: 100%;" name="edtaSexo" id="edtaSexo">
+                    <option id="setSex2"></option>
+                    <?php
+                    $sexPac = AtencionesControlador::ctrListarSexo();
+                    foreach ($sexPac as $key => $value) {
+                      echo '<option value="' . $value["idTipSexo"] . '">' . $value["detaTipSexo"] . '</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+              <div class="form-group">
+                <label for="edtaFinancia">Financimiento &nbsp;</label>
+                <i class="fas fa-file-medical-alt"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtaFinancia" id="edtaFinancia" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label for="edtaDistrito">Distrito &nbsp;</label>
+                <i class="fas fa-file-medical-alt"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtaDistrito" id="edtaDistrito" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+              <div class="form-group">
+                <label for="edtaEstadoPac">Estado Paciente &nbsp;</label>
+                <i class="fas fa-file-medical-alt"></i> *
+                <div class="input-group">
+                  <select class="form-control" style="width: 100%;" name="edtaEstadoPac" id="edtaEstadoPac">
+                    <option id="setEstado2"></option>
+                    <?php
+                    $estadoPac = AtencionesControlador::ctrListarEstadosPaciente();
+                    foreach ($estadoPac as $key => $value) {
+                      echo '<option value="' . $value["idEstadoPacAtencion"] . '">' . $value["detaEstadoPacAtencion"] . '</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+              <div class="form-group">
+                <label for="edtaCama">Cama &nbsp;</label>
+                <i class="fas fa-file-medical-alt"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtaCama" id="edtaCama" class="form-control" placeholder="Ingrese N° Cama (Opcional)" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label for="edtaFIngServicio">Fecha de Ingreso &nbsp;</label>
+                <i class="fas fa-calendar-alt"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtaFIngServicio" id="edtaFIngServicio" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+              <div class="form-group">
+                <label for="edtaServicio">Servicio Ingresado &nbsp;</label>
+                <i class="fas fa-file-medical-alt"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtaServicio" id="edtaServicio" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="submit" class="btn btn-secondary" id="btnEdtAte"><i class="fas fa-save"></i> Guardar Cambios</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Editar Atención -->

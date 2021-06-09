@@ -181,6 +181,7 @@ $(".datatableDiagnosticos tbody").on("click", ".btnEditarDiagnostico", function 
         processData: false,
         dataType: "json",
         success: function (respuesta) {
+            console.log(respuesta);
             $("#idDiagnostico").val(respuesta["idDiagnostico"]);
             $("#edtdCie").val(respuesta["cieDiagnostico"]);
             $("#edtdDescripcion").val(respuesta["detaDiagnostico"]);
