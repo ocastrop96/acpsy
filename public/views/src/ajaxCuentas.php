@@ -10,21 +10,6 @@ class ajaxDatosCuenta
         $valorCuenta = $this->idCuenta;
         $datosCuenta = AtencionesControlador::ctrTraerDatosCuenta($valorCuenta);
         $totalData = count($datosCuenta);
-
-        $data = "<table class='table  table-responsive p-0 table-hover text-nowrap'>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>N° Episodio</th>
-            <th>N° HC</th>
-            <th>N° Doc</th>
-            <th>Paciente</th>
-            <th>Fecha de Ingreso</th>
-            <th>Estado</th>
-            <th>Servicio</th>
-          </tr>
-        </thead>
-        <tbody>";
         // Cabecera
         if ($totalData > 0) {
             foreach ($datosCuenta as $key => $value) {
@@ -37,30 +22,68 @@ class ajaxDatosCuenta
                     $estadoPac = "HOSPITALIZADO";
                 }
                 // Condiciones para estado
-                $data .= "<tr>
-                    <td><div class='btn-group'><button type='button' class='btn btn-success btnSelecCuenta' id='btnSelecCuenta' idCuenta='$value[IdCuentaAtencion]' idEpisodio='$value[IdEpisodio]' onclick='seleccionarAtencion($value[IdCuentaAtencion],$value[IdEpisodio])'><i class='fas fa-mouse-pointer'></i></button></div></td>
-                    <td>$value[NumEpisodio]</td>
-                    <td>$value[NroHistoriaClinica]</td>
-                    <td>$value[DescripcionAbrev]-$value[NroDocumento]</td>
-                    <td>$value[PrimerNombre] $value[SegundoNombre] $value[ApellidoPaterno] $value[ApellidoMaterno]</td>
-                    <td>$value[FechaIngreso]</td>
-                    <td>$estadoPac</td>
-                    <td>$value[Nombre]</td>
-                </tr>";
+                $data = "<div class='card card-olive'>
+                    <div class='card-header'>
+                        <h3 class='card-title'>Datos de Cuenta</h3>
+                    </div>
+                    <div class='card-body'>
+                        <div class='row'>
+                            <div class='col-12 col-sm-3 col-md-2 col-lg-2'><strong>
+                                    <i class='fas fa-hashtag mr-1'></i> N° Episodio</strong>
+                            </div>
+                            <div class='col-12 col-sm-3 col-md-2 col-lg-2'>
+                                <p class='text-muted'>$value[IdEpisodio]</p>
+                            </div>
+                            <div class='col-12 col-sm-4 col-md-3 col-lg-3'><strong>
+                                    <i class='fas fa-book mr-1'></i> N° Historia Clínica</strong>
+                            </div>
+                            <div class='col-12 col-sm-3 col-md-2 col-lg-2'>
+                                <p class='text-muted'>$value[NroHistoriaClinica]</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class='row'>
+                            <div class='col-12 col-sm-3 col-md-2 col-lg-2'><strong>
+                                    <i class='fas fa-hashtag mr-1'></i> N° Doc</strong>
+                            </div>
+                            <div class='col-12 col-sm-4 col-md-3 col-lg-3'>
+                                <p class='text-muted'>$value[DescripcionAbrev]-$value[NroDocumento]</p>
+                            </div>
+                            <div class='col-12 col-sm-12 col-md-3 col-lg-3'><strong>
+                                    <i class='fas fa-book mr-1'></i> Fecha de Ingreso</strong>
+                            </div>
+                            <div class='col-12 col-sm-4 col-md-3 col-lg-3'>
+                                <p class='text-muted'>$value[FechaIngreso]</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <strong><i class='fas fa-hospital-user mr-1'></i> Paciente</strong>
+                        <p class='text-muted'>$value[PrimerNombre] $value[SegundoNombre] $value[ApellidoPaterno] $value[ApellidoMaterno]</p>
+                        <hr>
+                        <strong><i class='fas fa-hospital-alt mr-1'></i> Servicio Ingreso</strong>
+                        <p class='text-muted'>$value[Nombre]</p>
+                        <hr>
+                        <div class='row'>
+                            <div class='col-12 col-sm-4 col-md-3 col-lg-3'><strong>
+                                    <i class='fas fa-user-injured mr-1'></i> Estado Paciente</strong>
+                            </div>
+                            <div class='col-12 col-sm-4 col-md-3 col-lg-3'>
+                                <p class='text-muted'>$estadoPac</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='card-footer'>
+                        <button type='button' class='btn btn-success btn-block border-5' idCuenta='$value[IdCuentaAtencion]' idEpisodio='$value[IdEpisodio]' onclick='seleccionarAtencion($value[IdCuentaAtencion],$value[IdEpisodio])'><i class='fas fa-sync-alt'></i> &nbsp; Cargar Datos</button>
+                    </div>
+                </div>";
             }
         } else {
-            $data .= "<tr>
-                    <td>SIN DATOS</td>
-                    <td>SIN DATOS</td>
-                    <td>SIN DATOS</td>
-                    <td>SIN DATOS</td>
-                    <td>SIN DATOS</td>
-                    <td>SIN DATOS</td>
-                    <td>SIN DATOS</td>
-                    <td>SIN DATOS</td>
-                </tr>";
+            $data = "<div class='alert alert-warning alert-dismissible'>
+                <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>
+                <h5 class='font-weight-bold'><i class='icon fas fa-exclamation-triangle'></i> ¡Datos no encontrados!</h5>
+                No se encontró data relacionada a la cuenta ingresada.
+            </div>";
         }
-        $data .= "</tbody></table>";
         echo $data;
     }
 

@@ -66,6 +66,7 @@
                 <div class="input-group">
                   <input type="text" name="rgaNCuenta" id="rgaNCuenta" class="form-control" placeholder="Ingrese N° Cuenta" required autocomplete="off" autofocus="autofocus" readonly>
                   <input type="hidden" name="usuRegAte" id="usuRegAte" value="<?php echo $_SESSION["loginId"]; ?>">
+                  <input type="hidden" name="idEpisodio" id="idEpisodio">
                 </div>
               </div>
             </div>
@@ -82,7 +83,7 @@
             <div class="col-12 col-sm-3 col-md-3 col-lg-3">
               <div class="form-group">
                 <label for="rgaNHC">N° de Historia &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-hospital-user"></i> *
                 <div class="input-group">
                   <input type="text" name="rgaNHC" id="rgaNHC" class="form-control" placeholder="Ingrese N° HC" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
@@ -120,7 +121,7 @@
             <div class="col-12 col-sm-4 col-md-4 col-lg-4">
               <div class="form-group">
                 <label for="rgaAPaterno">Apellido Paterno &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-hospital-user"></i> *
                 <div class="input-group">
                   <input type="text" name="rgaAPaterno" id="rgaAPaterno" class="form-control" placeholder="Ingrese Apellido Paterno" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
@@ -129,7 +130,7 @@
             <div class="col-12 col-sm-4 col-md-4 col-lg-4">
               <div class="form-group">
                 <label for="rgaAMaterno">Apellido Materno &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-hospital-user"></i> *
                 <div class="input-group">
                   <input type="text" name="rgaAMaterno" id="rgaAMaterno" class="form-control" placeholder="Ingrese Apellido Materno" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
@@ -138,7 +139,7 @@
             <div class="col-12 col-sm-4 col-md-4 col-lg-4">
               <div class="form-group">
                 <label for="rgaNombres">Nombres &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-hospital-user"></i> *
                 <div class="input-group">
                   <input type="text" name="rgaNombres" id="rgaNombres" class="form-control" placeholder="Ingrese Nombres" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
@@ -149,7 +150,7 @@
             <div class="col-12 col-sm-2 col-md-2 col-lg-2">
               <div class="form-group">
                 <label for="rgaEdad">Edad</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-pager"></i> *
                 <div class="input-group">
                   <input type="text" name="rgaEdad" id="rgaEdad" class="form-control" placeholder="Ingrese Edad" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
@@ -158,7 +159,7 @@
             <div class="col-12 col-sm-3 col-md-3 col-lg-3">
               <div class="form-group">
                 <label for="rgaSexo">Sexo &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-venus-mars"></i> *
                 <div class="input-group">
                   <select class="form-control" style="width: 100%;" name="rgaSexo" id="rgaSexo">
                     <option value="0" id="setSex">Seleccione Sexo</option>
@@ -175,7 +176,7 @@
             <div class="col-12 col-sm-3 col-md-3 col-lg-3">
               <div class="form-group">
                 <label for="rgaFinancia">Financimiento &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-coins"></i> *
                 <div class="input-group">
                   <input type="text" name="rgaFinancia" id="rgaFinancia" class="form-control" placeholder="Ingrese Financiamiento" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
@@ -184,7 +185,7 @@
             <div class="col-12 col-sm-4 col-md-4 col-lg-4">
               <div class="form-group">
                 <label for="rgaDistrito">Distrito &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-search-location"></i> *
                 <div class="input-group">
                   <input type="text" name="rgaDistrito" id="rgaDistrito" class="form-control" placeholder="Ingrese Distrito" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
@@ -195,7 +196,7 @@
             <div class="col-12 col-sm-6 col-md-6 col-lg-6">
               <div class="form-group">
                 <label for="rgaEstadoPac">Estado Paciente &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-user-injured"></i> *
                 <div class="input-group">
                   <select class="form-control" style="width: 100%;" name="rgaEstadoPac" id="rgaEstadoPac">
                     <option value="0" id="setEstado">Seleccione Estado</option>
@@ -212,9 +213,9 @@
             <div class="col-12 col-sm-6 col-md-6 col-lg-6">
               <div class="form-group">
                 <label for="rgaCama">Cama &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-procedures"></i> *
                 <div class="input-group">
-                  <input type="text" name="rgaCama" id="rgaCama" class="form-control" placeholder="Ingrese N° Cama (Opcional)" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgaCama" id="rgaCama" class="form-control" placeholder="Ingrese N° Cama (Opcional)" autocomplete="off" autofocus="autofocus">
                 </div>
               </div>
             </div>
@@ -232,7 +233,7 @@
             <div class="col-12 col-sm-8 col-md-8 col-lg-8">
               <div class="form-group">
                 <label for="rgaServicio">Servicio Ingresado &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-hospital-alt"></i> *
                 <div class="input-group">
                   <input type="text" name="rgaServicio" id="rgaServicio" class="form-control" placeholder="Ingrese Servicio" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
@@ -245,6 +246,10 @@
           <button type="reset" class="btn btn-danger"><i class="fas fa-eraser"></i> Limpiar</button>
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
         </div>
+        <?php
+        $registraAtencion = new AtencionesControlador();
+        $registraAtencion->ctrRegistrarAtencion();
+        ?>
       </form>
     </div>
   </div>
@@ -252,7 +257,7 @@
 <!-- Registrar Atención -->
 <!-- Busqueda de cuentas -->
 <div id="modal-busqueda-cuenta" class="modal fade" role="dialog" aria-modal="true" style="padding-right: 17px;">
-  <div class="modal-dialog modal-xl">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header text-center" style="background: #7EB2C2; color: white">
         <h4 class="modal-title">Búsqueda de Paciente&nbsp; <i class="fas fa-hospital-user"></i></h4>
@@ -262,7 +267,7 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+          <div class="col-12 col-sm-5 col-md-5 col-lg-5">
             <div class="form-group">
               <label for="">N° de Cuenta &nbsp;</label>
               <i class="fas fa-hashtag"></i> *
@@ -276,10 +281,6 @@
       <div class="modal-body">
         <div id="dataCuenta"></div>
       </div>
-      <!-- <div class="modal-footer justify-content-center">
-        <button type="submit" class="btn btn-secondary" id="btnSelPac"><i class="fas fa-mouse-pointer"></i> Seleccionar</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
-      </div> -->
     </div>
   </div>
 </div>
@@ -299,12 +300,22 @@
           <div class="row">
             <div class="col-3">
               <div class="form-group">
+                <label for="edtaCorrelativo">N° de Atención &nbsp;</label>
+                <i class="fas fa-hashtag"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtaCorrelativo" id="edtaCorrelativo" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
                 <label for="edtaNCuenta">N° de Cuenta &nbsp;</label>
                 <i class="fas fa-hashtag"></i> *
                 <div class="input-group">
                   <input type="text" name="edtaNCuenta" id="edtaNCuenta" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
                   <input type="hidden" name="usuEdtAte" id="usuEdtAte" value="<?php echo $_SESSION["loginId"]; ?>">
                   <input type="hidden" name="idAtencion" id="idAtencion">
+                  <input type="hidden" name="idEpisodioEdt" id="idEpisodioEdt">
                 </div>
               </div>
             </div>
@@ -321,7 +332,7 @@
             <div class="col-12 col-sm-3 col-md-3 col-lg-3">
               <div class="form-group">
                 <label for="edtaNHC">N° de Historia &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-hospital-user"></i> *
                 <div class="input-group">
                   <input type="text" name="edtaNHC" id="edtaNHC" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
@@ -359,7 +370,7 @@
             <div class="col-12 col-sm-4 col-md-4 col-lg-4">
               <div class="form-group">
                 <label for="edtaAPaterno">Apellido Paterno &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-hospital-user"></i> *
                 <div class="input-group">
                   <input type="text" name="edtaAPaterno" id="edtaAPaterno" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
@@ -368,7 +379,7 @@
             <div class="col-12 col-sm-4 col-md-4 col-lg-4">
               <div class="form-group">
                 <label for="edtaAMaterno">Apellido Materno &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-hospital-user"></i> *
                 <div class="input-group">
                   <input type="text" name="edtaAMaterno" id="edtaAMaterno" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
@@ -377,7 +388,7 @@
             <div class="col-12 col-sm-4 col-md-4 col-lg-4">
               <div class="form-group">
                 <label for="edtaNombres">Nombres &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-hospital-user"></i> *
                 <div class="input-group">
                   <input type="text" name="edtaNombres" id="edtaNombres" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
@@ -388,7 +399,7 @@
             <div class="col-12 col-sm-2 col-md-2 col-lg-2">
               <div class="form-group">
                 <label for="edtaEdad">Edad</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-pager"></i> *
                 <div class="input-group">
                   <input type="text" name="edtaEdad" id="edtaEdad" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
@@ -397,7 +408,7 @@
             <div class="col-12 col-sm-3 col-md-3 col-lg-3">
               <div class="form-group">
                 <label for="edtaSexo">Sexo &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-venus-mars"></i> *
                 <div class="input-group">
                   <select class="form-control" style="width: 100%;" name="edtaSexo" id="edtaSexo">
                     <option id="setSex2"></option>
@@ -414,7 +425,7 @@
             <div class="col-12 col-sm-3 col-md-3 col-lg-3">
               <div class="form-group">
                 <label for="edtaFinancia">Financimiento &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-coins"></i> *
                 <div class="input-group">
                   <input type="text" name="edtaFinancia" id="edtaFinancia" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
@@ -423,7 +434,7 @@
             <div class="col-12 col-sm-4 col-md-4 col-lg-4">
               <div class="form-group">
                 <label for="edtaDistrito">Distrito &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-search-location"></i> *
                 <div class="input-group">
                   <input type="text" name="edtaDistrito" id="edtaDistrito" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
@@ -434,7 +445,7 @@
             <div class="col-12 col-sm-6 col-md-6 col-lg-6">
               <div class="form-group">
                 <label for="edtaEstadoPac">Estado Paciente &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-user-injured"></i> *
                 <div class="input-group">
                   <select class="form-control" style="width: 100%;" name="edtaEstadoPac" id="edtaEstadoPac">
                     <option id="setEstado2"></option>
@@ -451,7 +462,7 @@
             <div class="col-12 col-sm-6 col-md-6 col-lg-6">
               <div class="form-group">
                 <label for="edtaCama">Cama &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-procedures"></i> *
                 <div class="input-group">
                   <input type="text" name="edtaCama" id="edtaCama" class="form-control" placeholder="Ingrese N° Cama (Opcional)" required autocomplete="off" autofocus="autofocus">
                 </div>
@@ -471,7 +482,7 @@
             <div class="col-12 col-sm-8 col-md-8 col-lg-8">
               <div class="form-group">
                 <label for="edtaServicio">Servicio Ingresado &nbsp;</label>
-                <i class="fas fa-file-medical-alt"></i> *
+                <i class="fas fa-hospital-alt"></i> *
                 <div class="input-group">
                   <input type="text" name="edtaServicio" id="edtaServicio" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
                 </div>
