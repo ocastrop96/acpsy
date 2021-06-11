@@ -71,15 +71,13 @@ OFFSET 0 ROWS
 FETCH NEXT 1 ROWS ONLY
 END
 
-
-
 ALTER PROCEDURE [dbo].[LISTAR_DATOS_CUENTA_PSICO_FORM]
   @IdCuentaAtencion INT, @IdEpisodio INT
 AS
 BEGIN
 	SELECT
 	Atenciones.IdAtencion,
-	EpisodioAtencion.NumEpisodio, 
+	EpisodioAtencion.NumEpisodio,
 	EpisodioAtencion.IdEpisodio,
 	FORMAT(EpisodioAtencion.FechaIngreso,'dd/MM/yyyy') AS FechaIngreso, 
 	Atenciones.IdCuentaAtencion, 
