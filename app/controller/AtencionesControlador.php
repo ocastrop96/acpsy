@@ -110,7 +110,87 @@ class AtencionesControlador
             }
         }
     }
-    static public function ctrditarAtencion()
+    static public function ctrEditarAtencion()
     {
+        if (isset($_POST["edtaNCuenta"]) && isset($_POST["edtaNHC"])) {
+            if (
+                preg_match('/^[0-9]+$/', $_POST["edtaNCuenta"]) &&
+                preg_match('/^[0-9]+$/', $_POST["edtaNHC"])
+            ) {
+                // Seteo de fechas
+                date_default_timezone_set('America/Lima');
+                $fRegistroAtencionAudit = date("Y-m-d");
+
+                $fNac = $_POST["edtaFNac"];
+                $dateFNac = str_replace('/', '-', $fNac);
+                $fNac1 = date('Y-m-d', strtotime($dateFNac));
+
+                $fIng = $_POST["edtaFIngServicio"];
+                $dateFIng = str_replace('/', '-', $fIng);
+                $fIng1 = date('Y-m-d', strtotime($dateFIng));
+                // Seteo de fechas
+                $datos = array(
+                    "idEpisodio" => $_POST["idEpisodioEdt"],
+                    "cuentaAtencion" => $_POST["edtaNCuenta"],
+                    "historiaAtencion" => $_POST["edtaNHC"],
+                    "fechaPacNacimiento" => $fNac1,
+                    "tipdocAtencion" => $_POST["edtaTdoc"],
+                    "nrodocAtencion" => $_POST["edtaNDoc"],
+                    "apPaternoAtencion" => $_POST["edtaAPaterno"],
+                    "apMaternoAtencion" => $_POST["edtaAMaterno"],
+                    "nombAtencion" => $_POST["edtaNombres"],
+                    "fIngresoAtencion" => $fIng1,
+                    "servAtencion" => $_POST["edtaServicio"],
+                    "camaAtencion" => $_POST["edtaCama"],
+                    "distritoAtencion" => $_POST["edtaDistrito"],
+                    "edadAtencion" => $_POST["edtaEdad"],
+                    "financiaAtencion" => $_POST["edtaFinancia"],
+                    "idAtencion" => $_POST["idAtencion"],
+                    "tipSexoAtencion" => $_POST["edtaSexo"],
+                    "idEstadoPacAtencion" => $_POST["edtaEstadoPac"]
+                );
+                $rptEditarAtencion = AtencionesModelo::mdlEditarAtenciones($datos);
+                if ($rptEditarAtencion == "ok") {
+                    echo '<script>
+                            Swal.fire({
+                                icon: "success",
+                                title: "¡La atención ha sido actualizada con éxito!",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            function redirect(){
+                                window.location = "atenciones";
+                            }
+                            setTimeout(redirect,1100);
+                      </script>';
+                } else {
+                    echo '<script>
+                        Swal.fire({
+                        icon: "error",
+                        title: "Hubo un error al registrar. Intente nuevamente",
+                        showConfirmButton: false,
+                        timer: 1500
+                        });
+                        function redirect(){
+                            window.location = "atenciones";
+                        }
+                        setTimeout(redirect,1100);
+                    </script>';
+                }
+            } else {
+                echo '<script>
+                    Swal.fire({
+                    icon: "error",
+                    title: "Ingrese correctamente sus datos",
+                    showConfirmButton: false,
+                    timer: 1500
+                    });
+                    function redirect(){
+                        window.location = "atenciones";
+                    }
+                    setTimeout(redirect,1000);
+                </script>';
+            }
+        }
     }
 }

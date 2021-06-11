@@ -304,6 +304,8 @@
                 <i class="fas fa-hashtag"></i> *
                 <div class="input-group">
                   <input type="text" name="edtaCorrelativo" id="edtaCorrelativo" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
+                  <input type="hidden" name="idCuentaAct" id="idCuentaAct">
+                  <input type="hidden" name="idEpisodioEdtAct" id="idEpisodioEdtAct">
                 </div>
               </div>
             </div>
@@ -323,7 +325,7 @@
               <div class="form-group">
                 <label>Búsqueda:<span class="text-danger">&nbsp;*</span></label>
                 <div class="input-group">
-                  <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modal-busqueda-cuenta2" id="btnCuentaPac2"><i class="fas fa-search"></i> Consultar Datos Cuenta</button>
+                  <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modal-busqueda-cuenta-edt" id="btnCuentaPac2"><i class="fas fa-search"></i> Consultar Datos Cuenta</button>
                 </div>
               </div>
             </div>
@@ -464,7 +466,7 @@
                 <label for="edtaCama">Cama &nbsp;</label>
                 <i class="fas fa-procedures"></i> *
                 <div class="input-group">
-                  <input type="text" name="edtaCama" id="edtaCama" class="form-control" placeholder="Ingrese N° Cama (Opcional)" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="edtaCama" id="edtaCama" class="form-control" placeholder="Ingrese N° Cama (Opcional)" autocomplete="off" autofocus="autofocus">
                 </div>
               </div>
             </div>
@@ -494,8 +496,42 @@
           <button type="submit" class="btn btn-secondary" id="btnEdtAte"><i class="fas fa-save"></i> Guardar Cambios</button>
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
         </div>
+        <?php
+        $editarAtencion = new AtencionesControlador();
+        $editarAtencion->ctrEditarAtencion();
+        ?>
       </form>
     </div>
   </div>
 </div>
 <!-- Editar Atención -->
+<!-- Busqueda de cuentas -->
+<div id="modal-busqueda-cuenta-edt" class="modal fade" role="dialog" aria-modal="true" style="padding-right: 17px;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header text-center" style="background: #7EB2C2; color: white">
+        <h4 class="modal-title">Búsqueda de Paciente&nbsp; <i class="fas fa-hospital-user"></i></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12 col-sm-5 col-md-5 col-lg-5">
+            <div class="form-group">
+              <label for="">N° de Cuenta &nbsp;</label>
+              <i class="fas fa-hashtag"></i> *
+              <div class="input-group">
+                <input type="text" name="searchCuenta2" id="searchCuenta2" class="form-control" placeholder="Ingrese N° Cuenta del Paciente" required autocomplete="off" autofocus="autofocus">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div id="dataCuenta2"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Busqueda de cuentas -->

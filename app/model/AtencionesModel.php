@@ -128,6 +128,33 @@ class AtencionesModelo
     }
     static public function mdlEditarAtenciones($datos)
     {
+        $stmt = Conexion::conectar()->prepare("CALL EDITAR_ATENCION(:idEpisodio,:cuentaAtencion,:historiaAtencion,:idEstadoPacAtencion,:fechaPacNacimiento,:tipdocAtencion,:nrodocAtencion,:apPaternoAtencion,:apMaternoAtencion,:nombAtencion,:fIngresoAtencion,:servAtencion,:camaAtencion,:distritoAtencion,:edadAtencion,:tipSexoAtencion,:financiaAtencion,:idAtencion)");
+
+        $stmt->bindParam(":idEstadoPacAtencion", $datos["idEstadoPacAtencion"], PDO::PARAM_INT);
+        $stmt->bindParam(":tipSexoAtencion", $datos["tipSexoAtencion"], PDO::PARAM_INT);
+        $stmt->bindParam(":idAtencion", $datos["idAtencion"], PDO::PARAM_INT);
+        $stmt->bindParam(":idEpisodio", $datos["idEpisodio"], PDO::PARAM_STR);
+        $stmt->bindParam(":cuentaAtencion", $datos["cuentaAtencion"], PDO::PARAM_STR);
+        $stmt->bindParam(":historiaAtencion", $datos["historiaAtencion"], PDO::PARAM_STR);
+        $stmt->bindParam(":fechaPacNacimiento", $datos["fechaPacNacimiento"], PDO::PARAM_STR);
+        $stmt->bindParam(":tipdocAtencion", $datos["tipdocAtencion"], PDO::PARAM_STR);
+        $stmt->bindParam(":nrodocAtencion", $datos["nrodocAtencion"], PDO::PARAM_STR);
+        $stmt->bindParam(":apPaternoAtencion", $datos["apPaternoAtencion"], PDO::PARAM_STR);
+        $stmt->bindParam(":apMaternoAtencion", $datos["apMaternoAtencion"], PDO::PARAM_STR);
+        $stmt->bindParam(":nombAtencion", $datos["nombAtencion"], PDO::PARAM_STR);
+        $stmt->bindParam(":fIngresoAtencion", $datos["fIngresoAtencion"], PDO::PARAM_STR);
+        $stmt->bindParam(":servAtencion", $datos["servAtencion"], PDO::PARAM_STR);
+        $stmt->bindParam(":camaAtencion", $datos["camaAtencion"], PDO::PARAM_STR);
+        $stmt->bindParam(":distritoAtencion", $datos["distritoAtencion"], PDO::PARAM_STR);
+        $stmt->bindParam(":edadAtencion", $datos["edadAtencion"], PDO::PARAM_STR);
+        $stmt->bindParam(":financiaAtencion", $datos["financiaAtencion"], PDO::PARAM_STR);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
     }
     static public function mdlAnularAtenciones()
     {
