@@ -156,7 +156,58 @@ class AtencionesModelo
         $stmt->close();
         $stmt = null;
     }
-    static public function mdlAnularAtenciones()
+    static public function mdlAuditoriaAtenciones($datos)
     {
+        $stmt = Conexion::conectar()->prepare("CALL REGISTRAR_AUDATENCION(:idAtencion,:fechaRegAudi,:idUsuario,:AccRealizada,:cuentaAnterior, :EpisodioAnterior,:cuentaNueva,:EpisodioNuevo)");
+
+        $stmt->bindParam(":idAtencion", $datos["idAtencion"], PDO::PARAM_INT);
+        $stmt->bindParam(":idUsuario", $datos["idUsuario"], PDO::PARAM_INT);
+        $stmt->bindParam(":fechaRegAudi", $datos["fechaRegAudi"], PDO::PARAM_STR);
+        $stmt->bindParam(":AccRealizada", $datos["AccRealizada"], PDO::PARAM_STR);
+        $stmt->bindParam(":cuentaAnterior", $datos["cuentaAnterior"], PDO::PARAM_STR);
+        $stmt->bindParam(":EpisodioAnterior", $datos["EpisodioAnterior"], PDO::PARAM_STR);
+        $stmt->bindParam(":cuentaNueva", $datos["cuentaNueva"], PDO::PARAM_STR);
+        $stmt->bindParam(":EpisodioNuevo", $datos["EpisodioNuevo"], PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
+    }
+    static public function mdlAnularAtenciones($datos)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL ANULAR_ATENCION(:idAtencion)");
+        $stmt->bindParam(":idAtencion", $datos, PDO::PARAM_STR);
+        $stmt->execute();
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
+    }
+
+    static public function mdlAuditoriaAtenciones2($datos)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL REGISTRAR_AUDATENCION2(:idAtencion,:fechaRegAudi,:idUsuario,:AccRealizada,:cuentaAnterior, :EpisodioAnterior)");
+
+        $stmt->bindParam(":idAtencion", $datos["idAtencion"], PDO::PARAM_INT);
+        $stmt->bindParam(":idUsuario", $datos["idUsuario"], PDO::PARAM_INT);
+        $stmt->bindParam(":fechaRegAudi", $datos["fechaRegAudi"], PDO::PARAM_STR);
+        $stmt->bindParam(":AccRealizada", $datos["AccRealizada"], PDO::PARAM_STR);
+        $stmt->bindParam(":cuentaAnterior", $datos["cuentaAnterior"], PDO::PARAM_STR);
+        $stmt->bindParam(":EpisodioAnterior", $datos["EpisodioAnterior"], PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
     }
 }

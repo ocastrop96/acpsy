@@ -26,15 +26,19 @@ class DatatableAtenciones
             // Estado de Atención
             if ($atenciones[$i]["idEstadoAte"] == 1) {
                 $estadoAtencion = "<button type='button' class='btn btn-block btn-success font-weight-bold'><i class='fas fa-clipboard-list'></i> " . $atenciones[$i]["detaEstadoAte"] . "</button>";
+
+                $botones = "<div class='btn-group'><button class='btn btn-warning btnEditarAtencion' idAtencion='" . $atenciones[$i]["idAtencion"] . "' data-toggle='modal' data-target='#modal-editar-atencion'><i class='fas fa-edit'></i></button><button class='btn btn-info btnVerAtencion' data-toggle='tooltip' data-placement='left' title='Ver Ficha de  Atención' idAtencion='" . $atenciones[$i]["idAtencion"] . "'><i class='fas fa-file-medical-alt'></i></button><button class='btn btn-secondary btnAnularAtencion' data-toggle='tooltip' data-placement='left' title='Anular Atención' idAtencion='" . $atenciones[$i]["idAtencion"] . "' idCuenta='" . $atenciones[$i]["cuentaAtencion"] . "' idEpisodio = '" . $atenciones[$i]["idEpisodio"] . "'><i class='fas fa-power-off'></i></button></div>";
             } elseif ($atenciones[$i]["idEstadoAte"] == 2) {
                 $estadoAtencion = "<button type='button' class='btn btn-block btn-danger font-weight-bold'><i class='fa fa-ban'></i> " . $atenciones[$i]["detaEstadoAte"] . "</button>";
+
+                $botones = "<div class='btn-group'><button class='btn btn-warning disabled'><i class='fas fa-edit'></i></button><button class='btn btn-info disabled'><i class='fas fa-file-medical-alt'></i></button><button class='btn btn-secondary disabled'><i class='fas fa-power-off'></i></button></div>";
             } else {
                 $estadoAtencion = "<button type='button' class='btn btn-block btn-info font-weight-bold'><i class='fa fa-check'></i> " . $atenciones[$i]["detaEstadoAte"] . "</button>";
+
+                $botones = "<div class='btn-group'><button class='btn btn-warning disabled'><i class='fas fa-edit'></i></button><button class='btn btn-info btnVerAtencion' data-toggle='tooltip' data-placement='left' title='Ver Ficha de  Atención' idAtencion='" . $atenciones[$i]["idAtencion"] . "'><i class='fas fa-file-medical-alt'></i></button><button class='btn btn-secondary disabled'><i class='fas fa-power-off'></i></button></div>";
             }
             // Estado de Atención
             // Botones de Opciones
-            $botones = "<div class='btn-group'><button class='btn btn-warning btnEditarAtencion' idAtencion='" . $atenciones[$i]["idAtencion"] . "' data-toggle='modal' data-target='#modal-editar-atencion'><i class='fas fa-edit'></i></button><button class='btn btn-info btnVerAtencion' data-toggle='tooltip' data-placement='left' title='Ver Ficha de  Atención' idAtencion='" . $atenciones[$i]["idAtencion"] . "'><i class='fas fa-file-medical-alt'></i></button><button class='btn btn-secondary btnAnularAtencion' data-toggle='tooltip' data-placement='left' title='Anular Atención' idAtencion='" . $atenciones[$i]["idAtencion"] . "'><i class='fas fa-power-off'></i></button></div>";
-
             $datos_json .= '[
                 "' . ($i + 1) . '",
                 "' . $atenciones[$i]["correlativo_Atencion"] . '",

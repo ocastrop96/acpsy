@@ -73,7 +73,7 @@ class ajaxDatosCuenta
                         </div>
                     </div>
                     <div class='card-footer'>
-                        <button type='button' class='btn btn-success btn-block border-5' idCuenta='$value[IdCuentaAtencion]' idEpisodio='$value[IdEpisodio]' onclick='seleccionarAtencion($value[IdCuentaAtencion],$value[IdEpisodio])'><i class='fas fa-sync-alt'></i> &nbsp; Cargar Datos</button>
+                        <button type='button' class='btn btn-info btn-block border-5' id='btncarga1' onclick='seleccionarAtencion($value[IdCuentaAtencion],$value[IdEpisodio])'><i class='fas fa-sync-alt'></i> &nbsp; Cargar Datos</button>
                     </div>
                 </div>";
             }
@@ -167,7 +167,7 @@ class ajaxDatosCuenta
                         </div>
                     </div>
                     <div class='card-footer'>
-                        <button type='button' class='btn btn-success btn-block border-5' idCuenta='$value[IdCuentaAtencion]' idEpisodio='$value[IdEpisodio]' onclick='seleccionarAtencion2($value[IdCuentaAtencion],$value[IdEpisodio])'><i class='fas fa-sync-alt'></i> &nbsp; Cargar Datos</button>
+                        <button class='btn btn-success btn-block border-5 btncarga2' id='btncarga2' idCuenta='$value[IdCuentaAtencion]' idEpisodio='$value[IdEpisodio]' onclick='seleccionarAtencion2($value[IdCuentaAtencion],$value[IdEpisodio])'><i class='fas fa-sync-alt'></i> &nbsp; Cargar Datos</button>
                     </div>
                 </div>";
             }

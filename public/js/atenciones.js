@@ -258,15 +258,14 @@ $("#searchCuenta").keyup(function () {
 $("#searchCuenta2").keyup(function () {
     this.value = (this.value + "").replace(/[^0-9]/g, "");
 });
-$("#searchCuenta").keyup(function () {
+$("#btnCuentaCarg1").click(function () {
     const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
         showConfirmButton: false,
         timer: 1500,
     });
-    var cuenta = $(this).val();
-
+    var cuenta = $("#searchCuenta").val();
     var datos = new FormData();
     if (cuenta != "") {
         datos.append("cuentaAtencion", cuenta);
@@ -357,14 +356,14 @@ function seleccionarAtencion(cuenta, episodio) {
     });
 }
 
-$("#searchCuenta2").keyup(function () {
+$("#btnCuentaCarg2").click(function () {
     const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
         showConfirmButton: false,
         timer: 1500,
     });
-    var cuenta = $(this).val();
+    var cuenta = $("#searchCuenta2").val();
     var edtaNCuenta = $("#edtaNCuenta").val();
 
     var datos = new FormData();
@@ -500,3 +499,25 @@ $(".datatableAtenciones tbody").on("click", ".btnEditarAtencion", function () {
     });
 });
 // Editar Atención
+// Anula atención
+$(".datatableAtenciones tbody").on("click", ".btnAnularAtencion", function () {
+    var idAtencion = $(this).attr("idAtencion");
+    var idCuenta = $(this).attr("idCuenta");
+    var idEpisodio = $(this).attr("idEpisodio");
+    var idUsuario = $("#idAtencionUsuario").val();
+
+    Swal.fire({
+        title: '¿Está seguro(a) de anular la atención?',
+        text: "¡Si no lo está, puede cancelar la acción!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#343a40',
+        cancelButtonText: 'Cancelar',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '¡Sí, anular Atención!'
+    }).then(function (result) {
+        if (result.value) {
+            window.location = "index.php?ruta=atenciones&idAtencion=" + idAtencion + "&idCuenta=" + idCuenta + "&idEpisodio=" + idEpisodio + "&idUsuario=" + idUsuario;
+        }
+    })
+});

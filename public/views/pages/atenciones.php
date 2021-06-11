@@ -22,6 +22,7 @@
       <div class="card-body">
         <button type="btn" class="btn btn-secondary" data-toggle="modal" data-target="#modal-registrar-atencion"><i class="fas fa-archive"></i> Registrar Atención
         </button>
+        <input type="hidden" value="<?php echo $_SESSION["loginId"]; ?>" id="idAtencionUsuario">
       </div>
       <div class="card-body">
         <table id="datatableAtenciones" class="table table-bordered table-hover dt-responsive datatableAtenciones">
@@ -276,6 +277,14 @@
               </div>
             </div>
           </div>
+          <div class="col-12 col-sm-2 col-md-2 col-lg-2">
+            <div class="form-group">
+              <label>Buscar cuenta</label>
+              <div class="input-group">
+                <button type="button" class="btn btn-block btn-info" id="btnCuentaCarg1"><i class="fas fa-search"></i></button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-body">
@@ -526,6 +535,14 @@
               </div>
             </div>
           </div>
+          <div class="col-12 col-sm-2 col-md-2 col-lg-2">
+            <div class="form-group">
+              <label>Buscar cuenta</label>
+              <div class="input-group">
+                <button type="button" class="btn btn-block btn-info" id="btnCuentaCarg2"><i class="fas fa-search"></i></button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-body">
@@ -535,3 +552,7 @@
   </div>
 </div>
 <!-- Busqueda de cuentas -->
+<?php
+$anulaAtencion = new AtencionesControlador();
+$anulaAtencion->ctrAnularAtencion();
+?>

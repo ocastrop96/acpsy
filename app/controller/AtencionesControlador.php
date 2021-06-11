@@ -128,6 +128,19 @@ class AtencionesControlador
                 $fIng = $_POST["edtaFIngServicio"];
                 $dateFIng = str_replace('/', '-', $fIng);
                 $fIng1 = date('Y-m-d', strtotime($dateFIng));
+                // Registro de Auditoría
+                $datosAudi = array(
+                    "fechaRegAudi" => $fRegistroAtencionAudit,
+                    "idAtencion" => $_POST["idAtencion"],
+                    "idUsuario" => $_POST["usuEdtAte"],
+                    "AccRealizada" => "MODIFICACIÓN",
+                    "cuentaAnterior" => $_POST["idCuentaAct"],
+                    "EpisodioAnterior" => $_POST["idEpisodioEdtAct"],
+                    "cuentaNueva" => $_POST["edtaNCuenta"],
+                    "EpisodioNuevo" => $_POST["idEpisodioEdt"]
+                );
+                // Registro de Auditoría
+                $rptEditarAudAtencion = AtencionesModelo::mdlAuditoriaAtenciones($datosAudi);
                 // Seteo de fechas
                 $datos = array(
                     "idEpisodio" => $_POST["idEpisodioEdt"],
@@ -150,6 +163,7 @@ class AtencionesControlador
                     "idEstadoPacAtencion" => $_POST["edtaEstadoPac"]
                 );
                 $rptEditarAtencion = AtencionesModelo::mdlEditarAtenciones($datos);
+
                 if ($rptEditarAtencion == "ok") {
                     echo '<script>
                             Swal.fire({
@@ -191,6 +205,59 @@ class AtencionesControlador
                     setTimeout(redirect,1000);
                 </script>';
             }
+        }
+    }
+
+    static public function ctrAnularAtencion()
+    {
+        if (isset($_GET["idAtencion"])) {
+            $idAtencion = $_GET["idAtencion"];
+            $idCuenta = $_GET["idCuenta"];
+            $idEpisodio = $_GET["idEpisodio"];
+            $idUsuario = $_GET["idUsuario"];
+
+            date_default_timezone_set('America/Lima');
+            $fAnulaAtencion = date("Y-m-d");
+            $datosAuditaAnula = array(
+                "fechaRegAudi" => $fAnulaAtencion,
+                "idAtencion" => $idAtencion,
+                "idUsuario" => $idUsuario,
+                "AccRealizada" => "ANULACION",
+                "cuentaAnterior" => $idCuenta,
+                "EpisodioAnterior" => $idEpisodio
+            );
+            $rptAnularAudAtencion = AtencionesModelo::mdlAuditoriaAtenciones2($datosAuditaAnula);
+
+            // Anular Ficha
+            $rptAnulaAtencion = AtencionesModelo::mdlAnularAtenciones($idAtencion);
+            if ($rptAnulaAtencion == "ok") {
+                echo '<script>
+                        Swal.fire({
+                        icon: "success",
+                        title: "¡La Atención ha sido anulada con éxito!",
+                        showConfirmButton: false,
+                        timer: 1300
+                          });
+                          function redirect() {
+                              window.location = "atenciones";
+                          }
+                          setTimeout(redirect, 1000);
+                    </script>';
+            } else {
+                echo '<script>
+                        Swal.fire({
+                        icon: "error",
+                        title: "¡No se puede anular la atención!",
+                        showConfirmButton: false,
+                        timer: 1300
+                          });
+                          function redirect() {
+                              window.location = "atenciones";
+                          }
+                          setTimeout(redirect, 1100);
+                    </script>';
+            }
+            // Anular Ficha
         }
     }
 }
