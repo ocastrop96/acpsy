@@ -22,6 +22,7 @@
       <div class="card-body">
         <button type="btn" class="btn btn-secondary" data-toggle="modal" data-target="#modal-registrar-familiar"><i class="fas fa-chalkboard-teacher"></i> Registrar familiar
         </button>
+        <input type="hidden" value="<?php echo $_SESSION["loginId"]; ?>" id="idUsFam">
       </div>
       <div class="card-body">
         <table id="datatableFamiliares" class="table table-bordered table-hover dt-responsive datatableFamiliares">
@@ -59,10 +60,9 @@
           <div class="row">
             <div class="col-12">
               <div class="form-group">
-                <label for="">PACIENTE &nbsp;</label>
+                <label for="rgfAtencion">PACIENTE &nbsp;</label>
                 <i class="fas fa-hospital-user"></i> *
-                <!-- <input type="text" name="" id="" class="form-control" placeholder="Seleccione Paciente" required autocomplete="off" autofocus="autofocus" readonly> -->
-                <select class="form-control" style="width: 100%;" id="pacienteFam" name="pacienteFam">
+                <select class="form-control" style="width: 100%;" id="rgfAtencion" name="rgfAtencion">
                   <option value="0">Ingrese apellidos o N° de cuenta de Paciente</option>
                 </select>
                 <input type="hidden" name="idAtencion" id="idAtencion">
@@ -72,10 +72,10 @@
           <div class="row">
             <div class="col-3">
               <div class="form-group">
-                <label for="">Tipo Doc &nbsp;</label>
+                <label for="rgfTdoc">Tipo Doc &nbsp;</label>
                 <i class="fas fa-hashtag"></i> *
                 <div class="input-group">
-                  <select class="form-control">
+                  <select class="form-control" id="rgfTdoc" name="rgfTdoc">
                     <option value="0">Seleccione T. Doc</option>
                     <option value="DNI" selected>DNI</option>
                     <option value="CE">CE</option>
@@ -86,10 +86,10 @@
             </div>
             <div class="col-3">
               <div class="form-group">
-                <label for="">N° Doc &nbsp;</label>
+                <label for="rgfNdoc">N° Doc &nbsp;</label>
                 <i class="fas fa-hashtag"></i> *
                 <div class="input-group">
-                  <input type="text" name="" id="" class="form-control" placeholder="Ingrese N° Doc" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgfNdoc" id="rgfNdoc" class="form-control" placeholder="Ingrese N° Doc" required autocomplete="off" autofocus="autofocus">
                 </div>
               </div>
             </div>
@@ -101,15 +101,71 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="col-9">
+          </div>
+          <div class="row">
+            <div class="col-9">
               <div class="form-group">
-                <label for="rgdDescripcion">Descripción de Diagnóstico &nbsp;</label>
-                <i class="fas fa-laptop-medical"></i> *
+                <label for="rgfNomAp">Nombres y Apellidos de Familiar &nbsp;</label>
+                <i class="fas fa-signature"></i> *
                 <div class="input-group">
-                  <input type="text" name="rgdDescripcion" id="rgdDescripcion" class="form-control" placeholder="Ingrese detalle de diagnóstico" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgfNomAp" id="rgfNomAp" class="form-control" placeholder="Ingrese Nombres y Apellidos de Familiar" required autocomplete="off" autofocus="autofocus">
                 </div>
               </div>
-            </div> -->
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <label for="rgfSexo">Sexo &nbsp;</label>
+                <i class="fas fa-venus-mars"></i> *
+                <div class="input-group">
+                  <select class="form-control" id="rgfSexo" name="rgfSexo">
+                    <option value="0">Seleccione Sexo</option>
+                    <?php
+                    $sexFam = AtencionesControlador::ctrListarSexo();
+                    foreach ($sexFam as $key => $value) {
+                      echo '<option value="' . $value["idTipSexo"] . '">' . $value["detaTipSexo"] . '</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <div class="form-group">
+                <label for="rgfParent">Parentesco &nbsp;</label>
+                <i class="fas fa-users"></i> *
+                <div class="input-group">
+                  <select class="form-control" name="rgfParent" id="rgfParent">
+                    <option value="0">Seleccione Parentesco</option>
+                    <?php
+                    $parentesco = FamiliaresControlador::ctrListarParentesco();
+                    foreach ($parentesco as $key => $value) {
+                      echo '<option value="' . $value["idParentesco"] . '">' . $value["detaParentesco"] . '</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <label for="rgfEdad">Edad Familiar &nbsp;</label>
+                <i class="fas fa-id-card-alt"></i> *
+                <div class="input-group">
+                  <input type="text" name="rgfEdad" id="rgfEdad" class="form-control" placeholder="Ingrese edad" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label for="rgfTel">N° Teléfono o Celular &nbsp;</label>
+                <i class="fas fa-phone"></i>&nbsp;<i class="fas fa-mobile-alt"></i> *
+                <div class="input-group">
+                  <input type="text" name="rgfTel" id="rgfTel" class="form-control" placeholder="Ingrese Tel/Cel" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="modal-footer justify-content-center">
@@ -117,6 +173,10 @@
           <button type="reset" class="btn btn-danger"><i class="fas fa-eraser"></i> Limpiar</button>
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
         </div>
+        <?php
+        $regFamiliar = new FamiliaresControlador();
+        $regFamiliar->ctrRegistrarFamiliar();
+        ?>
       </form>
     </div>
   </div>

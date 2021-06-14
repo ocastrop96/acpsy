@@ -60,4 +60,40 @@ class FamiliaresModelo
         $stmt->close();
         $stmt = null;
     }
+    static public function mdlListarParentesco()
+    {
+        $stmt = Conexion::conectar()->prepare("CALL LISTAR_PARENTESCO()");
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
+    static public function mdlRegistrarFamiliar($datos)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL REGISTRAR_FAMILIARES(:fechaRegistro,:idUsuario,:idAtencion,:idParentesco,:idTipSexo,:tipdocFamiliar,:ndocFamiliar,:nombApFamiliar,:edadFamiliar,:telcelFamiliar)");
+
+        $stmt->bindParam(":idUsuario", $datos["idUsuario"], PDO::PARAM_INT);
+        $stmt->bindParam(":idAtencion", $datos["idAtencion"], PDO::PARAM_INT);
+        $stmt->bindParam(":idParentesco", $datos["idParentesco"], PDO::PARAM_INT);
+        $stmt->bindParam(":idTipSexo", $datos["idTipSexo"], PDO::PARAM_INT);
+        $stmt->bindParam(":fechaRegistro", $datos["fechaRegistro"], PDO::PARAM_STR);
+        $stmt->bindParam(":tipdocFamiliar", $datos["tipdocFamiliar"], PDO::PARAM_STR);
+        $stmt->bindParam(":ndocFamiliar", $datos["ndocFamiliar"], PDO::PARAM_STR);
+        $stmt->bindParam(":nombApFamiliar", $datos["nombApFamiliar"], PDO::PARAM_STR);
+        $stmt->bindParam(":edadFamiliar", $datos["edadFamiliar"], PDO::PARAM_STR);
+        $stmt->bindParam(":telcelFamiliar", $datos["telcelFamiliar"], PDO::PARAM_STR);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
+    }
+    static public function mdlEditarFamiliar($datos)
+    {
+    }
+    static public function mdlEliminarFamiliar($datos)
+    {
+    }
 }

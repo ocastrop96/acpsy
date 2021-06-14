@@ -20,7 +20,9 @@ BEGIN
 	Pacientes.PrimerNombre,
 	UPPER(Pacientes.SegundoNombre) AS SegundoNombre, 
 	EpisodioAtencion.IdservicioIngreso, 
-	Servicios.Nombre, 
+	Servicios.Nombre,
+	EpisodioAtencion.IdTipoServicio,
+	UPPER(TiposServicio.Descripcion) AS TIPO_SERVICIO, 
 	Pacientes.IdDistritoDomicilio, 
 	UPPER(Distritos.Nombre) AS DISTRITO_PAC,
 	FORMAT(Pacientes.FechaNacimiento,'dd/MM/yyyy') AS FechaNacimiento, 
@@ -64,6 +66,10 @@ FROM
 	dbo.Servicios
 	ON 
 		EpisodioAtencion.IdservicioIngreso = Servicios.IdServicio
+	INNER JOIN
+	dbo.TiposServicio
+	ON
+	EpisodioAtencion.IdTipoServicio = TiposServicio.IdTipoServicio
 WHERE
 	YEAR(EpisodioAtencion.FechaIngreso) = YEAR(GETDATE()) AND Atenciones.IdCuentaAtencion = @IdCuentaAtencion
 ORDER BY EpisodioAtencion.FechaIngreso DESC
@@ -71,13 +77,14 @@ OFFSET 0 ROWS
 FETCH NEXT 1 ROWS ONLY
 END
 
+-- CARGA DE DATOS
 ALTER PROCEDURE [dbo].[LISTAR_DATOS_CUENTA_PSICO_FORM]
   @IdCuentaAtencion INT, @IdEpisodio INT
 AS
 BEGIN
 	SELECT
 	Atenciones.IdAtencion,
-	EpisodioAtencion.NumEpisodio,
+	EpisodioAtencion.NumEpisodio, 
 	EpisodioAtencion.IdEpisodio,
 	FORMAT(EpisodioAtencion.FechaIngreso,'dd/MM/yyyy') AS FechaIngreso, 
 	Atenciones.IdCuentaAtencion, 
@@ -89,10 +96,13 @@ BEGIN
 	TiposDocIdentidad.DescripcionAbrev, 
 	Pacientes.NroDocumento, 
 	Pacientes.ApellidoPaterno, 
-	Pacientes.ApellidoMaterno,
-	CONCAT(Pacientes.PrimerNombre,' ',UPPER(Pacientes.SegundoNombre)) AS PrimerNombre, 
+	Pacientes.ApellidoMaterno, 
+	Pacientes.PrimerNombre,
+	UPPER(Pacientes.SegundoNombre) AS SegundoNombre, 
 	EpisodioAtencion.IdservicioIngreso, 
-	Servicios.Nombre, 
+	Servicios.Nombre,
+	EpisodioAtencion.IdTipoServicio,
+	UPPER(TiposServicio.Descripcion) AS TIPO_SERVICIO, 
 	Pacientes.IdDistritoDomicilio, 
 	UPPER(Distritos.Nombre) AS DISTRITO_PAC,
 	FORMAT(Pacientes.FechaNacimiento,'dd/MM/yyyy') AS FechaNacimiento, 
@@ -136,6 +146,10 @@ FROM
 	dbo.Servicios
 	ON 
 		EpisodioAtencion.IdservicioIngreso = Servicios.IdServicio
+	INNER JOIN
+	dbo.TiposServicio
+	ON
+	EpisodioAtencion.IdTipoServicio = TiposServicio.IdTipoServicio
 WHERE
 	YEAR(EpisodioAtencion.FechaIngreso) = YEAR(GETDATE()) AND Atenciones.IdCuentaAtencion = @IdCuentaAtencion AND EpisodioAtencion.IdEpisodio = @IdEpisodio
 END

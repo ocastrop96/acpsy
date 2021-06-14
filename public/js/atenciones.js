@@ -334,7 +334,7 @@ function seleccionarAtencion(cuenta, episodio) {
             $("#rgaEdad").val(respuesta["EDAD_PAC"]);
             $("#rgaFinancia").val(respuesta["FUENTE_PAC"]);
             $("#rgaDistrito").val(respuesta["DISTRITO_PAC"]);
-            $("#rgaServicio").val(respuesta["Nombre"]);
+            $("#rgaServicio").val(respuesta["Nombre"] + ' - ' + respuesta["TIPO_SERVICIO"]);
             $("#setSex").val(respuesta["IdTipoSexo"]);
             $("#setSex").html(respuesta["SEXO_PAC"]);
             if (respuesta["IdCondicionAlta"] == 1 || respuesta["IdCondicionAlta"] == 2 || respuesta["IdCondicionAlta"] == 3) {
@@ -437,7 +437,7 @@ function seleccionarAtencion2(cuenta, episodio) {
             $("#edtaEdad").val(respuesta["EDAD_PAC"]);
             $("#edtaFinancia").val(respuesta["FUENTE_PAC"]);
             $("#edtaDistrito").val(respuesta["DISTRITO_PAC"]);
-            $("#edtaServicio").val(respuesta["Nombre"]);
+            $("#edtaServicio").val(respuesta["Nombre"] + ' - ' + respuesta["TIPO_SERVICIO"]);
             $("#setSex2").val(respuesta["IdTipoSexo"]);
             $("#setSex2").html(respuesta["SEXO_PAC"]);
             if (respuesta["IdCondicionAlta"] == 1 || respuesta["IdCondicionAlta"] == 2 || respuesta["IdCondicionAlta"] == 3) {
