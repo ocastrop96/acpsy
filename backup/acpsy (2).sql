@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 02-06-2021 a las 20:03:24
+-- Tiempo de generación: 14-06-2021 a las 05:02:11
 -- Versión del servidor: 5.7.24
 -- Versión de PHP: 7.4.15
 
@@ -25,7 +25,39 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ANULAR_ATENCION` (IN `_idAtencion` INT(11))  UPDATE acpsy_atencion SET idEpisodio = "ANULADA", cuentaAtencion = "ANULADA", idEstadoAte = 2 WHERE idAtencion = _idAtencion$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `BUSCAR_PACIENTE` (IN `_termino` TEXT)  SELECT
+	* 
+FROM
+	acpsy_atencion 
+WHERE acpsy_atencion.cuentaAtencion LIKE CONCAT('%',_termino,'%') OR acpsy_atencion.apPaternoAtencion LIKE CONCAT('%',_termino,'%') OR acpsy_atencion.apMaternoAtencion LIKE CONCAT('%',_termino,'%') OR acpsy_atencion.nombAtencion LIKE CONCAT('%',_termino,'%') AND acpsy_atencion.idEstadoAte != 2$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `DESBLOQUEAR_USUARIO` (IN `_idUsuario` INT(11))  UPDATE acpsy_usuarios SET intentosUsuario = 0 WHERE idUsuario = _idUsuario$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EDITAR_ATENCION` (IN `_idEpisodio` TEXT, IN `_cuentaAtencion` VARCHAR(20), IN `_historiaAtencion` VARCHAR(20), IN `_idEstadoPacAtencion` INT(11), IN `_fechaPacNacimiento` DATE, IN `_tipdocAtencion` VARCHAR(20), IN `_nrodocAtencion` VARCHAR(15), IN `_apPaternoAtencion` VARCHAR(30), IN `_apMaternoAtencion` VARCHAR(30), IN `_nombAtencion` VARCHAR(30), IN `_fIngresoAtencion` DATE, IN `_servAtencion` VARCHAR(100), IN `_camaAtencion` VARCHAR(20), IN `_distritoAtencion` VARCHAR(50), IN `_edadAtencion` VARCHAR(20), IN `_tipSexoAtencion` INT(11), IN `_financiaAtencion` VARCHAR(50), IN `_idAtencion` INT(11))  UPDATE acpsy_atencion SET idEpisodio = _idEpisodio,
+cuentaAtencion = _cuentaAtencion,
+historiaAtencion = _historiaAtencion,
+idEstadoPacAtencion = _idEstadoPacAtencion,
+fechaPacNacimiento = _fechaPacNacimiento,
+tipdocAtencion = _tipdocAtencion,
+nrodocAtencion = _nrodocAtencion,
+apPaternoAtencion = _apPaternoAtencion,
+apMaternoAtencion = _apMaternoAtencion,
+nombAtencion = _nombAtencion,
+fIngresoAtencion = _fIngresoAtencion,
+servAtencion = _servAtencion,
+camaAtencion = _camaAtencion,
+distritoAtencion = _distritoAtencion,
+edadAtencion = _edadAtencion,
+tipSexoAtencion = _tipSexoAtencion,
+financiaAtencion = _financiaAtencion
+WHERE
+	idAtencion = _idAtencion$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EDITAR_DIAGNOSTICO` (IN `_idDiagnostico` INT(11), IN `_cieDiagnostico` VARCHAR(20), IN `_detaDiagnostico` VARCHAR(100))  UPDATE acpsy_diagnosticos SET cieDiagnostico = _cieDiagnostico,detaDiagnostico = _detaDiagnostico WHERE idDiagnostico = _idDiagnostico$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EDITAR_PROFESIONAL` (IN `_idProfesional` INT(11), IN `_idCondicion` INT(11), `_dniProfesional` VARCHAR(15), IN `_cpspProfesional` VARCHAR(25), IN `_apellidosProfesional` VARCHAR(50), IN `_nombresProfesional` VARCHAR(50))  UPDATE acpsy_profesionales SET idCondicion = _idCondicion, dniProfesional = _dniProfesional, cpspProfesional = _cpspProfesional, apellidosProfesional = _apellidosProfesional, nombresProfesional = _nombresProfesional WHERE idProfesional = _idProfesional$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `EDITAR_USUARIO` (IN `_idUsuario` INT(11), IN `_idPerfil` INT(11), IN `_dniUsuario` VARCHAR(20), IN `_apellidosUsuario` VARCHAR(50), IN `_nombresUsuario` VARCHAR(50), IN `_cuentaUsuario` VARCHAR(50), IN `_correoUsuario` VARCHAR(50), IN `_claveUsuario` VARCHAR(100))  UPDATE acpsy_usuarios 
 SET idPerfil = _idPerfil,
@@ -38,11 +70,56 @@ claveUsuario = _claveUsuario
 WHERE
 	idUsuario = _idUsuario$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ELIMINAR_DIAGNOSTICO` (IN `_idDiagnostico` INT(11))  DELETE FROM acpsy_diagnosticos WHERE idDiagnostico = _idDiagnostico$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ELIMINAR_PROFESIONAL` (IN `_idProfesional` INT(11))  DELETE FROM acpsy_profesionales WHERE idProfesional = _idProfesional$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ELIMINAR_USUARIO` (IN `_idUsuario` INT(11))  DELETE FROM acpsy_usuarios WHERE idUsuario = _idUsuario$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `HABILITAR_PROFESIONAL` (IN `_idProfesional` INT(11), IN `_idEstado` INT(11))  UPDATE acpsy_profesionales SET idEstado = _idEstado WHERE idProfesional = _idProfesional$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `HABILITAR_USUARIO` (IN `_idUsuario` INT(11), IN `_idEstado` INT(11))  UPDATE acpsy_usuarios SET idEstado = _idEstado WHERE idUsuario = _idUsuario$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_ATENCIONES` ()  SELECT
+	acpsy_atencion.idAtencion, 
+	acpsy_atencion.correlativo_Atencion, 
+	date_format(acpsy_atencion.fRegistroAtencion,'%d/%m/%Y') as fRegistroAtencion,
+	acpsy_atencion.idEpisodio, 
+	acpsy_atencion.cuentaAtencion, 
+	acpsy_atencion.historiaAtencion, 
+	acpsy_atencion.idEstadoPacAtencion, 
+	acpsy_estadopaciente.detaEstadoPacAtencion, 
+	date_format(acpsy_atencion.fechaPacNacimiento,'%d/%m/%Y')as fechaPacNacimiento, 
+	acpsy_atencion.tipdocAtencion, 
+	acpsy_atencion.nrodocAtencion, 
+	acpsy_atencion.apPaternoAtencion, 
+	acpsy_atencion.apMaternoAtencion, 
+	acpsy_atencion.nombAtencion, 
+	date_format(acpsy_atencion.fIngresoAtencion,'%d/%m/%Y')as fIngresoAtencion, 
+	acpsy_atencion.servAtencion, 
+	acpsy_atencion.camaAtencion, 
+	acpsy_atencion.distritoAtencion, 
+	acpsy_atencion.edadAtencion, 
+	acpsy_atencion.tipSexoAtencion, 
+	acpsy_tipsexo.detaTipSexo, 
+	acpsy_atencion.financiaAtencion, 
+	acpsy_atencion.idEstadoAte, 
+	acpsy_estadoatencion.detaEstadoAte
+FROM
+	acpsy_atencion
+	INNER JOIN
+	acpsy_estadoatencion
+	ON 
+		acpsy_atencion.idEstadoAte = acpsy_estadoatencion.idEstadoAte
+	INNER JOIN
+	acpsy_estadopaciente
+	ON 
+		acpsy_atencion.idEstadoPacAtencion = acpsy_estadopaciente.idEstadoPacAtencion
+	INNER JOIN
+	acpsy_tipsexo
+	ON 
+		acpsy_atencion.tipSexoAtencion = acpsy_tipsexo.idTipSexo
+	ORDER BY acpsy_atencion.correlativo_Atencion DESC$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_CONDICIONES_PROF` ()  SELECT idCondicion,detaCondicion FROM acpsy_condicionprof$$
 
@@ -53,6 +130,46 @@ acpsy_diagnosticos.detaDiagnostico
 FROM
 	acpsy_diagnosticos 
 ORDER BY acpsy_diagnosticos.cieDiagnostico$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_ESTADOS_PACIENTE` ()  SELECT
+	acpsy_estadopaciente.idEstadoPacAtencion, 
+	acpsy_estadopaciente.detaEstadoPacAtencion
+FROM
+	acpsy_estadopaciente$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_FAMILIARES` ()  SELECT
+	acpsy_famatencion.idFamiliar,
+	date_format(acpsy_famatencion.fechaRegistro,'%d/%m/%Y') as fechaRegistro, 
+	acpsy_famatencion.idAtencion, 
+	acpsy_atencion.cuentaAtencion, 
+	acpsy_atencion.historiaAtencion, 
+	acpsy_atencion.apPaternoAtencion, 
+	acpsy_atencion.apMaternoAtencion, 
+	acpsy_atencion.nombAtencion, 
+	acpsy_famatencion.tipdocFamiliar, 
+	acpsy_famatencion.ndocFamiliar, 
+	acpsy_famatencion.nombApFamiliar, 
+	acpsy_famatencion.idParentesco, 
+	acpsy_parentescofam.detaParentesco, 
+	acpsy_famatencion.idTipSexo, 
+	acpsy_tipsexo.detaTipSexo, 
+	acpsy_famatencion.edadFamiliar, 
+	acpsy_famatencion.telcelFamiliar
+FROM
+	acpsy_famatencion
+	INNER JOIN
+	acpsy_atencion
+	ON 
+		acpsy_famatencion.idAtencion = acpsy_atencion.idAtencion
+	INNER JOIN
+	acpsy_parentescofam
+	ON 
+		acpsy_famatencion.idParentesco = acpsy_parentescofam.idParentesco
+	INNER JOIN
+	acpsy_tipsexo
+	ON 
+		acpsy_famatencion.idTipSexo = acpsy_tipsexo.idTipSexo
+	ORDER BY acpsy_famatencion.fechaRegistro DESC$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_PERFILES_USUARIO` ()  SELECT
 	acpsy_perfiles.idPerfil, 
@@ -80,6 +197,12 @@ FROM
 	acpsy_condicionprof
 	ON 
 		acpsy_profesionales.idCondicion = acpsy_condicionprof.idCondicion$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_SEXO` ()  SELECT
+	acpsy_tipsexo.idTipSexo, 
+	acpsy_tipsexo.detaTipSexo
+FROM
+	acpsy_tipsexo$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_USUARIOS` ()  SELECT
 	acpsy_usuarios.idUsuario, 
@@ -135,6 +258,74 @@ FROM
 		acpsy_usuarios.idEstado = acpsy_estadosu.idEstado 
 WHERE acpsy_usuarios.cuentaUsuario = _cuentaUsuario$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `REGISTRAR_ATENCION` (IN `_fRegistroAtencion` DATE, IN `_idEpisodio` TEXT, IN `_cuentaAtencion` VARCHAR(20), IN `_historiaAtencion` VARCHAR(20), IN `_idEstadoPacAtencion` INT(11), IN `_fechaPacNacimiento` DATE, IN `_tipdocAtencion` VARCHAR(20), IN `_nrodocAtencion` VARCHAR(15), IN `_apPaternoAtencion` VARCHAR(30), IN `_apMaternoAtencion` VARCHAR(30), IN `_nombAtencion` VARCHAR(30), IN `_fIngresoAtencion` DATE, IN `_servAtencion` VARCHAR(100), IN `_camaAtencion` VARCHAR(20), IN `_distritoAtencion` VARCHAR(50), IN `_edadAtencion` VARCHAR(20), IN `_tipSexoAtencion` INT(11), IN `_financiaAtencion` VARCHAR(50), IN `_idURegAtencion` INT(11))  INSERT INTO acpsy_atencion (
+	fRegistroAtencion,
+	idEpisodio,
+	cuentaAtencion,
+	historiaAtencion,
+	idEstadoPacAtencion,
+	fechaPacNacimiento,
+	tipdocAtencion,
+	nrodocAtencion,
+	apPaternoAtencion,
+	apMaternoAtencion,
+	nombAtencion,
+	fIngresoAtencion,
+	servAtencion,
+	camaAtencion,
+	distritoAtencion,
+	edadAtencion,
+	tipSexoAtencion,
+	financiaAtencion,
+	idURegAtencion 
+)
+VALUES
+	(
+		_fRegistroAtencion,
+		_idEpisodio,
+		_cuentaAtencion,
+		_historiaAtencion,
+		_idEstadoPacAtencion,
+		_fechaPacNacimiento,
+		_tipdocAtencion,
+		_nrodocAtencion,
+		_apPaternoAtencion,
+		_apMaternoAtencion,
+		_nombAtencion,
+		_fIngresoAtencion,
+		_servAtencion,
+		_camaAtencion,
+		_distritoAtencion,
+		_edadAtencion,
+		_tipSexoAtencion,
+		_financiaAtencion,
+	_idURegAtencion 
+	)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `REGISTRAR_AUDATENCION` (IN `_idAtencion` INT(11), IN `_fechaRegAudi` DATE, IN `_idUsuario` INT(11), IN `_AccRealizada` TEXT, IN `_cuentaAnterior` TEXT, IN `_EpisodioAnterior` TEXT, IN `_cuentaNueva` TEXT, IN `_EpisodioNuevo` TEXT)  INSERT INTO zacpsy_aud_atenciones ( idAtencion, fechaRegAudi, idUsuario, AccRealizada, cuentaAnterior, EpisodioAnterior, cuentaNueva, EpisodioNuevo )
+VALUES
+	(
+		_idAtencion,
+		_fechaRegAudi,
+		_idUsuario,
+		_AccRealizada,
+		_cuentaAnterior,
+		_EpisodioAnterior,
+	_cuentaNueva,
+	_EpisodioNuevo)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `REGISTRAR_AUDATENCION2` (IN `_idAtencion` INT(11), IN `_fechaRegAudi` DATE, IN `_idUsuario` INT(11), IN `_AccRealizada` TEXT, IN `_cuentaAnterior` TEXT, IN `_EpisodioAnterior` TEXT)  INSERT INTO zacpsy_aud_atenciones (idAtencion, fechaRegAudi, idUsuario, AccRealizada, cuentaAnterior, EpisodioAnterior)
+VALUES
+	(
+		_idAtencion,
+		_fechaRegAudi,
+		_idUsuario,
+		_AccRealizada,
+		_cuentaAnterior,
+		_EpisodioAnterior)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `REGISTRAR_DIAGNOSTICO` (IN `_cieDiagnostico` VARCHAR(20), IN `_detaDiagnostico` VARCHAR(100))  INSERT INTO acpsy_diagnosticos(cieDiagnostico,detaDiagnostico) VALUES(_cieDiagnostico,_detaDiagnostico)$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `REGISTRAR_PROFESIONAL` (IN `_idCondicion` INT(11), `_dniProfesional` VARCHAR(15), IN `_cpspProfesional` VARCHAR(25), IN `_apellidosProfesional` VARCHAR(50), IN `_nombresProfesional` VARCHAR(50))  INSERT INTO acpsy_profesionales(idCondicion,dniProfesional,cpspProfesional,apellidosProfesional,nombresProfesional) VALUES(_idCondicion,_dniProfesional,_cpspProfesional,_apellidosProfesional,_nombresProfesional)$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `REGISTRAR_USUARIO` (IN `_idPerfil` INT(11), IN `_dniUsuario` VARCHAR(20), IN `_apellidosUsuario` VARCHAR(50), IN `_nombresUsuario` VARCHAR(50), IN `_cuentaUsuario` VARCHAR(50), IN `_correoUsuario` VARCHAR(50), IN `_claveUsuario` VARCHAR(100))  INSERT INTO acpsy_usuarios ( idPerfil, dniUsuario, apellidosUsuario, nombresUsuario, cuentaUsuario, correoUsuario, claveUsuario )
@@ -155,25 +346,67 @@ DELIMITER ;
 
 CREATE TABLE `acpsy_atencion` (
   `idAtencion` int(11) NOT NULL,
-  `fRegistroAtencion` date DEFAULT NULL,
-  `cuentaAtencion` varchar(20) COLLATE utf8_bin DEFAULT NULL,
-  `historiaAtencion` varchar(20) COLLATE utf8_bin DEFAULT NULL,
-  `estadoPacAtencion` int(11) DEFAULT '0',
-  `tipdocAtencion` varchar(20) COLLATE utf8_bin DEFAULT NULL,
-  `nrodocAtencion` varchar(15) COLLATE utf8_bin DEFAULT NULL,
-  `apPaternoAtencion` varchar(30) COLLATE utf8_bin DEFAULT NULL,
-  `apMaternoAtencion` varchar(30) COLLATE utf8_bin DEFAULT NULL,
-  `nombAtencion` varchar(30) COLLATE utf8_bin DEFAULT NULL,
-  `fIngresoAtencion` date DEFAULT NULL,
-  `servAtencion` varchar(20) COLLATE utf8_bin DEFAULT NULL,
+  `correlativo_Atencion` text COLLATE utf8_bin,
+  `fRegistroAtencion` date NOT NULL,
+  `idEpisodio` text COLLATE utf8_bin NOT NULL,
+  `cuentaAtencion` varchar(20) COLLATE utf8_bin NOT NULL,
+  `historiaAtencion` varchar(20) COLLATE utf8_bin NOT NULL,
+  `idEstadoPacAtencion` int(11) DEFAULT '0',
+  `fechaPacNacimiento` date NOT NULL,
+  `tipdocAtencion` varchar(20) COLLATE utf8_bin NOT NULL,
+  `nrodocAtencion` varchar(15) COLLATE utf8_bin NOT NULL,
+  `apPaternoAtencion` varchar(30) COLLATE utf8_bin NOT NULL,
+  `apMaternoAtencion` varchar(30) COLLATE utf8_bin NOT NULL,
+  `nombAtencion` varchar(30) COLLATE utf8_bin NOT NULL,
+  `fIngresoAtencion` date NOT NULL,
+  `servAtencion` varchar(100) COLLATE utf8_bin NOT NULL,
   `camaAtencion` varchar(20) COLLATE utf8_bin DEFAULT NULL,
-  `distritoAtencion` varchar(50) COLLATE utf8_bin DEFAULT NULL,
-  `edadAtencion` varchar(20) COLLATE utf8_bin DEFAULT NULL,
-  `tipSexoAtencion` int(11) DEFAULT NULL,
-  `financiaAtencion` varchar(20) COLLATE utf8_bin DEFAULT NULL,
-  `idURegAtencion` int(11) DEFAULT NULL,
-  `idEstadoAte` int(11) DEFAULT NULL
+  `distritoAtencion` varchar(50) COLLATE utf8_bin NOT NULL,
+  `edadAtencion` varchar(20) COLLATE utf8_bin NOT NULL,
+  `tipSexoAtencion` int(11) NOT NULL,
+  `financiaAtencion` varchar(50) COLLATE utf8_bin NOT NULL,
+  `idURegAtencion` int(11) NOT NULL,
+  `idEstadoAte` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Volcado de datos para la tabla `acpsy_atencion`
+--
+
+INSERT INTO `acpsy_atencion` (`idAtencion`, `correlativo_Atencion`, `fRegistroAtencion`, `idEpisodio`, `cuentaAtencion`, `historiaAtencion`, `idEstadoPacAtencion`, `fechaPacNacimiento`, `tipdocAtencion`, `nrodocAtencion`, `apPaternoAtencion`, `apMaternoAtencion`, `nombAtencion`, `fIngresoAtencion`, `servAtencion`, `camaAtencion`, `distritoAtencion`, `edadAtencion`, `tipSexoAtencion`, `financiaAtencion`, `idURegAtencion`, `idEstadoAte`) VALUES
+(1, 'ACP-2021-00001', '2021-06-04', 'ANULADA', 'ANULADA', '1274420', 2, '1996-08-31', 'DNI', '77478995', 'CASTRO', 'PALACIOS', 'OLGER IVAN', '2021-05-03', 'MEDICINA', 'CAMA 01', 'CARABAYLLO', '25', 1, 'SIS', 1, 2),
+(2, 'ACP-2021-00002', '2021-06-10', '451972', '1901273', '686952', 2, '1983-10-02', 'DNI', '46067861', 'CONDEZO', 'CAMPOS', 'ROSA ELIZABETH', '2021-05-26', 'CORONAVIRUS', '', 'COMAS', '38', 2, 'PARTICULAR', 1, 1),
+(3, 'ACP-2021-00003', '2021-06-10', '451964', '1901267', '1337232', 2, '1993-12-28', 'DNI', '70011740', 'GALLARDO', 'ANGULO', 'ARTURO RONALD', '2021-05-26', 'CORONAVIRUS', '', 'CARABAYLLO', '28', 1, 'SOAT', 1, 1),
+(4, 'ACP-2021-00004', '2021-06-10', '451985', '1901283', '1280961', 1, '1981-10-21', 'DNI', '42515485', 'ENRIQUEZ', 'ESPIRITU', 'YARI JULIA', '2021-05-26', 'CORONAVIRUS', 'CAMA 07', 'COMAS', '40', 2, 'PARTICULAR', 1, 1),
+(5, 'ACP-2021-00005', '2021-06-10', '451276', '1900644', '1236796', 1, '1931-02-12', 'DNI', '20548719', 'PAUCAR', 'AGUIRRE', 'FAUSTINA ', '2021-05-23', 'CORONAVIRUS', 'CAMA 07', 'COMAS', '90', 2, 'PARTICULAR', 1, 1),
+(6, 'ACP-2021-00006', '2021-06-10', '451504', '1900850', '151841', 3, '1951-03-04', 'DNI', '07158153', 'CLEMENTE', 'MORENO', 'JUAN DE', '2021-05-24', 'CORONAVIRUS', '', 'CARABAYLLO', '70', 1, 'SOAT', 1, 1),
+(7, 'ACP-2021-00007', '2021-06-10', '449187', '1898717', '998785', 3, '1954-02-16', 'DNI', '06904859', 'CASTAÑEDA', 'MUÑOZ', 'EDISSON ILDEFONSO', '2021-05-13', 'CORONAVIRUS', 'CAMA CAMALEON', 'CARABAYLLO', '67', 1, 'PARTICULAR', 1, 1),
+(8, 'ACP-2021-00008', '2021-06-10', '451895', '1900587', '1337036', 1, '1968-09-01', 'DNI', '44610904', 'GONZALES', 'ORBEGOZO', 'JOSE', '2021-05-26', 'COVID LEGADO', '', 'SAN MARTIN DE PORRES', '53', 1, 'PARTICULAR', 1, 1),
+(9, 'ACP-2021-00009', '2021-06-10', '451893', '1900558', '1150550', 1, '1955-06-24', 'DNI', '04058794', 'ZERPA', 'MIRAVAL', 'GLORIA', '2021-05-26', 'COVID LEGADO', '', 'CARABAYLLO', '66', 2, 'PARTICULAR', 1, 1),
+(10, 'ACP-2021-00010', '2021-06-10', '451810', '1901095', '1337179', 1, '1955-12-25', 'DNI', '08543036', 'JARA', 'CHACON', 'MANUEL', '2021-05-25', 'COVID LEGADO', '', 'LOS OLIVOS', '66', 1, 'PARTICULAR', 1, 1),
+(11, 'ACP-2021-00011', '2021-06-10', '451736', '1900988', '613249', 1, '1944-01-31', 'DNI', '23146815', 'TAFUR', 'PIMENTEL', 'JULIA', '2021-05-25', 'COVID LEGADO', '', 'COMAS', '77', 2, 'PARTICULAR', 1, 1),
+(12, 'ACP-2021-00012', '2021-06-10', '451625', '1900894', '168339', 3, '1922-12-11', 'DNI', '06922052', 'POZO', 'RAMOS', 'MARIA', '2021-05-25', 'COVID LEGADO', '', 'COMAS', '99', 2, 'PARTICULAR', 1, 1),
+(13, 'ACP-2021-00013', '2021-06-10', 'ANULADA', 'ANULADA', '1335042', 2, '1974-01-11', 'DNI', '10137548', 'BEJARANO', 'LLAJA', 'EDGAR ', '2021-04-25', 'COVID VII', 'camaguery', 'SAN MARTIN DE PORRES', '47', 1, 'SOAT', 1, 2),
+(14, 'ACP-2021-00014', '2021-06-11', 'ANULADA', 'ANULADA', '1334975', 2, '1980-10-17', 'DNI', '40699316', 'HUACACHI', 'MATEO', 'ABEL FAUSTINO', '2021-04-24', 'COVID VII', '', 'COMAS', '41', 1, 'PARTICULAR', 1, 2),
+(15, 'ACP-2021-00015', '2021-06-11', 'ANULADA', 'ANULADA', '363934', 3, '1976-08-18', 'DNI', '10401317', 'PADILLA', 'SANCHEZ', 'ELSA ', '2021-04-24', 'COVID VII', '', 'CARABAYLLO', '45', 2, 'PARTICULAR', 1, 2);
+
+--
+-- Disparadores `acpsy_atencion`
+--
+DELIMITER $$
+CREATE TRIGGER `GENERAR_CORRELATIVO_ATENCION` BEFORE INSERT ON `acpsy_atencion` FOR EACH ROW BEGIN
+    DECLARE cont1 int default 0;
+    DECLARE anio text;
+    set anio = (SELECT YEAR(CURDATE()));
+    SET cont1= (SELECT count(*) FROM acpsy_atencion WHERE year(fRegistroAtencion) = year(now()));
+    IF (cont1 < 1) THEN
+    SET NEW.correlativo_Atencion = CONCAT('ACP-',anio,'-', LPAD(cont1 + 1, 5, '0'));
+    ELSE
+    SET NEW.correlativo_Atencion = CONCAT('ACP-',anio,'-', LPAD(cont1 + 1, 5, '0'));
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -246,8 +479,29 @@ CREATE TABLE `acpsy_estadoatencion` (
 --
 
 INSERT INTO `acpsy_estadoatencion` (`idEstadoAte`, `detaEstadoAte`) VALUES
-(1, 'ACTIVO'),
-(2, 'FINALIZADO');
+(1, 'REGISTRADA'),
+(2, 'ANULADA'),
+(3, 'FINALIZADA');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `acpsy_estadopaciente`
+--
+
+CREATE TABLE `acpsy_estadopaciente` (
+  `idEstadoPacAtencion` int(11) NOT NULL,
+  `detaEstadoPacAtencion` varchar(50) COLLATE utf8_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Volcado de datos para la tabla `acpsy_estadopaciente`
+--
+
+INSERT INTO `acpsy_estadopaciente` (`idEstadoPacAtencion`, `detaEstadoPacAtencion`) VALUES
+(1, 'HOSPITALIZADO'),
+(2, 'ALTA'),
+(3, 'FALLECIDO');
 
 -- --------------------------------------------------------
 
@@ -334,6 +588,8 @@ INSERT INTO `acpsy_etapaseguimiento` (`idEtapSegui`, `detaEtapSegui`) VALUES
 
 CREATE TABLE `acpsy_famatencion` (
   `idFamiliar` int(11) NOT NULL,
+  `fechaRegistro` date DEFAULT NULL,
+  `idUsuario` int(11) DEFAULT NULL,
   `idAtencion` int(11) DEFAULT NULL,
   `idParentesco` int(11) DEFAULT NULL,
   `idTipSexo` int(11) DEFAULT NULL,
@@ -343,6 +599,13 @@ CREATE TABLE `acpsy_famatencion` (
   `edadFamiliar` varchar(20) COLLATE utf8_bin DEFAULT NULL,
   `telcelFamiliar` varchar(12) COLLATE utf8_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Volcado de datos para la tabla `acpsy_famatencion`
+--
+
+INSERT INTO `acpsy_famatencion` (`idFamiliar`, `fechaRegistro`, `idUsuario`, `idAtencion`, `idParentesco`, `idTipSexo`, `tipdocFamiliar`, `ndocFamiliar`, `nombApFamiliar`, `edadFamiliar`, `telcelFamiliar`) VALUES
+(1, '2021-06-12', 1, 2, 1, 1, 'DNI', '20525252', 'JOSÉ CONDEZO SIPAN', '55', '915905629');
 
 -- --------------------------------------------------------
 
@@ -379,7 +642,10 @@ INSERT INTO `acpsy_parentescofam` (`idParentesco`, `detaParentesco`) VALUES
 (6, 'HERMANO(A)'),
 (7, 'TIO(A)'),
 (8, 'SOBRINO(A)'),
-(9, 'ESPOSO(A)');
+(9, 'ESPOSO(A)'),
+(10, 'PRIMO(A)'),
+(11, 'YERNO'),
+(12, 'NUERA');
 
 -- --------------------------------------------------------
 
@@ -431,8 +697,7 @@ INSERT INTO `acpsy_profesionales` (`idProfesional`, `idEstado`, `idCondicion`, `
 (7, 1, 1, '06123251', '10097', 'SANCHEZ AQUINO', 'NORMA NELIDA'),
 (8, 1, 2, '10288615', '25775', 'TRUJILLO CASTILLO', 'MIRIAM ROCIO'),
 (9, 1, 1, '07178930', '34522', 'VELASQUEZ REYES', 'MARIA ANGELA'),
-(10, 1, 2, '46624029', '21470', 'ZAVALETA LOPEZ', 'DARNELLY JAHAIRA'),
-(11, 2, 2, '10402790', '123', 'VELAZCO CASTRO DE PALACIOS', 'PALERMA');
+(10, 1, 2, '46624029', '21470', 'ZAVALETA LOPEZ', 'DARNELLY JAHAIRA');
 
 -- --------------------------------------------------------
 
@@ -540,6 +805,41 @@ INSERT INTO `acpsy_usuarios` (`idUsuario`, `idPerfil`, `idEstado`, `dniUsuario`,
 (11, 3, 2, '07178930', 'VELASQUEZ REYES', 'MARIA ANGELA', 'mvelasquezr', 'dpsicologia@hnseb.gob.pe', '$2a$07$usesomesillystringforedE1OzELbl6PFujI.BSco1Er6IX.Uv6C', 0, '2021-06-01 17:28:22', NULL),
 (12, 3, 2, '46624029', 'ZAVALETA LOPEZ', 'DARNELLY JAHAIRA', 'dzavaletal', 'dpsicologia@hnseb.gob.pe', '$2a$07$usesomesillystringforeBQPDD/GSseqnB6cro9X9nOHtqDKTXLS', 0, '2021-06-01 17:29:00', NULL);
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `zacpsy_aud_atenciones`
+--
+
+CREATE TABLE `zacpsy_aud_atenciones` (
+  `idAuditAte` int(11) NOT NULL,
+  `idAtencion` int(11) NOT NULL,
+  `fechaRegAudi` date NOT NULL,
+  `idUsuario` int(11) NOT NULL,
+  `AccRealizada` text COLLATE utf8_bin NOT NULL,
+  `cuentaAnterior` text COLLATE utf8_bin,
+  `EpisodioAnterior` text COLLATE utf8_bin,
+  `cuentaNueva` text COLLATE utf8_bin,
+  `EpisodioNuevo` text COLLATE utf8_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Volcado de datos para la tabla `zacpsy_aud_atenciones`
+--
+
+INSERT INTO `zacpsy_aud_atenciones` (`idAuditAte`, `idAtencion`, `fechaRegAudi`, `idUsuario`, `AccRealizada`, `cuentaAnterior`, `EpisodioAnterior`, `cuentaNueva`, `EpisodioNuevo`) VALUES
+(1, 1, '2021-06-11', 1, 'MODIFICACION', '11', '11', '12', '12'),
+(2, 1, '2021-06-11', 1, 'MODIFICACION', '121', '122', '123', '124'),
+(3, 13, '2021-06-11', 1, 'MODIFICACIÓN', '1900161', '450784', '1900161', '450784'),
+(4, 12, '2021-06-11', 1, 'MODIFICACIÓN', '1900894', '451625', '1900894', '451625'),
+(5, 8, '2021-06-11', 1, 'MODIFICACIÓN', '1900587', '451895', '1900587', '451895'),
+(6, 13, '2021-06-11', 1, 'MODIFICACIÓN', '1900161', '450784', '1895242', '445492'),
+(7, 14, '2021-06-11', 1, 'MODIFICACIÓN', '1895120', '445257', '1895052', '445256'),
+(8, 14, '2021-06-11', 1, 'MODIFICACIÓN', '1895052', '445256', '1895052', '445256'),
+(9, 14, '2021-06-11', 1, 'ANULACION', '1895052', '445256', NULL, NULL),
+(10, 1, '2021-06-11', 1, 'ANULACION', '1852299', 'E-101795', NULL, NULL),
+(11, 13, '2021-06-11', 1, 'ANULACION', '1895242', '445492', NULL, NULL);
+
 --
 -- Índices para tablas volcadas
 --
@@ -549,7 +849,8 @@ INSERT INTO `acpsy_usuarios` (`idUsuario`, `idPerfil`, `idEstado`, `dniUsuario`,
 --
 ALTER TABLE `acpsy_atencion`
   ADD PRIMARY KEY (`idAtencion`),
-  ADD KEY `fk_estadoAte` (`idEstadoAte`);
+  ADD KEY `fk_estadoAte` (`idEstadoAte`),
+  ADD KEY `fk_estadoPac` (`idEstadoPacAtencion`);
 
 --
 -- Indices de la tabla `acpsy_condicionprof`
@@ -568,6 +869,12 @@ ALTER TABLE `acpsy_diagnosticos`
 --
 ALTER TABLE `acpsy_estadoatencion`
   ADD PRIMARY KEY (`idEstadoAte`);
+
+--
+-- Indices de la tabla `acpsy_estadopaciente`
+--
+ALTER TABLE `acpsy_estadopaciente`
+  ADD PRIMARY KEY (`idEstadoPacAtencion`);
 
 --
 -- Indices de la tabla `acpsy_estadoprof`
@@ -662,6 +969,12 @@ ALTER TABLE `acpsy_usuarios`
   ADD KEY `fk_estadoUsuario` (`idEstado`);
 
 --
+-- Indices de la tabla `zacpsy_aud_atenciones`
+--
+ALTER TABLE `zacpsy_aud_atenciones`
+  ADD PRIMARY KEY (`idAuditAte`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -669,7 +982,7 @@ ALTER TABLE `acpsy_usuarios`
 -- AUTO_INCREMENT de la tabla `acpsy_atencion`
 --
 ALTER TABLE `acpsy_atencion`
-  MODIFY `idAtencion` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idAtencion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `acpsy_condicionprof`
@@ -687,7 +1000,13 @@ ALTER TABLE `acpsy_diagnosticos`
 -- AUTO_INCREMENT de la tabla `acpsy_estadoatencion`
 --
 ALTER TABLE `acpsy_estadoatencion`
-  MODIFY `idEstadoAte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idEstadoAte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `acpsy_estadopaciente`
+--
+ALTER TABLE `acpsy_estadopaciente`
+  MODIFY `idEstadoPacAtencion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `acpsy_estadoprof`
@@ -717,7 +1036,7 @@ ALTER TABLE `acpsy_etapaseguimiento`
 -- AUTO_INCREMENT de la tabla `acpsy_famatencion`
 --
 ALTER TABLE `acpsy_famatencion`
-  MODIFY `idFamiliar` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idFamiliar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `acpsy_motivoseguimiento`
@@ -729,7 +1048,7 @@ ALTER TABLE `acpsy_motivoseguimiento`
 -- AUTO_INCREMENT de la tabla `acpsy_parentescofam`
 --
 ALTER TABLE `acpsy_parentescofam`
-  MODIFY `idParentesco` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `idParentesco` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `acpsy_perfiles`
@@ -741,7 +1060,7 @@ ALTER TABLE `acpsy_perfiles`
 -- AUTO_INCREMENT de la tabla `acpsy_profesionales`
 --
 ALTER TABLE `acpsy_profesionales`
-  MODIFY `idProfesional` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idProfesional` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `acpsy_seguimiento`
@@ -768,6 +1087,12 @@ ALTER TABLE `acpsy_usuarios`
   MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
+-- AUTO_INCREMENT de la tabla `zacpsy_aud_atenciones`
+--
+ALTER TABLE `zacpsy_aud_atenciones`
+  MODIFY `idAuditAte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
 -- Restricciones para tablas volcadas
 --
 
@@ -775,7 +1100,8 @@ ALTER TABLE `acpsy_usuarios`
 -- Filtros para la tabla `acpsy_atencion`
 --
 ALTER TABLE `acpsy_atencion`
-  ADD CONSTRAINT `fk_estadoAte` FOREIGN KEY (`idEstadoAte`) REFERENCES `acpsy_estadoatencion` (`idEstadoAte`);
+  ADD CONSTRAINT `fk_estadoAte` FOREIGN KEY (`idEstadoAte`) REFERENCES `acpsy_estadoatencion` (`idEstadoAte`),
+  ADD CONSTRAINT `fk_estadoPac` FOREIGN KEY (`idEstadoPacAtencion`) REFERENCES `acpsy_estadopaciente` (`idEstadoPacAtencion`);
 
 --
 -- Filtros para la tabla `acpsy_famatencion`

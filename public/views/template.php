@@ -23,6 +23,9 @@ session_start();
   <link rel="stylesheet" href="public/views/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
   <!-- Tempusdominus Bootstrap 4 -->
   <link rel="stylesheet" href="public/views/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="public/views/plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="public/views/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
   <!-- iCheck -->
   <link rel="stylesheet" href="public/views/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Sweetalert -->
@@ -50,10 +53,12 @@ session_start();
   <script src="public/views/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
   <script src="public/views/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
   <script src="public/views/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <!-- Select2 -->
+  <script src="public/views/plugins/select2/js/select2.full.min.js"></script>
   <!-- Sweetalert -->
   <script src="public/views/plugins/sweetalert2/sweetalert2.min.js"></script>
   <!-- Toastr -->
-  <script src="public/views/plugins/toastr/toastr.min.js"></script> 
+  <script src="public/views/plugins/toastr/toastr.min.js"></script>
   <!-- daterangepicker -->
   <script src="public/views/plugins/moment/moment.min.js"></script>
   <script src="public/views/plugins/daterangepicker/daterangepicker.js"></script>

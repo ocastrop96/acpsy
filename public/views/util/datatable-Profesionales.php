@@ -3,9 +3,6 @@
 require_once "../../../app/controller/ProfesionalesControlador.php";
 // LLamada a modelo
 require_once "../../../app/model/ProfesionalesModelo.php";
-
-// require_once "../../app/model/UsuariosModelo.php";
-
 class DatatableProfesionales
 {
     public function mostrarTablaProfesionales()
