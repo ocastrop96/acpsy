@@ -22,6 +22,7 @@
       <div class="card-body">
         <button type="btn" class="btn btn-secondary" data-toggle="modal" data-target="#modal-registrar-familiar"><i class="fas fa-chalkboard-teacher"></i> Registrar familiar
         </button>
+        <input type="hidden" id="idUsFamOcu" name="idUsFamOcu" value="<?php echo $_SESSION["loginId"]; ?>">
       </div>
       <div class="card-body">
         <table id="datatableFamiliares" class="table table-bordered table-hover dt-responsive datatableFamiliares">
@@ -197,18 +198,16 @@
           <div class="row">
             <div class="col-12">
               <div class="form-group">
-                <div id="current">
-                  <span class="font-weight-bolder text-danger">ACTUAL : </span>
-                  <span class="font-weight-bolder" id="seleccionActual"></span>
-                </div>
-                <br>
                 <label for="edtfAtencion1">PACIENTE &nbsp;</label>
                 <i class="fas fa-hospital-user"></i> *
+                <span class="font-weight-bolder text-danger" id="seleccionActual1">ACTUAL : </span>
+                <span class="font-weight-bolder" id="seleccionActual"></span>
                 <select class="form-control" style="width: 100%;" id="edtfAtencion1" name="edtfAtencion">
                   <option id="edtfAtencion"></option>
                 </select>
                 <input type="hidden" name="idFamiliar" id="idFamiliar">
                 <input type="hidden" name="idAteAct" id="idAteAct">
+                <input type="hidden" name="idDniAct" id="idDniAct">
                 <input type="hidden" id="idUsEdtFam" name="idUsEdtFam" value="<?php echo $_SESSION["loginId"]; ?>">
               </div>
             </div>
@@ -316,8 +315,16 @@
           <button type="submit" class="btn btn-secondary" id="btnEdtFam"><i class="fas fa-sync-alt"></i> Actualizar Datos</button>
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
         </div>
+        <?php
+        $edtFamiliar = new FamiliaresControlador();
+        $edtFamiliar->ctrEditarFamiliar();
+        ?>
       </form>
     </div>
   </div>
 </div>
 <!-- Editar Familiar -->
+<?php
+$eliFamiliar = new FamiliaresControlador();
+$eliFamiliar->ctrEliminarFamiliar();
+?>

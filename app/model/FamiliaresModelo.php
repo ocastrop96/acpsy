@@ -68,6 +68,16 @@ class FamiliaresModelo
         $stmt->close();
         $stmt = null;
     }
+    static public function mdlValidarPaciente($idAtencion, $ndocFamiliar)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL VALIDA_FAMILIAR(:idAtencion,:ndocFamiliar)");
+        $stmt->bindParam(":idAtencion", $idAtencion, PDO::PARAM_STR);
+        $stmt->bindParam(":ndocFamiliar", $ndocFamiliar, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetch();
+        $stmt->close();
+        $stmt = null;
+    }
     static public function mdlRegistrarFamiliar($datos)
     {
         $stmt = Conexion::conectar()->prepare("CALL REGISTRAR_FAMILIARES(:fechaRegistro,:idUsuario,:idAtencion,:idParentesco,:idTipSexo,:tipdocFamiliar,:ndocFamiliar,:nombApFamiliar,:edadFamiliar,:telcelFamiliar)");
@@ -92,8 +102,77 @@ class FamiliaresModelo
     }
     static public function mdlEditarFamiliar($datos)
     {
+        $stmt = Conexion::conectar()->prepare("CALL EDITAR_FAMILIARES(:idFamiliar,:idAtencion,:idParentesco,:idTipSexo,:tipdocFamiliar,:ndocFamiliar,:nombApFamiliar,:edadFamiliar,:telcelFamiliar)");
+
+        $stmt->bindParam(":idFamiliar", $datos["idFamiliar"], PDO::PARAM_INT);
+        $stmt->bindParam(":idAtencion", $datos["idAtencion"], PDO::PARAM_INT);
+        $stmt->bindParam(":idParentesco", $datos["idParentesco"], PDO::PARAM_INT);
+        $stmt->bindParam(":idTipSexo", $datos["idTipSexo"], PDO::PARAM_INT);
+        $stmt->bindParam(":tipdocFamiliar", $datos["tipdocFamiliar"], PDO::PARAM_STR);
+        $stmt->bindParam(":ndocFamiliar", $datos["ndocFamiliar"], PDO::PARAM_STR);
+        $stmt->bindParam(":nombApFamiliar", $datos["nombApFamiliar"], PDO::PARAM_STR);
+        $stmt->bindParam(":edadFamiliar", $datos["edadFamiliar"], PDO::PARAM_STR);
+        $stmt->bindParam(":telcelFamiliar", $datos["telcelFamiliar"], PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
     }
     static public function mdlEliminarFamiliar($datos)
     {
+        $stmt = Conexion::conectar()->prepare("CALL ELIMINAR_FAMILIAR(:idFamiliar, @val)");
+        $stmt->bindParam(":idFamiliar", $datos, PDO::PARAM_INT);
+        $stmt->execute();
+        $value = $stmt->fetch();
+        $val2 = $value['nExistencia'];
+        if ($val2 == 0) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
+    }
+    static public function mdlAuditoriaFamiliares($datos)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL REGISTRAR_AUDFAMILIAR(:idFamiliar,:fecRegAudi,:idUsuario,:AccRealizada,:idAtencionAnt, :ndocAnt,:idAtencionNueva,:ndocNuevo)");
+
+        $stmt->bindParam(":idFamiliar", $datos["idFamiliar"], PDO::PARAM_INT);
+        $stmt->bindParam(":idUsuario", $datos["idUsuario"], PDO::PARAM_INT);
+        $stmt->bindParam(":idAtencionAnt", $datos["idAtencionAnt"], PDO::PARAM_INT);
+        $stmt->bindParam(":idAtencionNueva", $datos["idAtencionNueva"], PDO::PARAM_INT);
+        $stmt->bindParam(":fecRegAudi", $datos["fecRegAudi"], PDO::PARAM_STR);
+        $stmt->bindParam(":AccRealizada", $datos["AccRealizada"], PDO::PARAM_STR);
+        $stmt->bindParam(":ndocAnt", $datos["ndocAnt"], PDO::PARAM_STR);
+        $stmt->bindParam(":ndocNuevo", $datos["ndocNuevo"], PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
+    }
+    static public function mdlAuditoriaFamiliares2($datos)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL REGISTRAR_AUDFAMILIAR2(:idFamiliar,:fecRegAudi,:idUsuario,:AccRealizada,:idAtencionAnt, :ndocAnt)");
+        $stmt->bindParam(":idFamiliar", $datos["idFamiliar"], PDO::PARAM_INT);
+        $stmt->bindParam(":idUsuario", $datos["idUsuario"], PDO::PARAM_INT);
+        $stmt->bindParam(":idAtencionAnt", $datos["idAtencionAnt"], PDO::PARAM_INT);
+        $stmt->bindParam(":fecRegAudi", $datos["fecRegAudi"], PDO::PARAM_STR);
+        $stmt->bindParam(":AccRealizada", $datos["AccRealizada"], PDO::PARAM_STR);
+        $stmt->bindParam(":ndocAnt", $datos["ndocAnt"], PDO::PARAM_STR);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
     }
 }

@@ -116,7 +116,8 @@ $("#edtfAtencion1").select2(
                 };
             },
             processResults: function (response) {
-                $("#current").remove();
+                $("#seleccionActual1").remove();
+                $("#seleccionActual").remove();
                 return {
                     results: response,
                 };
@@ -288,6 +289,8 @@ $(".datatableFamiliares tbody").on("click", ".btnEditarFamiliar", function () {
         processData: false,
         dataType: "json",
         success: function (respuesta) {
+            $("#idAteAct").val(respuesta["idAtencion"]);
+            $("#idDniAct").val(respuesta["ndocFamiliar"]);
             $("#seleccionActual").html(respuesta["cuentaAtencion"] + " || " + respuesta["tipdocFamiliar"] + "-" + respuesta["ndocFamiliar"] + " - " + respuesta["nombAtencion"] + " " + respuesta["apPaternoAtencion"] + " " + respuesta["apMaternoAtencion"]);
             $("#edtfAtencion").val(respuesta["idAtencion"]);
             $("#edtfAtencion").html(respuesta["cuentaAtencion"] + " || " + respuesta["tipdocFamiliar"] + "-" + respuesta["ndocFamiliar"] + " - " + respuesta["nombAtencion"] + " " + respuesta["apPaternoAtencion"] + " " + respuesta["apMaternoAtencion"]);
@@ -422,3 +425,137 @@ $("#btnEdtFam").on("click", function () {
         },
     });
 });
+// Validar Familiar existente para Paciente
+$("#rgfNdoc").on("change", function () {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1500,
+    });
+    var ndoc = $(this).val();
+    var nate = $("#rgfAtencion").val();
+    var datos = new FormData();
+    if (ndoc.length >= 8 && nate > 0) {
+        datos.append("Paciente", nate);
+        datos.append("dniFamiliar", ndoc);
+        $.ajax({
+            url: "public/views/src/ajaxFamiliares.php",
+            method: "POST",
+            data: datos,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success: function (respuesta) {
+                console.log(respuesta);
+                if (respuesta) {
+                    Toast.fire({
+                        icon: "error",
+                        title: "El familiar ingresado, ya existe para el paciente seleccionado",
+                    });
+                    $("#rgfNdoc").val("");
+                    $("#rgfNdoc").focus();
+                    $("#rgfNomAp").val("");
+                }
+                else {
+                    $("#btnDNIFam").focus();
+                }
+            },
+        });
+    }
+})
+$("#edtfNdoc").on("change", function () {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1500,
+    });
+    var ndoc = $(this).val();
+    var nate = $("#edtfAtencion1").val();
+
+    var ateAct = $("#idAteAct").val();
+    var dniAct = $("#idDniAct").val();
+    var datos = new FormData();
+    if (ndoc.length >= 8 && nate > 0) {
+        if (nate == ateAct && ndoc != dniAct) {
+            datos.append("Paciente", nate);
+            datos.append("dniFamiliar", ndoc);
+            $.ajax({
+                url: "public/views/src/ajaxFamiliares.php",
+                method: "POST",
+                data: datos,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success: function (respuesta) {
+                    console.log(respuesta);
+                    if (respuesta) {
+                        Toast.fire({
+                            icon: "error",
+                            title: "El familiar ingresado, ya existe para el paciente seleccionado",
+                        });
+                        $("#edtfNdoc").val("");
+                        $("#edtfNdoc").focus();
+                    }
+                    else {
+                        $("#btnEdtDNIFam").focus();
+                    }
+                },
+            });
+        }
+        else if (nate != ateAct && ndoc != dniAct) {
+            datos.append("Paciente", nate);
+            datos.append("dniFamiliar", ndoc);
+            $.ajax({
+                url: "public/views/src/ajaxFamiliares.php",
+                method: "POST",
+                data: datos,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success: function (respuesta) {
+                    console.log(respuesta);
+                    if (respuesta) {
+                        Toast.fire({
+                            icon: "error",
+                            title: "El familiar ingresado, ya existe para el paciente seleccionado",
+                        });
+                        $("#edtfNdoc").val("");
+                        $("#edtfNdoc").focus();
+                    }
+                    else {
+                        $("#btnEdtDNIFam").focus();
+                    }
+                },
+            });
+        }
+    }
+})
+// Validar Familiar existente para Paciente
+// Eliminar Paciente
+$(".datatableFamiliares tbody").on("click", ".btnEliminarFamiliar", function () {
+    var idFamiliar = $(this).attr("idFamiliar");
+    var idAtencion = $(this).attr("idAtencion");
+    var idUsuario = $("#idUsFamOcu").val();
+    var idNDoc = $(this).attr("idNDoc");
+
+    Swal.fire({
+        title: '¿Está seguro de eliminar el familiar?',
+        text: "¡Si no lo está, puede cancelar la acción!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#343a40',
+        cancelButtonText: 'No, cancelar',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '¡Sí, eliminar familiar!'
+    }).then(function (result) {
+        if (result.value) {
+            window.location = "index.php?ruta=familiares&idFamiliar=" + idFamiliar + "&idAtencion=" + idAtencion + "&idNDoc=" + idNDoc + "&idUsuario=" + idUsuario;
+        }
+    })
+});
+// Eliminar Paciente

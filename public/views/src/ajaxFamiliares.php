@@ -30,6 +30,18 @@ class AjaxFamiliares
         $respuesta = FamiliaresControlador::ctrListarFamiliares($item, $valor);
         echo json_encode($respuesta);
     }
+
+    // Validar Cuenta existente
+    public $Paciente;
+    public $dniFamiliar;
+    public function ajaxValidarFamiliar()
+    {
+        $valor1 = $this->Paciente;
+        $valor2 = $this->dniFamiliar;
+        $respuesta = FamiliaresControlador::ctrValidarFamiliar($valor1, $valor2);
+        echo json_encode($respuesta);
+    }
+    // Validar Cuenta existente
 }
 // Búsqueda de paciente
 if (isset($_POST["searchTerm"])) {
@@ -46,3 +58,10 @@ if (isset($_POST["idFamiliar"])) {
     $list1->ajaxListarFamiliar();
 }
 // Listar Familiar
+// Validar Familiar
+if (isset($_POST["Paciente"])) {
+    $validFa = new AjaxFamiliares();
+    $validFa->Paciente = $_POST["Paciente"];
+    $validFa->dniFamiliar = $_POST["dniFamiliar"];
+    $validFa->ajaxValidarFamiliar();
+}

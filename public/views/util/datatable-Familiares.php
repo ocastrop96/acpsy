@@ -15,7 +15,7 @@ class DatatableFamiliares
 
         for ($i = 0; $i < count($familiares); $i++) {
             // Botones de Opciones
-            $botones = "<div class='btn-group'><button class='btn btn-warning btnEditarFamiliar' idFamiliar='" . $familiares[$i]["idFamiliar"] . "' data-toggle='modal' data-target='#modal-editar-familiar'><i class='fas fa-edit'></i></button><button class='btn btn-danger btnEliminarFamiliar' data-toggle='tooltip' data-placement='left' title='Eliminar Familiar' idFamiliar='" . $familiares[$i]["idFamiliar"] . "'><i class='fas fa-trash-alt'></i></button></div>";
+            $botones = "<div class='btn-group'><button class='btn btn-warning btnEditarFamiliar' idFamiliar='" . $familiares[$i]["idFamiliar"] . "' data-toggle='modal' data-target='#modal-editar-familiar'><i class='fas fa-edit'></i></button><button class='btn btn-danger btnEliminarFamiliar' data-toggle='tooltip' data-placement='left' title='Eliminar Familiar' idFamiliar='" . $familiares[$i]["idFamiliar"] . "' idAtencion='" . $familiares[$i]["idAtencion"] . "' idNDoc='" . $familiares[$i]["ndocFamiliar"] . "'><i class='fas fa-trash-alt'></i></button></div>";
 
             $datos_json .= '[
                 "' . ($i + 1) . '",
