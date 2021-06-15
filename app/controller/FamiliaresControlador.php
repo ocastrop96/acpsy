@@ -22,8 +22,7 @@ class FamiliaresControlador
         if (isset($_POST["rgfAtencion"]) && isset($_POST["rgfNdoc"])) {
             if (
                 preg_match('/^[0-9]+$/', $_POST["rgfAtencion"]) &&
-                preg_match('/^[0-9]+$/', $_POST["rgfNdoc"]) &&
-                preg_match('/^[a-zA-ZñÑáéíóúüÁÉÍÓÚÜ]+$/', $_POST["rgfNomAp"])
+                preg_match('/^[0-9]+$/', $_POST["rgfNdoc"])
             ) {
                 date_default_timezone_set('America/Lima');
                 $fRegFam = date("Y-m-d");

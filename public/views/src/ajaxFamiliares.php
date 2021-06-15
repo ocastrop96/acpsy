@@ -21,9 +21,28 @@ class AjaxFamiliares
         }
         echo json_encode($data);
     }
+
+    public $idFamiliar;
+    public function ajaxListarFamiliar()
+    {
+        $item = "idFamiliar";
+        $valor = $this->idFamiliar;
+        $respuesta = FamiliaresControlador::ctrListarFamiliares($item, $valor);
+        echo json_encode($respuesta);
+    }
 }
+// Búsqueda de paciente
 if (isset($_POST["searchTerm"])) {
     $list1 = new AjaxFamiliares();
     $list1->dato = $_POST["searchTerm"];
     $list1->ajaxBuscarPaciente1();
 }
+// Búsqueda de paciente
+
+// Listar Familiar
+if (isset($_POST["idFamiliar"])) {
+    $list1 = new AjaxFamiliares();
+    $list1->idFamiliar = $_POST["idFamiliar"];
+    $list1->ajaxListarFamiliar();
+}
+// Listar Familiar

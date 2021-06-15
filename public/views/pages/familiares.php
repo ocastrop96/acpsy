@@ -22,7 +22,6 @@
       <div class="card-body">
         <button type="btn" class="btn btn-secondary" data-toggle="modal" data-target="#modal-registrar-familiar"><i class="fas fa-chalkboard-teacher"></i> Registrar familiar
         </button>
-        <input type="hidden" value="<?php echo $_SESSION["loginId"]; ?>" id="idUsFam">
       </div>
       <div class="card-body">
         <table id="datatableFamiliares" class="table table-bordered table-hover dt-responsive datatableFamiliares">
@@ -66,6 +65,7 @@
                   <option value="0">Ingrese apellidos o N° de cuenta de Paciente</option>
                 </select>
                 <input type="hidden" name="idAtencion" id="idAtencion">
+                <input type="hidden" id="idUsFam" name="idUsFam" value="<?php echo $_SESSION["loginId"]; ?>">
               </div>
             </div>
           </div>
@@ -182,3 +182,142 @@
   </div>
 </div>
 <!-- Registrar Familiar -->
+<!-- Editar Familiar -->
+<div id="modal-editar-familiar" class="modal fade" role="dialog" aria-modal="true" style="padding-right: 17px;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form action="" role="form" id="formEdtFam" method="post">
+        <div class="modal-header text-center" style="background: #5D646C; color: white">
+          <h4 class="modal-title">Editar Familiar&nbsp; <i class="fas fa-chalkboard-teacher"></i></h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <div id="current">
+                  <span class="font-weight-bolder text-danger">ACTUAL : </span>
+                  <span class="font-weight-bolder" id="seleccionActual"></span>
+                </div>
+                <br>
+                <label for="edtfAtencion1">PACIENTE &nbsp;</label>
+                <i class="fas fa-hospital-user"></i> *
+                <select class="form-control" style="width: 100%;" id="edtfAtencion1" name="edtfAtencion">
+                  <option id="edtfAtencion"></option>
+                </select>
+                <input type="hidden" name="idFamiliar" id="idFamiliar">
+                <input type="hidden" name="idAteAct" id="idAteAct">
+                <input type="hidden" id="idUsEdtFam" name="idUsEdtFam" value="<?php echo $_SESSION["loginId"]; ?>">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <div class="form-group">
+                <label for="edtfTdoc1">Tipo Doc &nbsp;</label>
+                <i class="fas fa-hashtag"></i> *
+                <div class="input-group">
+                  <select class="form-control" id="edtfTdoc1" name="edtfTdoc">
+                    <option id="edtfTdoc"></option>
+                    <option value="DNI">DNI</option>
+                    <option value="CE">CE</option>
+                    <option value="PASS">PASS</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <label for="edtfNdoc">N° Doc &nbsp;</label>
+                <i class="fas fa-hashtag"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtfNdoc" id="edtfNdoc" class="form-control" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label>Buscar DNI:<span class="text-danger">&nbsp;*</span></label>
+                <div class="input-group">
+                  <button type="button" class="btn btn-block btn-info" id="btnEdtDNIFam"><i class="fas fa-search"></i> Consultar Datos DNI</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-9">
+              <div class="form-group">
+                <label for="edtfNomAp">Nombres y Apellidos de Familiar &nbsp;</label>
+                <i class="fas fa-signature"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtfNomAp" id="edtfNomAp" class="form-control" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <label for="edtfSexo1">Sexo &nbsp;</label>
+                <i class="fas fa-venus-mars"></i> *
+                <div class="input-group">
+                  <select class="form-control" id="edtfSexo1" name="edtfSexo">
+                    <option id="edtfSexo"></option>
+                    <?php
+                    $sexFam = AtencionesControlador::ctrListarSexo();
+                    foreach ($sexFam as $key => $value) {
+                      echo '<option value="' . $value["idTipSexo"] . '">' . $value["detaTipSexo"] . '</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <div class="form-group">
+                <label for="edtfParent1">Parentesco &nbsp;</label>
+                <i class="fas fa-users"></i> *
+                <div class="input-group">
+                  <select class="form-control" name="edtfParent" id="edtfParent1">
+                    <option id="edtfParent"></option>
+                    <?php
+                    $parentesco = FamiliaresControlador::ctrListarParentesco();
+                    foreach ($parentesco as $key => $value) {
+                      echo '<option value="' . $value["idParentesco"] . '">' . $value["detaParentesco"] . '</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <label for="edtfEdad">Edad Familiar &nbsp;</label>
+                <i class="fas fa-id-card-alt"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtfEdad" id="edtfEdad" class="form-control" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label for="edtfTel">N° Teléfono o Celular &nbsp;</label>
+                <i class="fas fa-phone"></i>&nbsp;<i class="fas fa-mobile-alt"></i> *
+                <div class="input-group">
+                  <input type="text" name="edtfTel" id="edtfTel" class="form-control" required autocomplete="off" autofocus="autofocus">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="submit" class="btn btn-secondary" id="btnEdtFam"><i class="fas fa-sync-alt"></i> Actualizar Datos</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Editar Familiar -->
