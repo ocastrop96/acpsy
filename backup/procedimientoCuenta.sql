@@ -71,13 +71,13 @@ FROM
 	ON
 	EpisodioAtencion.IdTipoServicio = TiposServicio.IdTipoServicio
 WHERE
-	YEAR(EpisodioAtencion.FechaIngreso) = YEAR(GETDATE()) AND Atenciones.IdCuentaAtencion = @IdCuentaAtencion
+	(YEAR(EpisodioAtencion.FechaIngreso) = '2020' OR YEAR(EpisodioAtencion.FechaIngreso) = YEAR(GETDATE())) AND Atenciones.IdCuentaAtencion = @IdCuentaAtencion
 ORDER BY EpisodioAtencion.FechaIngreso DESC
 OFFSET 0 ROWS
 FETCH NEXT 1 ROWS ONLY
 END
 
--- CARGA DE DATOS
+-- CARGA
 ALTER PROCEDURE [dbo].[LISTAR_DATOS_CUENTA_PSICO_FORM]
   @IdCuentaAtencion INT, @IdEpisodio INT
 AS
@@ -151,5 +151,5 @@ FROM
 	ON
 	EpisodioAtencion.IdTipoServicio = TiposServicio.IdTipoServicio
 WHERE
-	YEAR(EpisodioAtencion.FechaIngreso) = YEAR(GETDATE()) AND Atenciones.IdCuentaAtencion = @IdCuentaAtencion AND EpisodioAtencion.IdEpisodio = @IdEpisodio
+	Atenciones.IdCuentaAtencion = @IdCuentaAtencion AND EpisodioAtencion.IdEpisodio = @IdEpisodio
 END
