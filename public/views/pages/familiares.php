@@ -163,7 +163,7 @@
                 <label for="rgfTel">N° Teléfono o Celular &nbsp;</label>
                 <i class="fas fa-phone"></i>&nbsp;<i class="fas fa-mobile-alt"></i> *
                 <div class="input-group">
-                  <input type="text" name="rgfTel" id="rgfTel" class="form-control" placeholder="Ingrese Tel/Cel" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="rgfTel" id="rgfTel" class="form-control" placeholder="Ingrese Tel/Cel" autocomplete="off" autofocus="autofocus">
                 </div>
               </div>
             </div>
@@ -305,7 +305,7 @@
                 <label for="edtfTel">N° Teléfono o Celular &nbsp;</label>
                 <i class="fas fa-phone"></i>&nbsp;<i class="fas fa-mobile-alt"></i> *
                 <div class="input-group">
-                  <input type="text" name="edtfTel" id="edtfTel" class="form-control" required autocomplete="off" autofocus="autofocus">
+                  <input type="text" name="edtfTel" id="edtfTel" class="form-control" autocomplete="off" autofocus="autofocus">
                 </div>
               </div>
             </div>

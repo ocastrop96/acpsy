@@ -222,7 +222,7 @@ $("#btnRegFam").on("click", function () {
                 minlength: 1,
             },
             rgfTel: {
-                required: true,
+                required: false,
                 maxlength: 9,
                 minlength: 7,
             },
@@ -258,7 +258,6 @@ $("#btnRegFam").on("click", function () {
                 minlength: "Mínimo 1 dígito",
             },
             rgfTel: {
-                required: "Ingrese teléfono o celular",
                 maxlength: "9 dígitos si es celular",
                 minlength: "7 dígitos si es teléfono",
             },
@@ -371,7 +370,7 @@ $("#btnEdtFam").on("click", function () {
                 minlength: 1,
             },
             edtfTel: {
-                required: true,
+                required: false,
                 maxlength: 9,
                 minlength: 7,
             },
@@ -407,7 +406,6 @@ $("#btnEdtFam").on("click", function () {
                 minlength: "Mínimo 1 dígito",
             },
             edtfTel: {
-                required: "Ingrese teléfono o celular",
                 maxlength: "9 dígitos si es celular",
                 minlength: "7 dígitos si es teléfono",
             },
