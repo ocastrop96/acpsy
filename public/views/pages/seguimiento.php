@@ -30,12 +30,13 @@
               <th style="width: 10px">#</th>
               <th style="width: 10px">Registro</th>
               <th style="width: 10px">N°HC</th>
-              <th style="width: 10px">N°Cuenta</th>
               <th>Paciente</th>
               <th>Tipo</th>
               <th>Motivo</th>
               <th>Etapa</th>
+              <th>Profesional</th>
               <th style="width: 10px">¿Comunicación con familiar?</th>
+              <th style="width: 10px">Familiar</th>
               <th>Estado</th>
               <th>Acciones</th>
             </tr>
