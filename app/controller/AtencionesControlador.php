@@ -6,9 +6,9 @@ class AtencionesControlador
         $repuesta = AtencionesModelo::mdlTraerDatosCuenta($IdCuentaAtencion);
         return $repuesta;
     }
-    static public function ctrCargarDatosCuenta($IdCuentaAtencion, $IdEpisodio)
+    static public function ctrCargarDatosCuenta($IdCuentaAtencion)
     {
-        $repuesta = AtencionesModelo::mdlCargarDatosCuenta($IdCuentaAtencion, $IdEpisodio);
+        $repuesta = AtencionesModelo::mdlCargarDatosCuenta($IdCuentaAtencion);
         return $repuesta;
     }
     static public function ctrListarAtenciones($item, $valor)

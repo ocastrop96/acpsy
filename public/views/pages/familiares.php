@@ -81,6 +81,7 @@
                     <option value="DNI" selected>DNI</option>
                     <option value="CE">CE</option>
                     <option value="PASS">PASS</option>
+                    <option value="SD">SIN DOCUMENTO</option>
                   </select>
                 </div>
               </div>
@@ -223,6 +224,7 @@
                     <option value="DNI">DNI</option>
                     <option value="CE">CE</option>
                     <option value="PASS">PASS</option>
+                    <option value="SD">SIN DOCUMENTO</option>
                   </select>
                 </div>
               </div>

@@ -6,18 +6,17 @@ class AtencionesModelo
 {
     static public function mdlTraerDatosCuenta($IdCuentaAtencion)
     {
-        $stmt = ConexionConsulta::conectar()->prepare("exec LISTAR_DATOS_CUENTA_PSICO @IdCuentaAtencion = :IdCuentaAtencion");
+        $stmt = ConexionConsulta::conectar()->prepare("exec CONSULTA_PSICOLOGIA @IdCuentaAtencion = :IdCuentaAtencion");
         $stmt->bindParam(":IdCuentaAtencion", $IdCuentaAtencion, PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetchAll();
         $stmt->close();
         $stmt = null;
     }
-    static public function mdlCargarDatosCuenta($IdCuentaAtencion, $IdEpisodio)
+    static public function mdlCargarDatosCuenta($IdCuentaAtencion)
     {
-        $stmt = ConexionConsulta::conectar()->prepare("exec LISTAR_DATOS_CUENTA_PSICO_FORM @IdCuentaAtencion = :IdCuentaAtencion, @IdEpisodio = :IdEpisodio");
+        $stmt = ConexionConsulta::conectar()->prepare("exec CONSULTA_PSICOLOGIA @IdCuentaAtencion = :IdCuentaAtencion");
         $stmt->bindParam(":IdCuentaAtencion", $IdCuentaAtencion, PDO::PARAM_STR);
-        $stmt->bindParam(":IdEpisodio", $IdEpisodio, PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetch();
         $stmt->close();

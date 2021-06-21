@@ -29,10 +29,10 @@ class ajaxDatosCuenta
                     <div class='card-body'>
                         <div class='row'>
                             <div class='col-12 col-sm-3 col-md-2 col-lg-2'><strong>
-                                    <i class='fas fa-hashtag mr-1'></i> N° Episodio</strong>
+                                    <i class='fas fa-hashtag mr-1'></i> N° Atención</strong>
                             </div>
                             <div class='col-12 col-sm-3 col-md-2 col-lg-2'>
-                                <p class='text-muted'>$value[IdEpisodio]</p>
+                                <p class='text-muted'>$value[IdAtencion]</p>
                             </div>
                             <div class='col-12 col-sm-4 col-md-3 col-lg-3'><strong>
                                     <i class='fas fa-book mr-1'></i> N° Historia Clínica</strong>
@@ -73,7 +73,7 @@ class ajaxDatosCuenta
                         </div>
                     </div>
                     <div class='card-footer'>
-                        <button type='button' class='btn btn-info btn-block border-5' id='btncarga1' onclick='seleccionarAtencion($value[IdCuentaAtencion],$value[IdEpisodio])'><i class='fas fa-sync-alt'></i> &nbsp; Cargar Datos</button>
+                        <button type='button' class='btn btn-info btn-block border-5' id='btncarga1' onclick='seleccionarAtencion($value[IdCuentaAtencion])'><i class='fas fa-sync-alt'></i> &nbsp; Cargar Datos</button>
                     </div>
                 </div>";
             }
@@ -93,8 +93,7 @@ class ajaxDatosCuenta
     public function ajaxCargarDatosCuenta()
     {
         $valor = $this->idCuenta2;
-        $valor2 = $this->idEpisodio;
-        $respuesta = AtencionesControlador::ctrCargarDatosCuenta($valor, $valor2);
+        $respuesta = AtencionesControlador::ctrCargarDatosCuenta($valor);
         echo json_encode($respuesta);
     }
 
@@ -123,10 +122,10 @@ class ajaxDatosCuenta
                     <div class='card-body'>
                         <div class='row'>
                             <div class='col-12 col-sm-3 col-md-2 col-lg-2'><strong>
-                                    <i class='fas fa-hashtag mr-1'></i> N° Episodio</strong>
+                                    <i class='fas fa-hashtag mr-1'></i> N° Atención</strong>
                             </div>
                             <div class='col-12 col-sm-3 col-md-2 col-lg-2'>
-                                <p class='text-muted'>$value[IdEpisodio]</p>
+                                <p class='text-muted'>$value[IdAtencion]</p>
                             </div>
                             <div class='col-12 col-sm-4 col-md-3 col-lg-3'><strong>
                                     <i class='fas fa-book mr-1'></i> N° Historia Clínica</strong>
@@ -167,7 +166,7 @@ class ajaxDatosCuenta
                         </div>
                     </div>
                     <div class='card-footer'>
-                        <button class='btn btn-success btn-block border-5 btncarga2' id='btncarga2' idCuenta='$value[IdCuentaAtencion]' idEpisodio='$value[IdEpisodio]' onclick='seleccionarAtencion2($value[IdCuentaAtencion],$value[IdEpisodio])'><i class='fas fa-sync-alt'></i> &nbsp; Cargar Datos</button>
+                        <button class='btn btn-success btn-block border-5 btncarga2' id='btncarga2' onclick='seleccionarAtencion2($value[IdCuentaAtencion])'><i class='fas fa-sync-alt'></i> &nbsp; Cargar Datos</button>
                     </div>
                 </div>";
             }
@@ -196,6 +195,5 @@ if (isset($_POST["cuenta4"])) {
 if (isset($_POST["idCuenta"])) {
     $list2 = new ajaxDatosCuenta();
     $list2->idCuenta2 = $_POST["idCuenta"];
-    $list2->idEpisodio = $_POST["idEpisodio"];
     $list2->ajaxCargarDatosCuenta();
 }

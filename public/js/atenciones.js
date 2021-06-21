@@ -306,12 +306,10 @@ function mostrarPaciente(cuenta) {
         console.log("error");
     })
 }
-function seleccionarAtencion(cuenta, episodio) {
+function seleccionarAtencion(cuenta) {
     var idCuenta = cuenta;
-    var idEpisodio = episodio;
     var datosCarga = new FormData();
     datosCarga.append("idCuenta", idCuenta);
-    datosCarga.append("idEpisodio", idEpisodio);
     $.ajax({
         url: "public/views/src/ajaxCuentas.php",
         method: "POST",
@@ -321,7 +319,7 @@ function seleccionarAtencion(cuenta, episodio) {
         processData: false,
         dataType: "json",
         success: function (respuesta) {
-            $("#idEpisodio").val(respuesta["IdEpisodio"]);
+            $("#idEpisodio").val(respuesta["IdAtencion"]);
             $("#rgaNCuenta").val(respuesta["IdCuentaAtencion"]);
             $("#rgaNHC").val(respuesta["NroHistoriaClinica"]);
             $("#rgaFNac").val(respuesta["FechaNacimiento"]);
@@ -409,12 +407,10 @@ function mostrarPaciente2(cuenta) {
         console.log("error");
     })
 }
-function seleccionarAtencion2(cuenta, episodio) {
+function seleccionarAtencion2(cuenta) {
     var idCuenta = cuenta;
-    var idEpisodio = episodio;
     var datosCarga = new FormData();
     datosCarga.append("idCuenta", idCuenta);
-    datosCarga.append("idEpisodio", idEpisodio);
     $.ajax({
         url: "public/views/src/ajaxCuentas.php",
         method: "POST",
@@ -424,7 +420,7 @@ function seleccionarAtencion2(cuenta, episodio) {
         processData: false,
         dataType: "json",
         success: function (respuesta) {
-            $("#idEpisodioEdt").val(respuesta["IdEpisodio"]);
+            $("#idEpisodioEdt").val(respuesta["IdAtencion"]);
             $("#edtaNCuenta").val(respuesta["IdCuentaAtencion"]);
             $("#edtaNHC").val(respuesta["NroHistoriaClinica"]);
             $("#edtaFNac").val(respuesta["FechaNacimiento"]);

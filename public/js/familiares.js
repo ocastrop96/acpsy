@@ -149,6 +149,23 @@ $("#edtfEdad").keyup(function () {
 $("#edtfTel").keyup(function () {
     this.value = (this.value + "").replace(/[^0-9]/g, "");
 });
+$("#rgfTdoc").on("change", function () {
+    var TDoc = $(this).val();
+    if (TDoc != "DNI") {
+        if (TDoc == 'SD') {
+            $("#rgfNdoc").val("09999999");
+            $("#rgfNomAp").val("");
+            $("#rgfNomAp").focus();
+
+        }
+        else {
+            $("#rgfNdoc").val("");
+            $("#rgfNomAp").val("");
+            $("#rgfNomAp").prop("readonly", false);
+            $("#rgfNdoc").focus();
+        }
+    }
+});
 // Filtrado de campos
 // Búsqueda de datos por DNI
 $("#btnDNIFam").on("click", function () {
@@ -164,11 +181,18 @@ $("#btnDNIFam").on("click", function () {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
-                toastr.success("Datos cargados con éxito", "RENIEC");
-                $("#rgfNomAp").val(data["nombres"] + " " + data["apellidoPaterno"] + " " + data["apellidoMaterno"]);
-                $("#rgfSexo").focus();
-                $("#rgfNomAp").prop("readonly", true);
-                // $("#rgApellidos").prop("readonly", true);
+                if (data["nombres"] != null) {
+                    toastr.success("Datos cargados con éxito", "RENIEC");
+                    $("#rgfNomAp").val(data["nombres"] + " " + data["apellidoPaterno"] + " " + data["apellidoMaterno"]);
+                    $("#rgfSexo").focus();
+                    $("#rgfNomAp").prop("readonly", true);
+                }
+                else {
+                    toastr.warning("Es un menor de edad, ingrese datos manualmente", "RENIEC");
+                    $("#rgfNomAp").focus();
+                    $("#rgfNomAp").val("");
+                    $("#rgfNomAp").prop("readonly", false);
+                }
             },
             failure: function (data) {
                 toastr.info("No se pudo conectar los datos", "DNI");
@@ -320,11 +344,19 @@ $("#btnEdtDNIFam").on("click", function () {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
-                toastr.success("Datos cargados con éxito", "RENIEC");
-                $("#edtfNomAp").val(data["nombres"] + " " + data["apellidoPaterno"] + " " + data["apellidoMaterno"]);
-                $("#edtfSexo1").focus();
-                $("#edtfNomAp").prop("readonly", true);
-                // $("#rgApellidos").prop("readonly", true);
+
+                if (data["nombres"] != null) {
+                    toastr.success("Datos cargados con éxito", "RENIEC");
+                    $("#edtfNomAp").val(data["nombres"] + " " + data["apellidoPaterno"] + " " + data["apellidoMaterno"]);
+                    $("#edtfSexo1").focus();
+                    $("#edtfNomAp").prop("readonly", true);
+                }
+                else {
+                    toastr.warning("Es un menor de edad, ingrese datos manualmente", "RENIEC");
+                    $("#edtfNomAp").focus();
+                    $("#edtfNomAp").val("");
+                    $("#edtfNomAp").prop("readonly", false);
+                }
             },
             failure: function (data) {
                 toastr.info("No se pudo conectar los datos", "DNI");
@@ -433,34 +465,39 @@ $("#rgfNdoc").on("change", function () {
     });
     var ndoc = $(this).val();
     var nate = $("#rgfAtencion").val();
+    var tdoc = $("#rgfTdoc").val();
+
     var datos = new FormData();
-    if (ndoc.length >= 8 && nate > 0) {
-        datos.append("Paciente", nate);
-        datos.append("dniFamiliar", ndoc);
-        $.ajax({
-            url: "public/views/src/ajaxFamiliares.php",
-            method: "POST",
-            data: datos,
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: "json",
-            success: function (respuesta) {
-                console.log(respuesta);
-                if (respuesta) {
-                    Toast.fire({
-                        icon: "error",
-                        title: "El familiar ingresado, ya existe para el paciente seleccionado",
-                    });
-                    $("#rgfNdoc").val("");
-                    $("#rgfNdoc").focus();
-                    $("#rgfNomAp").val("");
-                }
-                else {
-                    $("#btnDNIFam").focus();
-                }
-            },
-        });
+
+    if (tdoc != 'SD') {
+        if (ndoc.length >= 8 && nate > 0) {
+            datos.append("Paciente", nate);
+            datos.append("dniFamiliar", ndoc);
+            $.ajax({
+                url: "public/views/src/ajaxFamiliares.php",
+                method: "POST",
+                data: datos,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success: function (respuesta) {
+                    console.log(respuesta);
+                    if (respuesta) {
+                        Toast.fire({
+                            icon: "error",
+                            title: "El familiar ingresado, ya existe para el paciente seleccionado",
+                        });
+                        $("#rgfNdoc").val("");
+                        $("#rgfNdoc").focus();
+                        $("#rgfNomAp").val("");
+                    }
+                    else {
+                        $("#btnDNIFam").focus();
+                    }
+                },
+            });
+        }
     }
 })
 $("#edtfNdoc").on("change", function () {
@@ -472,64 +509,67 @@ $("#edtfNdoc").on("change", function () {
     });
     var ndoc = $(this).val();
     var nate = $("#edtfAtencion1").val();
+    var tdoc = $("#edtfTdoc").val();
 
     var ateAct = $("#idAteAct").val();
     var dniAct = $("#idDniAct").val();
     var datos = new FormData();
-    if (ndoc.length >= 8 && nate > 0) {
-        if (nate == ateAct && ndoc != dniAct) {
-            datos.append("Paciente", nate);
-            datos.append("dniFamiliar", ndoc);
-            $.ajax({
-                url: "public/views/src/ajaxFamiliares.php",
-                method: "POST",
-                data: datos,
-                cache: false,
-                contentType: false,
-                processData: false,
-                dataType: "json",
-                success: function (respuesta) {
-                    console.log(respuesta);
-                    if (respuesta) {
-                        Toast.fire({
-                            icon: "error",
-                            title: "El familiar ingresado, ya existe para el paciente seleccionado",
-                        });
-                        $("#edtfNdoc").val("");
-                        $("#edtfNdoc").focus();
-                    }
-                    else {
-                        $("#btnEdtDNIFam").focus();
-                    }
-                },
-            });
-        }
-        else if (nate != ateAct && ndoc != dniAct) {
-            datos.append("Paciente", nate);
-            datos.append("dniFamiliar", ndoc);
-            $.ajax({
-                url: "public/views/src/ajaxFamiliares.php",
-                method: "POST",
-                data: datos,
-                cache: false,
-                contentType: false,
-                processData: false,
-                dataType: "json",
-                success: function (respuesta) {
-                    console.log(respuesta);
-                    if (respuesta) {
-                        Toast.fire({
-                            icon: "error",
-                            title: "El familiar ingresado, ya existe para el paciente seleccionado",
-                        });
-                        $("#edtfNdoc").val("");
-                        $("#edtfNdoc").focus();
-                    }
-                    else {
-                        $("#btnEdtDNIFam").focus();
-                    }
-                },
-            });
+    if (tdoc != 'SD') {
+        if (ndoc.length >= 8 && nate > 0) {
+            if (nate == ateAct && ndoc != dniAct) {
+                datos.append("Paciente", nate);
+                datos.append("dniFamiliar", ndoc);
+                $.ajax({
+                    url: "public/views/src/ajaxFamiliares.php",
+                    method: "POST",
+                    data: datos,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    success: function (respuesta) {
+                        console.log(respuesta);
+                        if (respuesta) {
+                            Toast.fire({
+                                icon: "error",
+                                title: "El familiar ingresado, ya existe para el paciente seleccionado",
+                            });
+                            $("#edtfNdoc").val("");
+                            $("#edtfNdoc").focus();
+                        }
+                        else {
+                            $("#btnEdtDNIFam").focus();
+                        }
+                    },
+                });
+            }
+            else if (nate != ateAct && ndoc != dniAct) {
+                datos.append("Paciente", nate);
+                datos.append("dniFamiliar", ndoc);
+                $.ajax({
+                    url: "public/views/src/ajaxFamiliares.php",
+                    method: "POST",
+                    data: datos,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    success: function (respuesta) {
+                        console.log(respuesta);
+                        if (respuesta) {
+                            Toast.fire({
+                                icon: "error",
+                                title: "El familiar ingresado, ya existe para el paciente seleccionado",
+                            });
+                            $("#edtfNdoc").val("");
+                            $("#edtfNdoc").focus();
+                        }
+                        else {
+                            $("#btnEdtDNIFam").focus();
+                        }
+                    },
+                });
+            }
         }
     }
 })
