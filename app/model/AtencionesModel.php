@@ -4,12 +4,63 @@ require_once "dbConnectMS.php";
 
 class AtencionesModelo
 {
-    static public function mdlTraerDatosCuenta($IdCuentaAtencion)
+    static public function mdlTraerDatosCuenta($filtro, $dato)
     {
-        $stmt = ConexionConsulta::conectar()->prepare("exec CONSULTA_PSICOLOGIA @IdCuentaAtencion = :IdCuentaAtencion");
-        $stmt->bindParam(":IdCuentaAtencion", $IdCuentaAtencion, PDO::PARAM_STR);
-        $stmt->execute();
-        return $stmt->fetchAll();
+        if ($filtro == 2) {
+            $stmt = ConexionConsulta::conectar()->prepare("SELECT
+            Atenciones.IdCuentaAtencion,
+            FORMAT ( Atenciones.FechaIngreso, 'dd/MM/yyyy' ) AS FechaIngreso,
+            Pacientes.NroHistoriaClinica,
+            Pacientes.NroDocumento,
+            TiposDocIdentidad.DescripcionAbrev,
+            Pacientes.ApellidoPaterno,
+            Pacientes.ApellidoMaterno,
+            Pacientes.PrimerNombre,
+            UPPER ( Pacientes.SegundoNombre ) AS SegundoNombre,
+            UPPER ( Pacientes.TercerNombre ) AS TercerNombre,
+            UPPER ( Servicios.Nombre ) AS Nombre,
+            UPPER ( TiposServicio.Descripcion ) AS TIPO_SERVICIO 
+        FROM
+            dbo.Atenciones
+            INNER JOIN dbo.Pacientes ON Atenciones.IdPaciente = Pacientes.IdPaciente
+            INNER JOIN dbo.TiposDocIdentidad ON Pacientes.IdDocIdentidad = TiposDocIdentidad.IdDocIdentidad
+            INNER JOIN dbo.Servicios ON Atenciones.IdServicioIngreso = Servicios.IdServicio
+            INNER JOIN dbo.TiposServicio ON Atenciones.IdTipoServicio = TiposServicio.IdTipoServicio 
+        WHERE 
+        Pacientes.NroHistoriaClinica = :dato AND ( YEAR ( Atenciones.FechaIngreso ) IN ( '2020', YEAR ( GETDATE( ) ) ) ) 
+        ORDER BY
+            Atenciones.FechaIngreso DESC");
+            $stmt->bindParam(":dato", $dato, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } else {
+            $stmt = ConexionConsulta::conectar()->prepare("SELECT
+            Atenciones.IdCuentaAtencion,
+            FORMAT ( Atenciones.FechaIngreso, 'dd/MM/yyyy' ) AS FechaIngreso,
+            Pacientes.NroHistoriaClinica,
+            Pacientes.NroDocumento,
+            TiposDocIdentidad.DescripcionAbrev,
+            Pacientes.ApellidoPaterno,
+            Pacientes.ApellidoMaterno,
+            Pacientes.PrimerNombre,
+            UPPER ( Pacientes.SegundoNombre ) AS SegundoNombre,
+            UPPER ( Pacientes.TercerNombre ) AS TercerNombre,
+            UPPER ( Servicios.Nombre ) AS Nombre,
+            UPPER ( TiposServicio.Descripcion ) AS TIPO_SERVICIO 
+        FROM
+            dbo.Atenciones
+            INNER JOIN dbo.Pacientes ON Atenciones.IdPaciente = Pacientes.IdPaciente
+            INNER JOIN dbo.TiposDocIdentidad ON Pacientes.IdDocIdentidad = TiposDocIdentidad.IdDocIdentidad
+            INNER JOIN dbo.Servicios ON Atenciones.IdServicioIngreso = Servicios.IdServicio
+            INNER JOIN dbo.TiposServicio ON Atenciones.IdTipoServicio = TiposServicio.IdTipoServicio 
+        WHERE 
+        Pacientes.NroDocumento = :dato AND ( YEAR ( Atenciones.FechaIngreso ) IN ( '2020', YEAR ( GETDATE( ) ) ) ) 
+        ORDER BY
+            Atenciones.FechaIngreso DESC");
+            $stmt->bindParam(":dato", $dato, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        }
         $stmt->close();
         $stmt = null;
     }

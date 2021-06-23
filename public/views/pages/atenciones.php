@@ -75,7 +75,7 @@
               <div class="form-group">
                 <label>Búsqueda:<span class="text-danger">&nbsp;*</span></label>
                 <div class="input-group">
-                  <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modal-busqueda-cuenta" id="btnCuentaPac"><i class="fas fa-search"></i> Consultar Datos Cuenta</button>
+                  <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modal-busqueda-cuenta" id="btnCuentaPac"><i class="fas fa-search"></i> Consultar Datos</button>
                 </div>
               </div>
             </div>
@@ -268,12 +268,24 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-12 col-sm-5 col-md-5 col-lg-5">
+          <div class="col-12 col-sm-2 col-md-2 col-lg-2">
             <div class="form-group">
-              <label for="">N° de Cuenta &nbsp;</label>
+              <label for="fCuenta">Filtro &nbsp;</label>
+              <i class="fas fa-filter"></i> *
+              <div class="input-group">
+                <select class="form-control" style="width: 100%;" name="fCuenta" id="fCuenta">
+                  <option value="1">DNI</option>
+                  <option value="2">N° HC</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+            <div class="form-group">
+              <label for="">N° de DNI o HC &nbsp;</label>
               <i class="fas fa-hashtag"></i> *
               <div class="input-group">
-                <input type="text" name="searchCuenta" id="searchCuenta" class="form-control" placeholder="Ingrese N° Cuenta del Paciente" required autocomplete="off" autofocus="autofocus">
+                <input type="text" name="searchCuenta" id="searchCuenta" class="form-control" placeholder="Ingrese N° DNI o HC" required autocomplete="off" autofocus="autofocus">
               </div>
             </div>
           </div>
@@ -526,12 +538,24 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-12 col-sm-5 col-md-5 col-lg-5">
+          <div class="col-12 col-sm-2 col-md-2 col-lg-2">
+            <div class="form-group">
+              <label for="fCuenta2">Filtro &nbsp;</label>
+              <i class="fas fa-filter"></i> *
+              <div class="input-group">
+                <select class="form-control" style="width: 100%;" name="fCuenta2" id="fCuenta2">
+                  <option value="1">DNI</option>
+                  <option value="2">N° HC</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-3 col-md-3 col-lg-3">
             <div class="form-group">
               <label for="">N° de Cuenta &nbsp;</label>
               <i class="fas fa-hashtag"></i> *
               <div class="input-group">
-                <input type="text" name="searchCuenta2" id="searchCuenta2" class="form-control" placeholder="Ingrese N° Cuenta del Paciente" required autocomplete="off" autofocus="autofocus">
+                <input type="text" name="searchCuenta2" id="searchCuenta2" class="form-control" placeholder="Ingrese N° DNI o HC" required autocomplete="off" autofocus="autofocus">
               </div>
             </div>
           </div>

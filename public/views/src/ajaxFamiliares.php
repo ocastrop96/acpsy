@@ -22,6 +22,21 @@ class AjaxFamiliares
         echo json_encode($data);
     }
 
+    public $dato2;
+    public function ajaxBuscarPaciente2()
+    {
+        $valorTermino = $this->dato2;
+
+        $stmt = Conexion::conectar()->prepare("CALL BUSCAR_PACIENTE('$valorTermino')");
+        $stmt->execute();
+        $data = array();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $data[] = array("id" => $row['idAtencion'], "text" => $row['cuentaAtencion'] . ' || ' . $row['tipdocAtencion'] . '-' . $row['nrodocAtencion'] . ' - ' . $row['paciente'] . ' || ESTADO : ' . $row['detaEstadoPacAtencion']);
+        }
+        echo json_encode($data);
+    }
+
+
     public $idFamiliar;
     public function ajaxListarFamiliar()
     {
@@ -48,6 +63,12 @@ if (isset($_POST["searchTerm"])) {
     $list1 = new AjaxFamiliares();
     $list1->dato = $_POST["searchTerm"];
     $list1->ajaxBuscarPaciente1();
+}
+// Búsqueda de paciente
+if (isset($_POST["searchTerm2"])) {
+    $list2 = new AjaxFamiliares();
+    $list2->dato = $_POST["searchTerm2"];
+    $list2->ajaxBuscarPaciente2();
 }
 // Búsqueda de paciente
 

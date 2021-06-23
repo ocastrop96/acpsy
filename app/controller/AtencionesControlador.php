@@ -1,9 +1,9 @@
 <?php
 class AtencionesControlador
 {
-    static public function ctrTraerDatosCuenta($IdCuentaAtencion)
+    static public function ctrTraerDatosCuenta($filtro,$dato)
     {
-        $repuesta = AtencionesModelo::mdlTraerDatosCuenta($IdCuentaAtencion);
+        $repuesta = AtencionesModelo::mdlTraerDatosCuenta($filtro,$dato);
         return $repuesta;
     }
     static public function ctrCargarDatosCuenta($IdCuentaAtencion)

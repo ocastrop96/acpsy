@@ -259,52 +259,90 @@ $("#searchCuenta2").keyup(function () {
     this.value = (this.value + "").replace(/[^0-9]/g, "");
 });
 $("#btnCuentaCarg1").click(function () {
+    // const Toast = Swal.mixin({
+    //     toast: true,
+    //     position: "top-end",
+    //     showConfirmButton: false,
+    //     timer: 1500,
+    // });
+    var dato = $("#searchCuenta").val();
+    var filtro = $("#fCuenta").val();
+    if (dato != '') {
+        mostrarPaciente(dato, filtro);
+    }
+    // var datos = new FormData();
+    // if (cuenta != "") {
+    //     datos.append("cuentaAtencion", cuenta);
+    //     $.ajax({
+    //         url: "public/views/src/ajaxAtenciones.php",
+    //         method: "POST",
+    //         data: datos,
+    //         cache: false,
+    //         contentType: false,
+    //         processData: false,
+    //         dataType: "json",
+    //         success: function (respuesta) {
+    //             if (respuesta) {
+    //                 Toast.fire({
+    //                     icon: "error",
+    //                     title: "La cuenta ingresada ya está registrada.",
+    //                 });
+    //                 $("#searchCuenta").val("");
+    //                 $("#searchCuenta").focus();
+    //             }
+    //             else {
+    //                 mostrarPaciente(cuenta);
+    //             }
+    //         },
+    //     });
+    // }
+});
+
+function mostrarPaciente(dato1, filtro1) {
+    $.ajax({
+        url: "public/views/src/ajaxCuentas.php",
+        method: "POST",
+        dataType: "html",
+        data: { dato: dato1, filtro: filtro1 }
+    }).done(function (respuesta) {
+        $("#dataCuenta").html(respuesta);
+    }).fail(function () {
+        console.log("error");
+    })
+}
+function ValidarCuentaExistente(cuenta) {
     const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
         showConfirmButton: false,
         timer: 1500,
     });
-    var cuenta = $("#searchCuenta").val();
+    var vcuenta = cuenta;
     var datos = new FormData();
-    if (cuenta != "") {
-        datos.append("cuentaAtencion", cuenta);
-        $.ajax({
-            url: "public/views/src/ajaxAtenciones.php",
-            method: "POST",
-            data: datos,
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: "json",
-            success: function (respuesta) {
-                if (respuesta) {
-                    Toast.fire({
-                        icon: "error",
-                        title: "La cuenta ingresada ya está registrada.",
-                    });
-                    $("#searchCuenta").val("");
-                    $("#searchCuenta").focus();
-                }
-                else {
-                    mostrarPaciente(cuenta);
-                }
-            },
-        });
-    }
-});
-
-function mostrarPaciente(cuenta) {
+    datos.append("cuentaAtencion", vcuenta);
     $.ajax({
-        url: "public/views/src/ajaxCuentas.php",
+        url: "public/views/src/ajaxAtenciones.php",
         method: "POST",
-        dataType: "html",
-        data: { cuenta: cuenta }
-    }).done(function (respuesta) {
-        $("#dataCuenta").html(respuesta);
-    }).fail(function () {
-        console.log("error");
-    })
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        success: function (respuesta) {
+            if (respuesta) {
+                Toast.fire({
+                    icon: "error",
+                    title: "La cuenta ingresada ya está registrada.",
+                });
+                $("#searchCuenta").val("");
+                $("#searchCuenta").focus();
+                $("#data").html("");
+            }
+            else {
+                seleccionarAtencion(vcuenta);
+            }
+        },
+    });
 }
 function seleccionarAtencion(cuenta) {
     var idCuenta = cuenta;
@@ -335,17 +373,23 @@ function seleccionarAtencion(cuenta) {
             $("#rgaServicio").val(respuesta["Nombre"] + ' - ' + respuesta["TIPO_SERVICIO"]);
             $("#setSex").val(respuesta["IdTipoSexo"]);
             $("#setSex").html(respuesta["SEXO_PAC"]);
-            if (respuesta["IdCondicionAlta"] == 1 || respuesta["IdCondicionAlta"] == 2 || respuesta["IdCondicionAlta"] == 3) {
+            if (respuesta["IdTipoServicio"] == 1) {
                 $("#setEstado").val(2);
                 $("#setEstado").html("ALTA");
             }
-            else if (respuesta["IdCondicionAlta"] == 4) {
-                $("#setEstado").val(3);
-                $("#setEstado").html("FALLECIDO");
-            }
             else {
-                $("#setEstado").val(1);
-                $("#setEstado").html("HOSPITALIZADO");
+                if (respuesta["IdCondicionAlta"] == 1 || respuesta["IdCondicionAlta"] == 2 || respuesta["IdCondicionAlta"] == 3) {
+                    $("#setEstado").val(2);
+                    $("#setEstado").html("ALTA");
+                }
+                else if (respuesta["IdCondicionAlta"] == 4) {
+                    $("#setEstado").val(3);
+                    $("#setEstado").html("FALLECIDO");
+                }
+                else {
+                    $("#setEstado").val(1);
+                    $("#setEstado").html("HOSPITALIZADO");
+                }
             }
             $("#modal-busqueda-cuenta").modal("hide");
             $("#searchCuenta").val("");
@@ -354,106 +398,106 @@ function seleccionarAtencion(cuenta) {
     });
 }
 
-$("#btnCuentaCarg2").click(function () {
-    const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 1500,
-    });
-    var cuenta = $("#searchCuenta2").val();
-    var edtaNCuenta = $("#edtaNCuenta").val();
+// $("#btnCuentaCarg2").click(function () {
+//     const Toast = Swal.mixin({
+//         toast: true,
+//         position: "top-end",
+//         showConfirmButton: false,
+//         timer: 1500,
+//     });
+//     var cuenta = $("#searchCuenta2").val();
+//     var edtaNCuenta = $("#edtaNCuenta").val();
 
-    var datos = new FormData();
+//     var datos = new FormData();
 
-    if (cuenta == edtaNCuenta) {
-        mostrarPaciente2(cuenta);
-    }
-    else if (cuenta != edtaNCuenta && cuenta != "") {
-        datos.append("cuentaAtencion", cuenta);
-        $.ajax({
-            url: "public/views/src/ajaxAtenciones.php",
-            method: "POST",
-            data: datos,
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: "json",
-            success: function (respuesta) {
-                if (respuesta) {
-                    Toast.fire({
-                        icon: "error",
-                        title: "La cuenta ingresada ya está registrada.",
-                    });
-                    $("#searchCuenta2").val("");
-                    $("#searchCuenta2").focus();
-                }
-                else {
-                    mostrarPaciente2(cuenta);
-                }
-            },
-        });
-    }
-});
-function mostrarPaciente2(cuenta) {
-    $.ajax({
-        url: "public/views/src/ajaxCuentas.php",
-        method: "POST",
-        dataType: "html",
-        data: { cuenta4: cuenta }
-    }).done(function (respuesta) {
-        $("#dataCuenta2").html(respuesta);
-    }).fail(function () {
-        console.log("error");
-    })
-}
-function seleccionarAtencion2(cuenta) {
-    var idCuenta = cuenta;
-    var datosCarga = new FormData();
-    datosCarga.append("idCuenta", idCuenta);
-    $.ajax({
-        url: "public/views/src/ajaxCuentas.php",
-        method: "POST",
-        data: datosCarga,
-        cache: false,
-        contentType: false,
-        processData: false,
-        dataType: "json",
-        success: function (respuesta) {
-            $("#idEpisodioEdt").val(respuesta["IdAtencion"]);
-            $("#edtaNCuenta").val(respuesta["IdCuentaAtencion"]);
-            $("#edtaNHC").val(respuesta["NroHistoriaClinica"]);
-            $("#edtaFNac").val(respuesta["FechaNacimiento"]);
-            $("#edtaFIngServicio").val(respuesta["FechaIngreso"]);
-            $("#edtaTdoc").val(respuesta["DescripcionAbrev"]);
-            $("#edtaNDoc").val(respuesta["NroDocumento"]);
-            $("#edtaAPaterno").val(respuesta["ApellidoPaterno"]);
-            $("#edtaAMaterno").val(respuesta["ApellidoMaterno"]);
-            $("#edtaNombres").val(respuesta["PrimerNombre"]);
-            $("#edtaEdad").val(respuesta["EDAD_PAC"]);
-            $("#edtaFinancia").val(respuesta["FUENTE_PAC"]);
-            $("#edtaDistrito").val(respuesta["DISTRITO_PAC"]);
-            $("#edtaServicio").val(respuesta["Nombre"] + ' - ' + respuesta["TIPO_SERVICIO"]);
-            $("#setSex2").val(respuesta["IdTipoSexo"]);
-            $("#setSex2").html(respuesta["SEXO_PAC"]);
-            if (respuesta["IdCondicionAlta"] == 1 || respuesta["IdCondicionAlta"] == 2 || respuesta["IdCondicionAlta"] == 3) {
-                $("#setEstado2").val(2);
-                $("#setEstado2").html("ALTA");
-            }
-            else if (respuesta["IdCondicionAlta"] == 4) {
-                $("#setEstado2").val(3);
-                $("#setEstado2").html("FALLECIDO");
-            }
-            else {
-                $("#setEstado2").val(1);
-                $("#setEstado2").html("HOSPITALIZADO");
-            }
-            $("#modal-busqueda-cuenta-edt").modal("hide");
-            $("#searchCuenta2").val("");
-            $("#dataCuenta2").html("");
-        },
-    });
-}
+//     if (cuenta == edtaNCuenta) {
+//         mostrarPaciente2(cuenta);
+//     }
+//     else if (cuenta != edtaNCuenta && cuenta != "") {
+//         datos.append("cuentaAtencion", cuenta);
+//         $.ajax({
+//             url: "public/views/src/ajaxAtenciones.php",
+//             method: "POST",
+//             data: datos,
+//             cache: false,
+//             contentType: false,
+//             processData: false,
+//             dataType: "json",
+//             success: function (respuesta) {
+//                 if (respuesta) {
+//                     Toast.fire({
+//                         icon: "error",
+//                         title: "La cuenta ingresada ya está registrada.",
+//                     });
+//                     $("#searchCuenta2").val("");
+//                     $("#searchCuenta2").focus();
+//                 }
+//                 else {
+//                     mostrarPaciente2(cuenta);
+//                 }
+//             },
+//         });
+//     }
+// });
+// function mostrarPaciente2(cuenta) {
+//     $.ajax({
+//         url: "public/views/src/ajaxCuentas.php",
+//         method: "POST",
+//         dataType: "html",
+//         data: { cuenta4: cuenta }
+//     }).done(function (respuesta) {
+//         $("#dataCuenta2").html(respuesta);
+//     }).fail(function () {
+//         console.log("error");
+//     })
+// }
+// function seleccionarAtencion2(cuenta) {
+//     var idCuenta = cuenta;
+//     var datosCarga = new FormData();
+//     datosCarga.append("idCuenta", idCuenta);
+//     $.ajax({
+//         url: "public/views/src/ajaxCuentas.php",
+//         method: "POST",
+//         data: datosCarga,
+//         cache: false,
+//         contentType: false,
+//         processData: false,
+//         dataType: "json",
+//         success: function (respuesta) {
+//             $("#idEpisodioEdt").val(respuesta["IdAtencion"]);
+//             $("#edtaNCuenta").val(respuesta["IdCuentaAtencion"]);
+//             $("#edtaNHC").val(respuesta["NroHistoriaClinica"]);
+//             $("#edtaFNac").val(respuesta["FechaNacimiento"]);
+//             $("#edtaFIngServicio").val(respuesta["FechaIngreso"]);
+//             $("#edtaTdoc").val(respuesta["DescripcionAbrev"]);
+//             $("#edtaNDoc").val(respuesta["NroDocumento"]);
+//             $("#edtaAPaterno").val(respuesta["ApellidoPaterno"]);
+//             $("#edtaAMaterno").val(respuesta["ApellidoMaterno"]);
+//             $("#edtaNombres").val(respuesta["PrimerNombre"]);
+//             $("#edtaEdad").val(respuesta["EDAD_PAC"]);
+//             $("#edtaFinancia").val(respuesta["FUENTE_PAC"]);
+//             $("#edtaDistrito").val(respuesta["DISTRITO_PAC"]);
+//             $("#edtaServicio").val(respuesta["Nombre"] + ' - ' + respuesta["TIPO_SERVICIO"]);
+//             $("#setSex2").val(respuesta["IdTipoSexo"]);
+//             $("#setSex2").html(respuesta["SEXO_PAC"]);
+//             if (respuesta["IdCondicionAlta"] == 1 || respuesta["IdCondicionAlta"] == 2 || respuesta["IdCondicionAlta"] == 3) {
+//                 $("#setEstado2").val(2);
+//                 $("#setEstado2").html("ALTA");
+//             }
+//             else if (respuesta["IdCondicionAlta"] == 4) {
+//                 $("#setEstado2").val(3);
+//                 $("#setEstado2").html("FALLECIDO");
+//             }
+//             else {
+//                 $("#setEstado2").val(1);
+//                 $("#setEstado2").html("HOSPITALIZADO");
+//             }
+//             $("#modal-busqueda-cuenta-edt").modal("hide");
+//             $("#searchCuenta2").val("");
+//             $("#dataCuenta2").html("");
+//         },
+//     });
+// }
 // Editar Atención
 $(".datatableAtenciones tbody").on("click", ".btnEditarAtencion", function () {
     var idAtencion = $(this).attr("idAtencion");

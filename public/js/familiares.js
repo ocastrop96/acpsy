@@ -18,7 +18,7 @@ $(".datatableFamiliares").DataTable({
 });
 $("#rgfAtencion").select2(
     {
-        maximumInputLength: "10",
+        maximumInputLength: "12",
         minimumInputLength: "2",
         language: {
 
@@ -34,11 +34,11 @@ $("#rgfAtencion").select2(
                 return "Ingrese 2 o más caracteres";
             },
             inputTooLong: function () {
-                return "Ingrese máximo 10 caracteres";
+                return "Ingrese máximo 12 caracteres";
             }
         },
         scrollAfterSelect: true,
-        placeholder: 'Ingrese N° de Cuenta o Nombres del Paciente',
+        placeholder: 'Ingrese N° de DNI,CE,PASS o Nombres del Paciente',
         ajax: {
             url: "public/views/src/ajaxFamiliares.php",
             type: "post",
