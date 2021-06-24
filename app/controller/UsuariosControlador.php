@@ -22,6 +22,10 @@ class UsuariosControlador
                             $_SESSION["loginIdCard"] = $rptLogin["dniUsuario"];
                             $_SESSION["loginPerfil"] = $rptLogin["idPerfil"];
                             $_SESSION["loginNombres"] = $rptLogin["nombresUsuario"];
+                            $_SESSION["loginIdProf"] = $rptLogin["idProfesional"];
+                            $_SESSION["loginNombProf"] = $rptLogin["profesional"];
+
+
                             echo '<script>
                                 Swal.fire({
                                     icon: "success",

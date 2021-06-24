@@ -30,13 +30,12 @@
               <th style="width: 10px">#</th>
               <th style="width: 10px">Registro</th>
               <th style="width: 10px">N° Cuenta</th>
-              <th>Paciente</th>
+              <th>N°Doc</th>
+              <th>Nombres Paciente</th>
               <th>Tipo</th>
-              <th>Motivo</th>
-              <th>Etapa</th>
               <th>Profesional</th>
               <th style="width: 10px">¿Comunicación con familiar?</th>
-              <th style="width: 10px">Familiar</th>
+              <th>Nombres Familiar</th>
               <th>Estado</th>
               <th>Acciones</th>
             </tr>
@@ -59,13 +58,43 @@
         </div>
         <div class="modal-body">
           <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="rgSegTip">Tipo de Seguimiento: &nbsp;</label>
+                <i class="fas fa-indent"></i> *
+                <div class="input-group">
+                  <select class="form-control" id="rgSegTip" name="rgSegTip">
+                    <option value="0">Seleccione Tipo de Seguimiento</option>
+                    <?php
+                    $tipSeg = SeguimientosControlador::ctrListarTipoSeguimiento();
+                    foreach ($tipSeg as $key => $value) {
+                      echo '<option value="' . $value["idTipoSeguimiento"] . '">' . $value["detaTipSeguimiento"] . '</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label for="rgSegProf">Profesional que atiende: &nbsp;</label>
+                <i class="fas fa-user-md"></i> *
+                <div class="input-group">
+                  <select class="form-control" id="rgSegProf" name="rgSegProf">
+                    <option value="<?php echo $_SESSION["loginIdProf"]; ?>"><?php echo $_SESSION["loginNombProf"]; ?></option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
             <div class="col-12">
               <div class="form-group">
                 <label for="rgSegPac">Atención de Paciente &nbsp;</label>
                 <i class="fas fa-hospital-user"></i> *
                 <div class="input-group">
                   <select class="form-control" style="width: 100%;" id="rgSegPac" name="rgSegPac">
-                    <option value="0">Ingrese apellidos o N° de cuenta de Paciente</option>
+                    <option value="0">Ingrese apellidos, N° DNI o HC del paciente</option>
                   </select>
                 </div>
               </div>

@@ -67,7 +67,7 @@ if (isset($_POST["searchTerm"])) {
 // Búsqueda de paciente
 if (isset($_POST["searchTerm2"])) {
     $list2 = new AjaxFamiliares();
-    $list2->dato = $_POST["searchTerm2"];
+    $list2->dato2 = $_POST["searchTerm2"];
     $list2->ajaxBuscarPaciente2();
 }
 // Búsqueda de paciente

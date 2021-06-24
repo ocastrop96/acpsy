@@ -63,7 +63,7 @@
                 <label for="rgfAtencion">PACIENTE &nbsp;</label>
                 <i class="fas fa-hospital-user"></i> *
                 <select class="form-control" style="width: 100%;" id="rgfAtencion" name="rgfAtencion">
-                  <option value="0">Ingrese apellidos o N° de cuenta de Paciente</option>
+                  <option value="0">Ingrese N° de DNI,CE,PASS o Nombres del Paciente</option>
                 </select>
                 <input type="hidden" name="idAtencion" id="idAtencion">
                 <input type="hidden" id="idUsFam" name="idUsFam" value="<?php echo $_SESSION["loginId"]; ?>">

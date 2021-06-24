@@ -104,7 +104,7 @@ $("#edtfAtencion1").select2(
             }
         },
         scrollAfterSelect: true,
-        placeholder: 'Ingrese N° de Cuenta o Nombres del Paciente',
+        placeholder: 'Ingrese N° de DNI,CE,PASS o Nombres del Paciente',
         ajax: {
             url: "public/views/src/ajaxFamiliares.php",
             type: "post",

@@ -83,4 +83,12 @@ class SeguimientosModelo
         $stmt->close();
         $stmt = null;
     }
+    static public function mdlListarTiposSeguimiento()
+    {
+        $stmt = Conexion::conectar()->prepare("CALL LISTAR_TIPO_SEGUIMIENTO()");
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
 }

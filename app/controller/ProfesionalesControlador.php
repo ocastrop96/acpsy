@@ -17,7 +17,7 @@ class ProfesionalesControlador
             if (
                 preg_match('/^[0-9]+$/', $_POST["rgpDni"]) &&
                 preg_match('/^[0-9]+$/', $_POST["rgpCpsp"]) &&
-                preg_match('/^[a-zA-ZñÑáéíóúüÁÉÍÓÚÜ]+$/', $_POST["rgpNombres"])
+                preg_match('/^[a-zA-ZñÑáéíóúüÁÉÍÓÚÜ ]+$/', $_POST["rgpNombres"])
             ) {
                 $datos = array(
                     "dniProfesional" => $_POST["rgpDni"],
@@ -90,7 +90,7 @@ class ProfesionalesControlador
                     echo '<script>
                             Swal.fire({
                                 icon: "success",
-                                title: "¡El profesional ha sido registrado con éxito!",
+                                title: "¡El profesional ha sido editado con éxito!",
                                 showConfirmButton: false,
                                 timer: 1500
                             });

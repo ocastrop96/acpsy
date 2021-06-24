@@ -6,4 +6,9 @@ class SeguimientosControlador
         $rptListSeg = SeguimientosModelo::mdlListarSeguimientos($item, $valor);
         return $rptListSeg;
     }
+    static public function ctrListarTipoSeguimiento()
+    {
+        $rptSexo = SeguimientosModelo::mdlListarTiposSeguimiento();
+        return $rptSexo;
+    }
 }
