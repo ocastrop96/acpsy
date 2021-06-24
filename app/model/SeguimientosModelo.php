@@ -91,4 +91,20 @@ class SeguimientosModelo
         $stmt->close();
         $stmt = null;
     }
+    static public function mdlListarMotivoSeguimiento()
+    {
+        $stmt = Conexion::conectar()->prepare("CALL LISTAR_MOTIVOS_SEGUIMIENTO()");
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
+    static public function mdlListarEtapaSeguimiento()
+    {
+        $stmt = Conexion::conectar()->prepare("CALL LISTAR_ETAPAS_SEGUIMIENTO()");
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
 }

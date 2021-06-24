@@ -40,10 +40,10 @@ $("#rgSegPac").select2(
             url: "public/views/src/ajaxFamiliares.php",
             type: "post",
             dataType: "json",
-            delay: 150,
+            delay: 200,
             data: function (params) {
                 return {
-                    searchTerm: params.term,
+                    searchTerm2: params.term,
                 };
             },
             processResults: function (response) {
@@ -55,3 +55,26 @@ $("#rgSegPac").select2(
         },
     }
 );
+// Condicionales para mostrar bloques
+$("#rgSegTip").on("change", function () {
+    // $("#tipSeg").prop("disabled", true);
+    let comboTipSeg = $(this).val();
+    if (comboTipSeg > 0) {
+        if (comboTipSeg == 1 || comboTipSeg == 2) {
+            $("#bloqueComFam").removeClass("d-none");
+            $("#comSi").prop("checked", true);
+            $("#comFami").val("SI");
+        }
+        else {
+            $("#bloqueComFam").addClass("d-none");
+            $("#comNo").prop("checked", true);
+            $("#comFami").val("NO");
+        }
+    }
+    else {
+        $("#comNo").prop("checked", true);
+        $("#comFami").val("NO");
+        $("#bloqueComFam").addClass("d-none");
+    }
+});
+// Condicionales para mostrar bloques
