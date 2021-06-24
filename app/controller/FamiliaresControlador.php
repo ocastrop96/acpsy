@@ -22,6 +22,11 @@ class FamiliaresControlador
         $rptFamValid = FamiliaresModelo::mdlValidarPaciente($idAtencion, $ndocFamiliar);
         return $rptFamValid;
     }
+    static public function ctrListarFamiliarPaciente($existe)
+    {
+        $rptListDiagSe = FamiliaresModelo::mdlListarFamiliarPac($existe);
+        return $rptListDiagSe;
+    }
     static public function ctrRegistrarFamiliar()
     {
         if (isset($_POST["rgfAtencion"]) && isset($_POST["rgfNdoc"])) {

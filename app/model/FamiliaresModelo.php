@@ -68,6 +68,15 @@ class FamiliaresModelo
         $stmt->close();
         $stmt = null;
     }
+    static public function mdlListarFamiliarPac($existe)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL LISTAR_FAMILIAR_PACIENTE(:idAtencion)");
+        $stmt->bindParam(":idAtencion", $existe, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
     static public function mdlValidarPaciente($idAtencion, $ndocFamiliar)
     {
         $stmt = Conexion::conectar()->prepare("CALL VALIDA_FAMILIAR(:idAtencion,:ndocFamiliar)");

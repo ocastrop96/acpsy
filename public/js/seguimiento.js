@@ -78,3 +78,83 @@ $("#rgSegTip").on("change", function () {
     }
 });
 // Condicionales para mostrar bloques
+// COMUNICA FAMILIAR
+$("#comSi").click(function () {
+    if ($("#comSi").is(":checked")) {
+        $("#comFami").val("SI");
+        $("#block1").removeClass("d-none");
+        $("#rgSegFam")[0].selectedIndex = 0;
+        $("#rgSegDf1")[0].selectedIndex = 0;
+        $("#rgSegDf2")[0].selectedIndex = 0;
+    } else {
+        $("#comFami").val("NO");
+    }
+});
+$("#comNo").click(function () {
+    if ($("#comNo").is(":checked")) {
+        $("#comFami").val("NO");
+        $("#block1").addClass("d-none");
+        $("#rgSegFam")[0].selectedIndex = 0;
+        $("#rgSegDf1")[0].selectedIndex = 0;
+        $("#rgSegDf2")[0].selectedIndex = 0;
+    } else {
+        $("#comFami").val("SI");
+    }
+});
+// COMUNICA FAMILIAR
+// DIAGNOSTICOS Y ACTIVIDADES
+$("#rgSegDp1").on("change", function () {
+    var existe = $(this).val();
+    $("#rgSegDp2")[0].selectedIndex = 0;
+    if (existe > 0) {
+        $.ajax({
+            url: "public/views/src/ajaxDiagnosticos.php",
+            method: "POST",
+            dataType: "html",
+            data: { existe: existe }
+        }).done(function (respuesta) {
+            $("#rgSegDp2").html(respuesta);
+        }).fail(function () {
+            console.log("error");
+        });
+    }
+});
+
+$("#rgSegDf1").on("change", function () {
+    var existe2 = $(this).val();
+    $("#rgSegDf2")[0].selectedIndex = 0;
+    if (existe2 > 0) {
+        $.ajax({
+            url: "public/views/src/ajaxDiagnosticos.php",
+            method: "POST",
+            dataType: "html",
+            data: { existe: existe2 }
+        }).done(function (respuesta) {
+            $("#rgSegDf2").html(respuesta);
+        }).fail(function () {
+            console.log("error");
+        });
+    }
+});
+// DIAGNOSTICOS Y ACTIVIDADES
+// Listar Familiares
+$("#rgSegPac").on("change", function () {
+    var atencion = $(this).val();
+    $("#rgSegFam")[0].selectedIndex = 0;
+    if (atencion > 0) {
+        $.ajax({
+            url: "public/views/src/ajaxFamiliares.php",
+            method: "POST",
+            dataType: "html",
+            data: { atencion: atencion }
+        }).done(function (respuesta) {
+            $("#rgSegFam").html(respuesta);
+        }).fail(function () {
+            console.log("error");
+        });
+    }
+});
+// Listar Familiares
+// Validación de campos
+
+// Validación de campos

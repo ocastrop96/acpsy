@@ -25,6 +25,15 @@ class DiagnosticosModelo
         $stmt->close();
         $stmt = null;
     }
+    static public function mdlListarNoSeleccionado($existe)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL LISTAR_DIAGNOSTICO_NO_SELECCIONADO(:idDiagnostico)");
+        $stmt->bindParam(":idDiagnostico", $existe, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
     static public function mdlRegistrarDiagnostico($datos)
     {
         $stmt = Conexion::conectar()->prepare("CALL REGISTRAR_DIAGNOSTICO(:cieDiagnostico,:detaDiagnostico)");

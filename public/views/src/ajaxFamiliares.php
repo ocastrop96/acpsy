@@ -57,6 +57,26 @@ class AjaxFamiliares
         echo json_encode($respuesta);
     }
     // Validar Cuenta existente
+    // Listar Familiares de paciente
+    public $atencion;
+    public function ajaxListarFamiliarPac()
+    {
+        $existeb = $this->atencion;
+        $datosFam = FamiliaresControlador::ctrListarFamiliarPaciente($existeb);
+        $totalFam = count($datosFam);
+
+        if ($totalFam > 0) {
+            $html = "<option value='0'>Seleccione Familiar (Opcional)</option>";
+            foreach ($datosFam as $key => $value) {
+                $html .= "<option value='$value[idFamiliar]'>$value[familiarPaciente]</option>";
+            }
+        } else {
+            $html = "<option value='0'>No hay familiares relacionados al paciente</option>";
+        }
+
+        echo $html;
+    }
+    // Listar Familiares de paciente
 }
 // Búsqueda de paciente
 if (isset($_POST["searchTerm"])) {
@@ -86,3 +106,10 @@ if (isset($_POST["Paciente"])) {
     $validFa->dniFamiliar = $_POST["dniFamiliar"];
     $validFa->ajaxValidarFamiliar();
 }
+// Listar Familiares Paciente
+if (isset($_POST["atencion"])) {
+    $list3 = new AjaxFamiliares();
+    $list3->atencion = $_POST["atencion"];
+    $list3->ajaxListarFamiliarPac();
+}
+// Listar Familiares Paciente

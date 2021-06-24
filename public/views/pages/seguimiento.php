@@ -28,14 +28,14 @@
           <thead>
             <tr>
               <th style="width: 10px">#</th>
-              <th style="width: 10px">Registro</th>
-              <th style="width: 10px">N° Cuenta</th>
+              <th style="width: 10px">F.Registro</th>
+              <th style="width: 10px">N°Cuenta</th>
               <th>N°Doc</th>
-              <th>Nombres Paciente</th>
-              <th>Tipo</th>
+              <th>Paciente</th>
+              <th>Tipo de Seguimiento</th>
               <th>Profesional</th>
               <th style="width: 10px">¿Comunicación con familiar?</th>
-              <th>Nombres Familiar</th>
+              <th>Familiar</th>
               <th>Estado</th>
               <th>Acciones</th>
             </tr>
@@ -96,7 +96,7 @@
                 <i class="fab fa-usps"></i> *
                 <div class="input-group">
                   <select class="form-control" id="rgSegEta" name="rgSegEta">
-                  <option value="0">Seleccione Etapa</option>
+                    <option value="0">Seleccione Etapa</option>
                     <?php
                     $etaSeg = SeguimientosControlador::ctrListarEtapaSeguimiento();
                     foreach ($etaSeg as $key => $value) {
@@ -247,6 +247,17 @@
                       </select>
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label for="rgSegObs">Observaciones: &nbsp;</label>
+                <i class="fas fa-search"></i>
+                <div class="input-group">
+                  <input type="text" class="form-control" name="rgSegObs" id="rgSegObs" placeholder="Ingrese observaciones (Opcional)">
                 </div>
               </div>
             </div>

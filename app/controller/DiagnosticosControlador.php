@@ -6,6 +6,11 @@ class DiagnosticosControlador
         $rptListDiag = DiagnosticosModelo::mdlListarDiagnosticos($item, $valor);
         return $rptListDiag;
     }
+    static public function ctrListarNoSeleccionado($existe)
+    {
+        $rptListDiagSe = DiagnosticosModelo::mdlListarNoSeleccionado($existe);
+        return $rptListDiagSe;
+    }
     static public function ctrRegistrarDiagnostico()
     {
         if (isset($_POST["rgdCie"]) && isset($_POST["rgdDescripcion"])) {
