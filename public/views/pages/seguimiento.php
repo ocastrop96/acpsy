@@ -60,6 +60,17 @@
           <h6 class="font-weight-bold">1. Tipo de Seguimiento y Personal de Salud. &nbsp;<i class="fas fa-hospital-user"></i></h6>
           <hr>
           <div class="row">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-4">
+              <div class="form-group">
+                <label for="rgSegFec">Fecha de Seguimiento: &nbsp;</label>
+                <i class="fas fa-calendar-check"></i>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="rgSegFec" name="rgSegFec" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask autocomplete="off" placeholder="dd-mm-yyyy">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
             <div class="col-12 col-sm-6 col-md-6 col-lg-6">
               <div class="form-group">
                 <label for="rgSegTip">Tipo de Seguimiento: &nbsp;</label>
@@ -74,6 +85,7 @@
                     }
                     ?>
                   </select>
+                  <input type="hidden" name="idUsuario" value="<?php echo $_SESSION["loginId"]; ?>">
                 </div>
               </div>
             </div>

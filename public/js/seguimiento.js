@@ -13,6 +13,24 @@ $(".datatableSeguimiento").DataTable({
         url: "public/views/resources/js/dataTables.spanish.lang",
     },
 });
+$.datepicker.regional['es'] = {
+    closeText: 'Cerrar',
+    prevText: '< Ant',
+    nextText: 'Sig >',
+    currentText: 'Hoy',
+    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+    dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+    weekHeader: 'Sm',
+    dateFormat: 'dd/mm/yy',
+    firstDay: 1,
+    isRTL: false,
+    showMonthAfterYear: false,
+    yearSuffix: ''
+};
+$.datepicker.setDefaults($.datepicker.regional['es']);
 $("#rgSegPac").select2(
     {
         maximumInputLength: "12",
@@ -55,6 +73,12 @@ $("#rgSegPac").select2(
         },
     }
 );
+$("#rgSegFec").datepicker({
+    dateFormat: 'dd/mm/yy',
+    showOtherMonths: true,
+    selectOtherMonths: false,
+    yearRange: ("-0:+0")
+});
 // Condicionales para mostrar bloques
 $("#rgSegTip").on("change", function () {
     // $("#tipSeg").prop("disabled", true);
@@ -156,5 +180,260 @@ $("#rgSegPac").on("change", function () {
 });
 // Listar Familiares
 // Validación de campos
+$("#btnRegSeg").on("click", function () {
+    var tipoS = $("#rgSegTip").val();
 
+    if (tipoS == 1) {
+        $("#formRegSeg").validate({
+            rules: {
+                rgSegTip: {
+                    valueNotEquals: "0",
+                },
+                rgSegProf: {
+                    valueNotEquals: "0",
+                },
+                rgSegEta: {
+                    valueNotEquals: "0",
+                },
+                rgSegMot: {
+                    valueNotEquals: "0",
+                },
+                rgSegPac: {
+                    valueNotEquals: "0",
+                    required: true,
+                },
+                rgSegDp1: {
+                    valueNotEquals: "0",
+                },
+                rgSegFam: {
+                    valueNotEquals: "0",
+                },
+                rgSegDf1: {
+                    valueNotEquals: "0",
+                },
+            },
+            messages: {
+                rgSegTip: {
+                    valueNotEquals: "Seleccione Tipo de Seguimiento",
+                },
+                rgSegProf: {
+                    valueNotEquals: "Seleccione Profesional",
+                },
+                rgSegEta: {
+                    valueNotEquals: "Seleccione Etapa",
+                },
+                rgSegMot: {
+                    valueNotEquals: "Seleccione Motivo",
+                },
+                rgSegPac: {
+                    valueNotEquals: "Seleccione Paciente",
+                    required: "Seleccione Paciente atendido",
+                },
+                rgSegDp1: {
+                    valueNotEquals: "Seleccione al menos un diagnóstico",
+                },
+                rgSegFam: {
+                    valueNotEquals: "Seleccione Familiar",
+                },
+                rgSegDf1: {
+                    valueNotEquals: "Seleccione al menos un diagnóstico",
+                },
+            },
+            errorElement: "span",
+            errorPlacement: function (error, element) {
+                error.addClass("invalid-feedback");
+                element.closest(".form-group").append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass("is-invalid");
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass("is-invalid");
+            },
+        });
+    }
+    if ($("#comSi").is(":checked")) {
+        $("#formRegSeg").validate({
+            rules: {
+                rgSegTip: {
+                    valueNotEquals: "0",
+                },
+                rgSegProf: {
+                    valueNotEquals: "0",
+                },
+                rgSegEta: {
+                    valueNotEquals: "0",
+                },
+                rgSegMot: {
+                    valueNotEquals: "0",
+                },
+                rgSegPac: {
+                    valueNotEquals: "0",
+                    required: true,
+                },
+                rgSegDp1: {
+                    valueNotEquals: "0",
+                },
+            },
+            messages: {
+                rgSegTip: {
+                    valueNotEquals: "Seleccione Tipo de Seguimiento",
+                },
+                rgSegProf: {
+                    valueNotEquals: "Seleccione Profesional",
+                },
+                rgSegEta: {
+                    valueNotEquals: "Seleccione Etapa",
+                },
+                rgSegMot: {
+                    valueNotEquals: "Seleccione Motivo",
+                },
+                rgSegPac: {
+                    valueNotEquals: "Seleccione Paciente",
+                    required: "Seleccione Paciente atendido",
+                },
+                rgSegDp1: {
+                    valueNotEquals: "Seleccione al menos un diagnóstico",
+                },
+            },
+            errorElement: "span",
+            errorPlacement: function (error, element) {
+                error.addClass("invalid-feedback");
+                element.closest(".form-group").append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass("is-invalid");
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass("is-invalid");
+            },
+        });
+    }
+    else if (tipoS == 2) {
+        $("#formRegSeg").validate({
+            rules: {
+                rgSegTip: {
+                    valueNotEquals: "0",
+                },
+                rgSegProf: {
+                    valueNotEquals: "0",
+                },
+                rgSegEta: {
+                    valueNotEquals: "0",
+                },
+                rgSegMot: {
+                    valueNotEquals: "0",
+                },
+                rgSegPac: {
+                    valueNotEquals: "0",
+                    required: true,
+                },
+                rgSegDp1: {
+                    valueNotEquals: "0",
+                },
+                rgSegFam: {
+                    valueNotEquals: "0",
+                },
+                rgSegDf1: {
+                    valueNotEquals: "0",
+                },
+            },
+            messages: {
+                rgSegTip: {
+                    valueNotEquals: "Seleccione Tipo de Seguimiento",
+                },
+                rgSegProf: {
+                    valueNotEquals: "Seleccione Profesional",
+                },
+                rgSegEta: {
+                    valueNotEquals: "Seleccione Etapa",
+                },
+                rgSegMot: {
+                    valueNotEquals: "Seleccione Motivo",
+                },
+                rgSegPac: {
+                    valueNotEquals: "Seleccione Paciente",
+                    required: "Seleccione Paciente atendido",
+                },
+                rgSegDp1: {
+                    valueNotEquals: "Seleccione al menos un diagnóstico",
+                },
+                rgSegFam: {
+                    valueNotEquals: "Seleccione Familiar",
+                },
+                rgSegDf1: {
+                    valueNotEquals: "Seleccione al menos un diagnóstico",
+                },
+            },
+            errorElement: "span",
+            errorPlacement: function (error, element) {
+                error.addClass("invalid-feedback");
+                element.closest(".form-group").append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass("is-invalid");
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass("is-invalid");
+            },
+        });
+    }
+    else {
+        $("#formRegSeg").validate({
+            rules: {
+                rgSegTip: {
+                    valueNotEquals: "0",
+                },
+                rgSegProf: {
+                    valueNotEquals: "0",
+                },
+                rgSegEta: {
+                    valueNotEquals: "0",
+                },
+                rgSegMot: {
+                    valueNotEquals: "0",
+                },
+                rgSegPac: {
+                    valueNotEquals: "0",
+                    required: true,
+                },
+                rgSegDp1: {
+                    valueNotEquals: "0",
+                },
+            },
+            messages: {
+                rgSegTip: {
+                    valueNotEquals: "Seleccione Tipo de Seguimiento",
+                },
+                rgSegProf: {
+                    valueNotEquals: "Seleccione Profesional",
+                },
+                rgSegEta: {
+                    valueNotEquals: "Seleccione Etapa",
+                },
+                rgSegMot: {
+                    valueNotEquals: "Seleccione Motivo",
+                },
+                rgSegPac: {
+                    valueNotEquals: "Seleccione Paciente",
+                    required: "Seleccione Paciente atendido",
+                },
+                rgSegDp1: {
+                    valueNotEquals: "Seleccione al menos un diagnóstico",
+                },
+            },
+            errorElement: "span",
+            errorPlacement: function (error, element) {
+                error.addClass("invalid-feedback");
+                element.closest(".form-group").append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass("is-invalid");
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass("is-invalid");
+            },
+        });
+    }
+});
 // Validación de campos

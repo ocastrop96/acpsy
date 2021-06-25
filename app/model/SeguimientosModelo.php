@@ -107,4 +107,31 @@ class SeguimientosModelo
         $stmt->close();
         $stmt = null;
     }
+    static public function mdlRegistrarSeguimiento($datos)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL REGISTRAR_SEGUIMIENTO(:fRegistrSeg,:idUsuario,:idAtencionPac,:idProfesional,:idTipoSeguimiento,:idMotSeguimiento,:idEtapSegui,:idDiag1Seg,:idDiag2Seg,:comunFamSeg,:idFamAtSeg,:idDiag1SegFam,:idDiag2SegFam,:obsSeg)");
+
+        $stmt->bindParam(":idUsuario", $datos["idUsuario"], PDO::PARAM_INT);
+        $stmt->bindParam(":idAtencionPac", $datos["idAtencionPac"], PDO::PARAM_INT);
+        $stmt->bindParam(":idProfesional", $datos["idProfesional"], PDO::PARAM_INT);
+        $stmt->bindParam(":idTipoSeguimiento", $datos["idTipoSeguimiento"], PDO::PARAM_INT);
+        $stmt->bindParam(":idMotSeguimiento", $datos["idMotSeguimiento"], PDO::PARAM_INT);
+        $stmt->bindParam(":idEtapSegui", $datos["idEtapSegui"], PDO::PARAM_INT);
+        $stmt->bindParam(":idDiag1Seg", $datos["idDiag1Seg"], PDO::PARAM_INT);
+        $stmt->bindParam(":idDiag2Seg", $datos["idDiag2Seg"], PDO::PARAM_INT);
+        $stmt->bindParam(":idFamAtSeg", $datos["idFamAtSeg"], PDO::PARAM_INT);
+        $stmt->bindParam(":idDiag1SegFam", $datos["idDiag1SegFam"], PDO::PARAM_INT);
+        $stmt->bindParam(":idDiag2SegFam", $datos["idDiag2SegFam"], PDO::PARAM_INT);
+        $stmt->bindParam(":fRegistrSeg", $datos["fRegistrSeg"], PDO::PARAM_STR);
+        $stmt->bindParam(":comunFamSeg", $datos["comunFamSeg"], PDO::PARAM_STR);
+        $stmt->bindParam(":obsSeg", $datos["obsSeg"], PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
+    }
 }
