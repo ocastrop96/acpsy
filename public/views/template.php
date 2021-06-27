@@ -25,10 +25,8 @@ session_start();
   <link rel="stylesheet" href="public/views/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <!-- Select2 -->
   <link rel="stylesheet" href="public/views/plugins/select2/css/select2.min.css">
-  <link rel="stylesheet" href="public/views/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-  <!-- JqueryUI -->
-  <link rel="stylesheet" href="public/views/plugins/jquery-ui/jquery-ui.min.css">
-  <!-- iCheck -->
+  <nk rel="stylesheet" href="public/views/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <!-li- iCheck -->
   <link rel="stylesheet" href="public/views/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Sweetalert -->
   <link rel="stylesheet" href="public/views/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
