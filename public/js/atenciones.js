@@ -312,6 +312,7 @@ function seleccionarAtencion(cuenta) {
     var idCuenta = cuenta;
     var datosCarga = new FormData();
     datosCarga.append("idCuenta", idCuenta);
+    var sn = "";
     $.ajax({
         url: "public/views/src/ajaxCuentas.php",
         method: "POST",
@@ -330,7 +331,9 @@ function seleccionarAtencion(cuenta) {
             $("#rgaNDoc").val(respuesta["NroDocumento"]);
             $("#rgaAPaterno").val(respuesta["ApellidoPaterno"]);
             $("#rgaAMaterno").val(respuesta["ApellidoMaterno"]);
-            $("#rgaNombres").val(respuesta["PrimerNombre"]);
+            respuesta["SegundoNombre"] == null ? (sn = "") : (sn = respuesta["SegundoNombre"]);
+
+            $("#rgaNombres").val(respuesta["PrimerNombre"] + " " + sn);
             $("#rgaEdad").val(respuesta["EDAD_PAC"]);
             $("#rgaFinancia").val(respuesta["FUENTE_PAC"]);
             $("#rgaDistrito").val(respuesta["DISTRITO_PAC"]);
@@ -342,7 +345,7 @@ function seleccionarAtencion(cuenta) {
                 $("#setEstado").html("ALTA");
             }
             else {
-                if (respuesta["IdCondicionAlta"] == 1 || respuesta["IdCondicionAlta"] == 2 || respuesta["IdCondicionAlta"] == 3) {
+                if (respuesta["IdTipoServicio"] == 1 || respuesta["IdCondicionAlta"] == 1 || respuesta["IdCondicionAlta"] == 2 || respuesta["IdCondicionAlta"] == 3) {
                     $("#setEstado").val(2);
                     $("#setEstado").html("ALTA");
                 }
@@ -425,6 +428,7 @@ function seleccionarAtencion2(cuenta) {
     var idCuenta = cuenta;
     var datosCarga = new FormData();
     datosCarga.append("idCuenta", idCuenta);
+    var sn = "";
     $.ajax({
         url: "public/views/src/ajaxCuentas.php",
         method: "POST",
@@ -443,7 +447,9 @@ function seleccionarAtencion2(cuenta) {
             $("#edtaNDoc").val(respuesta["NroDocumento"]);
             $("#edtaAPaterno").val(respuesta["ApellidoPaterno"]);
             $("#edtaAMaterno").val(respuesta["ApellidoMaterno"]);
-            $("#edtaNombres").val(respuesta["PrimerNombre"]);
+            respuesta["SegundoNombre"] == null ? (sn = "") : (sn = respuesta["SegundoNombre"]);
+
+            $("#edtaNombres").val(respuesta["PrimerNombre"] + " " + sn);
             $("#edtaEdad").val(respuesta["EDAD_PAC"]);
             $("#edtaFinancia").val(respuesta["FUENTE_PAC"]);
             $("#edtaDistrito").val(respuesta["DISTRITO_PAC"]);

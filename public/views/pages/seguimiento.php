@@ -60,32 +60,12 @@
           <h6 class="font-weight-bold">1. Tipo de Seguimiento y Personal de Salud. &nbsp;<i class="fas fa-hospital-user"></i></h6>
           <hr>
           <div class="row">
-            <div class="col-12 col-sm-6 col-md-4 col-lg-4">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
               <div class="form-group">
                 <label for="rgSegFec">Fecha de Seguimiento: &nbsp;</label>
                 <i class="fas fa-calendar-check"></i>
                 <div class="input-group">
                   <input type="text" name="rgSegFec" id="rgSegFec" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask autocomplete="off" placeholder="dd/mm/yyyy" required>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
-              <div class="form-group">
-                <label for="rgSegTip">Tipo de Seguimiento: &nbsp;</label>
-                <i class="fas fa-indent"></i> *
-                <div class="input-group">
-                  <select class="form-control" id="rgSegTip" name="rgSegTip">
-                    <option value="0">Seleccione Tipo de Seguimiento</option>
-                    <?php
-                    $tipSeg = SeguimientosControlador::ctrListarTipoSeguimiento();
-                    foreach ($tipSeg as $key => $value) {
-                      echo '<option value="' . $value["idTipoSeguimiento"] . '">' . $value["detaTipSeguimiento"] . '</option>';
-                    }
-                    ?>
-                  </select>
-                  <input type="hidden" name="idUsuario" value="<?php echo $_SESSION["loginId"]; ?>">
                 </div>
               </div>
             </div>
@@ -114,18 +94,19 @@
           <div class="row">
             <div class="col-12 col-sm-6 col-md-6 col-lg-6">
               <div class="form-group">
-                <label for="rgSegEta">Etapa : &nbsp;</label>
-                <i class="fab fa-usps"></i> *
+                <label for="rgSegTip">Tipo de Seguimiento: &nbsp;</label>
+                <i class="fas fa-indent"></i> *
                 <div class="input-group">
-                  <select class="form-control" id="rgSegEta" name="rgSegEta">
-                    <option value="0">Seleccione Etapa</option>
+                  <select class="form-control" id="rgSegTip" name="rgSegTip">
+                    <option value="0">Seleccione Tipo de Seguimiento</option>
                     <?php
-                    $etaSeg = SeguimientosControlador::ctrListarEtapaSeguimiento();
-                    foreach ($etaSeg as $key => $value) {
-                      echo '<option value="' . $value["idEtapSegui"] . '">' . $value["detaEtapSegui"] . '</option>';
+                    $tipSeg = SeguimientosControlador::ctrListarTipoSeguimiento();
+                    foreach ($tipSeg as $key => $value) {
+                      echo '<option value="' . $value["idTipoSeguimiento"] . '">' . $value["detaTipSeguimiento"] . '</option>';
                     }
                     ?>
                   </select>
+                  <input type="hidden" name="idUsuario" value="<?php echo $_SESSION["loginId"]; ?>">
                 </div>
               </div>
             </div>

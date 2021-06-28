@@ -40,7 +40,6 @@ class SeguimientosControlador
                     "idProfesional" => $_POST["rgSegProf"],
                     "idTipoSeguimiento" => $_POST["rgSegTip"],
                     "idMotSeguimiento" => $_POST["rgSegMot"],
-                    "idEtapSegui" => $_POST["rgSegEta"],
                     "idDiag1Seg" => $_POST["rgSegDp1"],
                     "idDiag2Seg" => $_POST["rgSegDp2"],
                     "comunFamSeg" => $_POST["comunicaFamilia"],

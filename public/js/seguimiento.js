@@ -178,9 +178,6 @@ $("#btnRegSeg").on("click", function () {
                 rgSegProf: {
                     valueNotEquals: "0",
                 },
-                rgSegEta: {
-                    valueNotEquals: "0",
-                },
                 rgSegMot: {
                     valueNotEquals: "0",
                 },
@@ -208,9 +205,6 @@ $("#btnRegSeg").on("click", function () {
                 },
                 rgSegProf: {
                     valueNotEquals: "Seleccione Profesional",
-                },
-                rgSegEta: {
-                    valueNotEquals: "Seleccione Etapa",
                 },
                 rgSegMot: {
                     valueNotEquals: "Seleccione Motivo",
@@ -254,9 +248,6 @@ $("#btnRegSeg").on("click", function () {
                 rgSegProf: {
                     valueNotEquals: "0",
                 },
-                rgSegEta: {
-                    valueNotEquals: "0",
-                },
                 rgSegMot: {
                     valueNotEquals: "0",
                 },
@@ -277,9 +268,6 @@ $("#btnRegSeg").on("click", function () {
                 },
                 rgSegProf: {
                     valueNotEquals: "Seleccione Profesional",
-                },
-                rgSegEta: {
-                    valueNotEquals: "Seleccione Etapa",
                 },
                 rgSegMot: {
                     valueNotEquals: "Seleccione Motivo",
@@ -317,9 +305,6 @@ $("#btnRegSeg").on("click", function () {
                 rgSegProf: {
                     valueNotEquals: "0",
                 },
-                rgSegEta: {
-                    valueNotEquals: "0",
-                },
                 rgSegMot: {
                     valueNotEquals: "0",
                 },
@@ -346,9 +331,6 @@ $("#btnRegSeg").on("click", function () {
                 },
                 rgSegProf: {
                     valueNotEquals: "Seleccione Profesional",
-                },
-                rgSegEta: {
-                    valueNotEquals: "Seleccione Etapa",
                 },
                 rgSegMot: {
                     valueNotEquals: "Seleccione Motivo",
@@ -392,9 +374,6 @@ $("#btnRegSeg").on("click", function () {
                 rgSegProf: {
                     valueNotEquals: "0",
                 },
-                rgSegEta: {
-                    valueNotEquals: "0",
-                },
                 rgSegMot: {
                     valueNotEquals: "0",
                 },
@@ -415,9 +394,6 @@ $("#btnRegSeg").on("click", function () {
                 },
                 rgSegProf: {
                     valueNotEquals: "Seleccione Profesional",
-                },
-                rgSegEta: {
-                    valueNotEquals: "Seleccione Etapa",
                 },
                 rgSegMot: {
                     valueNotEquals: "Seleccione Motivo",
