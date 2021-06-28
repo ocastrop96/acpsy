@@ -6,7 +6,7 @@ $(".datatableSeguimiento").DataTable({
     paging: true,
     lengthChange: true,
     searching: true,
-    ordering: true,
+    ordering: false,
     info: true,
     autoWidth: false,
     language: {
@@ -55,6 +55,13 @@ $("#rgSegPac").select2(
         },
     }
 );
+$("#rgSegFec").inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
+$('#rgSegFec').datepicker({
+    'format': 'dd/mm/yyyy',
+    'autoclose': true,
+    'language': 'es',
+    'endDate': new Date(),
+});
 // Condicionales para mostrar bloques
 $("#rgSegTip").on("change", function () {
     // $("#tipSeg").prop("disabled", true);
@@ -162,6 +169,9 @@ $("#btnRegSeg").on("click", function () {
     if (tipoS == 1) {
         $("#formRegSeg").validate({
             rules: {
+                rgSegFec: {
+                    required: true,
+                },
                 rgSegTip: {
                     valueNotEquals: "0",
                 },
@@ -189,6 +199,10 @@ $("#btnRegSeg").on("click", function () {
                 },
             },
             messages: {
+                
+                rgSegFec: {
+                    required: "Ingrese Fecha de Seguimiento",
+                },
                 rgSegTip: {
                     valueNotEquals: "Seleccione Tipo de Seguimiento",
                 },
@@ -231,6 +245,9 @@ $("#btnRegSeg").on("click", function () {
     if ($("#comSi").is(":checked")) {
         $("#formRegSeg").validate({
             rules: {
+                rgSegFec: {
+                    required: true,
+                },
                 rgSegTip: {
                     valueNotEquals: "0",
                 },
@@ -252,6 +269,9 @@ $("#btnRegSeg").on("click", function () {
                 },
             },
             messages: {
+                rgSegFec: {
+                    required: "Ingrese Fecha de Seguimiento",
+                },
                 rgSegTip: {
                     valueNotEquals: "Seleccione Tipo de Seguimiento",
                 },
@@ -288,6 +308,9 @@ $("#btnRegSeg").on("click", function () {
     else if (tipoS == 2) {
         $("#formRegSeg").validate({
             rules: {
+                rgSegFec: {
+                    required: true,
+                },
                 rgSegTip: {
                     valueNotEquals: "0",
                 },
@@ -315,6 +338,9 @@ $("#btnRegSeg").on("click", function () {
                 },
             },
             messages: {
+                rgSegFec: {
+                    required: "Ingrese Fecha de Seguimiento",
+                },
                 rgSegTip: {
                     valueNotEquals: "Seleccione Tipo de Seguimiento",
                 },
@@ -357,6 +383,9 @@ $("#btnRegSeg").on("click", function () {
     else {
         $("#formRegSeg").validate({
             rules: {
+                rgSegFec: {
+                    required: true,
+                },
                 rgSegTip: {
                     valueNotEquals: "0",
                 },
@@ -378,6 +407,9 @@ $("#btnRegSeg").on("click", function () {
                 },
             },
             messages: {
+                rgSegFec: {
+                    required: "Ingrese Fecha de Seguimiento",
+                },
                 rgSegTip: {
                     valueNotEquals: "Seleccione Tipo de Seguimiento",
                 },

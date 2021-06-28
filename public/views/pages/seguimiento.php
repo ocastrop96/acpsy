@@ -65,7 +65,7 @@
                 <label for="rgSegFec">Fecha de Seguimiento: &nbsp;</label>
                 <i class="fas fa-calendar-check"></i>
                 <div class="input-group">
-                  <input type="text" class="form-control" id="rgSegFec" name="rgSegFec" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask autocomplete="off" placeholder="dd-mm-yyyy">
+                  <input type="text" name="rgSegFec" id="rgSegFec" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask autocomplete="off" placeholder="dd/mm/yyyy" required>
                 </div>
               </div>
             </div>
@@ -95,8 +95,18 @@
                 <i class="fas fa-user-md"></i> *
                 <div class="input-group">
                   <select class="form-control" id="rgSegProf" name="rgSegProf">
-                    <option value="<?php echo $_SESSION["loginIdProf"]; ?>"><?php echo $_SESSION["loginNombProf"]; ?></option>
+                    <option value="0">Seleccione Profesional</option>
+                    <?php
+                    $item = null;
+                    $valor = null;
+                    $prof = ProfesionalesControlador::ctrListarProfesionales($item, $valor);
+                    foreach ($prof as $key => $value) {
+                      echo '<option value="' . $value["idProfesional"] . '">' . $value["nombresProfesional"] . ' ' . $value["apellidosProfesional"] . '</option>';
+                    }
+                    ?>
                   </select>
+                  <!-- <input type="hidden" name="rgSegProf" value="<?php echo $_SESSION["loginIdProf"]; ?>">
+                  <input type="text" name="s1" id="s1" class="form-control" value="<?php echo $_SESSION["loginNombProf"]; ?>" readonly> -->
                 </div>
               </div>
             </div>
@@ -280,6 +290,10 @@
           <button type="reset" class="btn btn-danger"><i class="fas fa-eraser"></i> Limpiar</button>
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
         </div>
+        <?php
+        $regSeguimiento = new SeguimientosControlador();
+        $regSeguimiento->ctrRegistrarSeguimiento();
+        ?>
       </form>
     </div>
   </div>

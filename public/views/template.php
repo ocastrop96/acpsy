@@ -25,21 +25,22 @@ session_start();
   <link rel="stylesheet" href="public/views/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <!-- Select2 -->
   <link rel="stylesheet" href="public/views/plugins/select2/css/select2.min.css">
-  <nk rel="stylesheet" href="public/views/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-  <!-li- iCheck -->
+  <link rel="stylesheet" href="public/views/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <!--iCheck -->
   <link rel="stylesheet" href="public/views/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- JqueryUI -->
+  <link rel="stylesheet" href="public/views/plugins/jquery-ui/jquery-ui.min.css">
   <!-- Sweetalert -->
   <link rel="stylesheet" href="public/views/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <link rel="stylesheet" href="public/views/plugins/bootstrap-datepicker/bootstrap-datepicker.css">
+  <link rel="stylesheet" href="public/views/plugins/bootstrap-datepicker/bootstrap-datepicker.css.map">
   <!-- Toastr -->
   <link rel="stylesheet" href="public/views/plugins/toastr/toastr.min.css">
+  <link rel="stylesheet" href="public/views/plugins/daterangepicker/daterangepicker.css">
+  <link rel="stylesheet" href="public/views/plugins/summernote/summernote-bs4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="public/views/resources/css/adminlte.css">
-  <!-- overlayScrollbars -->
   <link rel="stylesheet" href="public/views/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="public/views/plugins/daterangepicker/daterangepicker.css">
-  <!-- summernote -->
-  <link rel="stylesheet" href="public/views/plugins/summernote/summernote-bs4.min.css">
   <!-- CSS -->
   <!-- JS -->
   <script src="public/views/plugins/jquery/jquery.min.js"></script>
@@ -55,24 +56,28 @@ session_start();
   <script src="public/views/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
   <!-- Select2 -->
   <script src="public/views/plugins/select2/js/select2.full.min.js"></script>
+  <script src="public/views/plugins/jquery-ui/jquery-ui.min.js"></script>
   <!-- Sweetalert -->
   <script src="public/views/plugins/sweetalert2/sweetalert2.min.js"></script>
   <!-- Toastr -->
   <script src="public/views/plugins/toastr/toastr.min.js"></script>
+  <script src="public/views/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+  <script src="public/views/plugins/bootstrap-datepicker/bootstrap-datepicker.es.min.js"></script>
   <!-- daterangepicker -->
   <script src="public/views/plugins/moment/moment.min.js"></script>
+  <script src="public/views/plugins/inputmask/jquery.inputmask.min.js"></script>
   <script src="public/views/plugins/daterangepicker/daterangepicker.js"></script>
   <!-- Tempusdominus Bootstrap 4 -->
   <script src="public/views/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
   <!-- Summernote -->
   <script src="public/views/plugins/summernote/summernote-bs4.min.js"></script>
   <!-- overlayScrollbars -->
-  <script src="public/views/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
   <!-- jquery-validation -->
   <script src="public/views/plugins/jquery-validation/jquery.validate.min.js"></script>
   <script src="public/views/plugins/jquery-validation/additional-methods.min.js"></script>
   <!-- AdminLTE App -->
   <script src="public/views/resources/js/adminlte.js"></script>
+  <script src="public/views/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
   <!-- JS -->
 </head>
 
@@ -119,8 +124,6 @@ session_start();
   <script type="text/javascript" src="public/js/atenciones.js"></script>
   <script type="text/javascript" src="public/js/familiares.js"></script>
   <script type="text/javascript" src="public/js/seguimiento.js"></script>
-
-
   <!-- Scripts JS Propios -->
 </body>
 
