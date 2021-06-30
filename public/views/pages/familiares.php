@@ -58,7 +58,7 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-12">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
               <div class="form-group">
                 <label for="rgfAtencion">PACIENTE &nbsp;</label>
                 <i class="fas fa-hospital-user"></i> *
@@ -71,7 +71,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="rgfTdoc">Tipo Doc &nbsp;</label>
                 <i class="fas fa-hashtag"></i> *
@@ -86,7 +86,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="rgfNdoc">N° Doc &nbsp;</label>
                 <i class="fas fa-hashtag"></i> *
@@ -95,7 +95,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label>Buscar DNI:<span class="text-danger">&nbsp;*</span></label>
                 <div class="input-group">
@@ -105,7 +105,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-9">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-9">
               <div class="form-group">
                 <label for="rgfNomAp">Nombres y Apellidos de Familiar &nbsp;</label>
                 <i class="fas fa-signature"></i> *
@@ -114,7 +114,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="rgfSexo">Sexo &nbsp;</label>
                 <i class="fas fa-venus-mars"></i> *
@@ -133,7 +133,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="rgfParent">Parentesco &nbsp;</label>
                 <i class="fas fa-users"></i> *
@@ -150,7 +150,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="rgfEdad">Edad Familiar &nbsp;</label>
                 <i class="fas fa-id-card-alt"></i> *
@@ -159,7 +159,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="rgfTel">N° Teléfono o Celular &nbsp;</label>
                 <i class="fas fa-phone"></i>&nbsp;<i class="fas fa-mobile-alt"></i> *
@@ -197,7 +197,7 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-12">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
               <div class="form-group">
                 <label for="edtfAtencion1">PACIENTE &nbsp;</label>
                 <i class="fas fa-hospital-user"></i> *
@@ -214,7 +214,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="edtfTdoc1">Tipo Doc &nbsp;</label>
                 <i class="fas fa-hashtag"></i> *
@@ -229,7 +229,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="edtfNdoc">N° Doc &nbsp;</label>
                 <i class="fas fa-hashtag"></i> *
@@ -238,7 +238,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label>Buscar DNI:<span class="text-danger">&nbsp;*</span></label>
                 <div class="input-group">
@@ -248,7 +248,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-9">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-9">
               <div class="form-group">
                 <label for="edtfNomAp">Nombres y Apellidos de Familiar &nbsp;</label>
                 <i class="fas fa-signature"></i> *
@@ -257,7 +257,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="edtfSexo1">Sexo &nbsp;</label>
                 <i class="fas fa-venus-mars"></i> *
@@ -276,7 +276,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="edtfParent1">Parentesco &nbsp;</label>
                 <i class="fas fa-users"></i> *
@@ -293,7 +293,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="edtfEdad">Edad Familiar &nbsp;</label>
                 <i class="fas fa-id-card-alt"></i> *
@@ -302,7 +302,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="edtfTel">N° Teléfono o Celular &nbsp;</label>
                 <i class="fas fa-phone"></i>&nbsp;<i class="fas fa-mobile-alt"></i> *

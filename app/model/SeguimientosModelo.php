@@ -10,32 +10,40 @@ class SeguimientosModelo
                 date_format(acpsy_seguimiento.fRegistrSeg,'%d/%m/%Y') as fRegistrSeg, 
             acpsy_seguimiento.idAtencionPac, 
             acpsy_atencion.cuentaAtencion, 
+            acpsy_atencion.tipdocAtencion,
+            acpsy_atencion.nrodocAtencion,
             acpsy_atencion.historiaAtencion, 
             acpsy_atencion.nombAtencion, 
-            acpsy_atencion.apMaternoAtencion, 
             acpsy_atencion.apPaternoAtencion, 
+            acpsy_atencion.apMaternoAtencion, 
             acpsy_seguimiento.idTipoSeguimiento, 
             acpsy_tiposeguimiento.detaTipSeguimiento, 
             acpsy_seguimiento.idMotSeguimiento, 
             acpsy_motivoseguimiento.detaMotivoSef, 
-            acpsy_seguimiento.idEtapSegui, 
-            acpsy_etapaseguimiento.detaEtapSegui, 
             acpsy_seguimiento.idProfesional, 
             acpsy_profesionales.nombresProfesional, 
             acpsy_profesionales.apellidosProfesional, 
             acpsy_seguimiento.comunFamSeg, 
             acpsy_seguimiento.idDiag1Seg, 
-            acpsy_diagnosticos.cieDiagnostico, 
-            acpsy_diagnosticos.detaDiagnostico, 
+            acpsy_diagnosticos.cieDiagnostico as cieP1,
+            acpsy_diagnosticos.detaDiagnostico as detaD1, 
+            acpsy_seguimiento.idDiag2Seg,
+            dp2.cieDiagnostico as cieP2,
+            dp2.detaDiagnostico as detD2, 		
             acpsy_seguimiento.idFamAtSeg, 
-            acpsy_famatencion.nombApFamiliar, 
-            acpsy_seguimiento.idDiag2Seg, 
-            acpsy_seguimiento.idDiag1SegFam, 
-            acpsy_seguimiento.idDiag2SegFam, 
+            acpsy_famatencion.nombApFamiliar,
+            acpsy_famatencion.telcelFamiliar,
+            acpsy_parentescofam.detaParentesco,
+            acpsy_seguimiento.idDiag1SegFam,
+            df1.cieDiagnostico as cieDF1,
+            df1.detaDiagnostico as detDF1,  
+            acpsy_seguimiento.idDiag2SegFam,
+            df2.cieDiagnostico as cieDF2,
+            df2.detaDiagnostico as detDF2,   
             acpsy_seguimiento.obsSeg, 
             acpsy_seguimiento.idStatusSeg, 
             acpsy_estatusseguimiento.detaStatusSeg
-        FROM
+            FROM
             acpsy_seguimiento
             INNER JOIN
             acpsy_atencion
@@ -54,14 +62,10 @@ class SeguimientosModelo
             ON 
                 acpsy_seguimiento.idMotSeguimiento = acpsy_motivoseguimiento.idMotSeguimiento
             INNER JOIN
-            acpsy_etapaseguimiento
-            ON 
-                acpsy_seguimiento.idEtapSegui = acpsy_etapaseguimiento.idEtapSegui
-            INNER JOIN
             acpsy_estatusseguimiento
             ON 
                 acpsy_seguimiento.idStatusSeg = acpsy_estatusseguimiento.idStatusSeg
-            INNER JOIN
+            LEFT JOIN
             acpsy_famatencion
             ON 
                 acpsy_seguimiento.idFamAtSeg = acpsy_famatencion.idFamiliar
@@ -69,6 +73,22 @@ class SeguimientosModelo
             acpsy_diagnosticos
             ON 
                 acpsy_seguimiento.idDiag1Seg = acpsy_diagnosticos.idDiagnostico
+            LEFT JOIN
+            acpsy_diagnosticos as dp2
+            ON 
+            acpsy_seguimiento.idDiag2Seg = dp2.idDiagnostico
+            LEFT JOIN
+            acpsy_diagnosticos as df1
+            ON 
+            acpsy_seguimiento.idDiag1SegFam = df1.idDiagnostico
+            LEFT JOIN
+            acpsy_diagnosticos as df2
+            ON 
+            acpsy_seguimiento.idDiag2SegFam = df2.idDiagnostico
+            LEFT JOIN
+            acpsy_parentescofam
+            ON
+            acpsy_famatencion.idParentesco = acpsy_parentescofam.idParentesco
             WHERE $item = :$item
             ORDER BY acpsy_seguimiento.fRegistrSeg desc, acpsy_seguimiento.idSeguimiento desc");
             $stmt->bindParam(":" . $item, $valor, PDO::PARAM_STR);
@@ -112,6 +132,32 @@ class SeguimientosModelo
         $stmt = Conexion::conectar()->prepare("CALL REGISTRAR_SEGUIMIENTO(:fRegistrSeg,:idUsuario,:idAtencionPac,:idProfesional,:idTipoSeguimiento,:idMotSeguimiento,:idDiag1Seg,:idDiag2Seg,:comunFamSeg,:idFamAtSeg,:idDiag1SegFam,:idDiag2SegFam,:obsSeg)");
 
         $stmt->bindParam(":idUsuario", $datos["idUsuario"], PDO::PARAM_INT);
+        $stmt->bindParam(":idAtencionPac", $datos["idAtencionPac"], PDO::PARAM_INT);
+        $stmt->bindParam(":idProfesional", $datos["idProfesional"], PDO::PARAM_INT);
+        $stmt->bindParam(":idTipoSeguimiento", $datos["idTipoSeguimiento"], PDO::PARAM_INT);
+        $stmt->bindParam(":idMotSeguimiento", $datos["idMotSeguimiento"], PDO::PARAM_INT);
+        $stmt->bindParam(":idDiag1Seg", $datos["idDiag1Seg"], PDO::PARAM_INT);
+        $stmt->bindParam(":idDiag2Seg", $datos["idDiag2Seg"], PDO::PARAM_INT);
+        $stmt->bindParam(":idFamAtSeg", $datos["idFamAtSeg"], PDO::PARAM_INT);
+        $stmt->bindParam(":idDiag1SegFam", $datos["idDiag1SegFam"], PDO::PARAM_INT);
+        $stmt->bindParam(":idDiag2SegFam", $datos["idDiag2SegFam"], PDO::PARAM_INT);
+        $stmt->bindParam(":fRegistrSeg", $datos["fRegistrSeg"], PDO::PARAM_STR);
+        $stmt->bindParam(":comunFamSeg", $datos["comunFamSeg"], PDO::PARAM_STR);
+        $stmt->bindParam(":obsSeg", $datos["obsSeg"], PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
+    }
+    static public function mdlEditarSeguimiento($datos)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL EDITAR_SEGUIMIENTO(:idSeguimiento,:fRegistrSeg,:idAtencionPac,:idProfesional,:idTipoSeguimiento,:idMotSeguimiento,:idDiag1Seg,:idDiag2Seg,:comunFamSeg,:idFamAtSeg,:idDiag1SegFam,:idDiag2SegFam,:obsSeg)");
+
+        $stmt->bindParam(":idSeguimiento", $datos["idSeguimiento"], PDO::PARAM_INT);
         $stmt->bindParam(":idAtencionPac", $datos["idAtencionPac"], PDO::PARAM_INT);
         $stmt->bindParam(":idProfesional", $datos["idProfesional"], PDO::PARAM_INT);
         $stmt->bindParam(":idTipoSeguimiento", $datos["idTipoSeguimiento"], PDO::PARAM_INT);

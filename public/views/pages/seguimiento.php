@@ -291,35 +291,27 @@
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <!-- <div class="modal-body">
+        <div class="modal-body">
           <h6 class="font-weight-bold">1. Tipo de Seguimiento y Personal de Salud. &nbsp;<i class="fas fa-hospital-user"></i></h6>
           <hr>
           <div class="row">
             <div class="col-12 col-sm-6 col-md-6 col-lg-6">
               <div class="form-group">
-                <label for="rgSegTip">Tipo de Seguimiento: &nbsp;</label>
-                <i class="fas fa-indent"></i> *
+                <label for="edtSegFec">Fecha de Seguimiento: &nbsp;</label>
+                <i class="fas fa-calendar-check"></i>
                 <div class="input-group">
-                  <select class="form-control" id="rgSegTip" name="rgSegTip">
-                    <option value="0">Seleccione Tipo de Seguimiento</option>
-                    <?php
-                    $tipSeg = SeguimientosControlador::ctrListarTipoSeguimiento();
-                    foreach ($tipSeg as $key => $value) {
-                      echo '<option value="' . $value["idTipoSeguimiento"] . '">' . $value["detaTipSeguimiento"] . '</option>';
-                    }
-                    ?>
-                  </select>
+                  <input type="text" name="edtSegFec" id="edtSegFec" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask autocomplete="off" placeholder="dd/mm/yyyy" required>
+                  <input type="hidden" name="idSeguimiento" id="idSeguimiento">
                 </div>
               </div>
             </div>
             <div class="col-12 col-sm-6 col-md-6 col-lg-6">
               <div class="form-group">
-                <label for="rgSegProf">Profesional que atiende: &nbsp;</label>
+                <label for="edtSegProf">Profesional que atiende: &nbsp;</label>
                 <i class="fas fa-user-md"></i> *
                 <div class="input-group">
-                  <select class="form-control" id="rgSegProf" name="rgSegProf">
-                    <option value="<?php echo $_SESSION["loginIdProf"]; ?>"><?php echo $_SESSION["loginNombProf"]; ?></option>
-                  </select>
+                  <input type="hidden" name="edtSegProf">
+                  <input type="text" name="s2" id="s2" class="form-control" readonly>
                 </div>
               </div>
             </div>
@@ -327,31 +319,32 @@
           <div class="row">
             <div class="col-12 col-sm-6 col-md-6 col-lg-6">
               <div class="form-group">
-                <label for="rgSegEta">Etapa : &nbsp;</label>
-                <i class="fab fa-usps"></i> *
+                <label for="edtSegTip">Tipo de Seguimiento: &nbsp;</label>
+                <i class="fas fa-indent"></i> *
                 <div class="input-group">
-                  <select class="form-control" id="rgSegEta" name="rgSegEta">
-                  <option value="0">Seleccione Etapa</option>
+                  <select class="form-control" id="edtSegTip" name="edtSegTip">
+                    <option id="edtSegTip1"></option>
                     <?php
-                    $etaSeg = SeguimientosControlador::ctrListarEtapaSeguimiento();
-                    foreach ($etaSeg as $key => $value) {
-                      echo '<option value="' . $value["idEtapSegui"] . '">' . $value["detaEtapSegui"] . '</option>';
+                    $tipSeg1 = SeguimientosControlador::ctrListarTipoSeguimiento();
+                    foreach ($tipSeg1 as $key => $value) {
+                      echo '<option value="' . $value["idTipoSeguimiento"] . '">' . $value["detaTipSeguimiento"] . '</option>';
                     }
                     ?>
                   </select>
+                  <input type="hidden" name="idUsuario" value="<?php echo $_SESSION["loginId"]; ?>">
                 </div>
               </div>
             </div>
             <div class="col-12 col-sm-6 col-md-6 col-lg-6">
               <div class="form-group">
-                <label for="rgSegMot">Motivo: &nbsp;</label>
+                <label for="edtSegMot">Motivo: &nbsp;</label>
                 <i class="fas fa-book-medical"></i> *
                 <div class="input-group">
-                  <select class="form-control" id="rgSegMot" name="rgSegMot">
-                    <option value="0">Seleccione Motivo</option>
+                  <select class="form-control" id="edtSegMot" name="edtSegMot">
+                    <option id="edtSegMot1"></option>
                     <?php
-                    $motSeg = SeguimientosControlador::ctrListarMotivoSeguimiento();
-                    foreach ($motSeg as $key => $value) {
+                    $motSeg1 = SeguimientosControlador::ctrListarMotivoSeguimiento();
+                    foreach ($motSeg1 as $key => $value) {
                       echo '<option value="' . $value["idMotSeguimiento"] . '">' . $value["detaMotivoSef"] . '</option>';
                     }
                     ?>
@@ -365,11 +358,13 @@
           <div class="row">
             <div class="col-12">
               <div class="form-group">
-                <label for="rgSegPac">Paciente &nbsp;</label>
+                <label for="edtSegPac">Paciente &nbsp;</label>
                 <i class="fas fa-hospital-user"></i> *
+                <span class="font-weight-bolder text-danger" id="seleccionActual2">ACTUAL : </span>
+                <span class="font-weight-bolder" id="seleccionActual21"></span>
                 <div class="input-group">
-                  <select class="form-control" style="width: 100%;" id="rgSegPac" name="rgSegPac">
-                    <option value="0">Ingrese apellidos, N° DNI o HC del paciente</option>
+                  <select class="form-control" style="width: 100%;" id="edtSegPac" name="edtSegPac">
+                    <option id="edtSegPac1">Ingrese apellidos, N° DNI o HC del paciente</option>
                   </select>
                 </div>
               </div>
@@ -378,11 +373,11 @@
           <div class="row">
             <div class="col-12">
               <div class="form-group">
-                <label for="rgSegDp1">Diagnóstico 1: <span class="text-danger">&nbsp;*</span></label>
+                <label for="edtSegDp1">Diagnóstico 1: <span class="text-danger">&nbsp;*</span></label>
                 <i class="fas fa-stethoscope"></i>
                 <div class="input-group">
-                  <select class="form-control" id="rgSegDp1" name="rgSegDp1">
-                    <option value="0">Seleccione Diagnóstico 1</option>
+                  <select class="form-control" id="edtSegDp1" name="edtSegDp1">
+                    <option id="edtSegDp11"></option>
                     <?php
                     $item = null;
                     $val = null;
@@ -399,17 +394,17 @@
           <div class="row">
             <div class="col-12">
               <div class="form-group">
-                <label for="rgSegDp2">Actividad (OPCIONAL): &nbsp;</label>
+                <label for="edtSegDp2">Actividad (OPCIONAL): &nbsp;</label>
                 <i class="fas fa-stethoscope"></i>
                 <div class="input-group">
-                  <select class="form-control" id="rgSegDp2" name="rgSegDp2">
-                    <option value="0">Seleccione Actividad (Opcional)</option>
+                  <select class="form-control" id="edtSegDp2" name="edtSegDp2">
+                    <option id="edtSegDp21"></option>
                   </select>
                 </div>
               </div>
             </div>
           </div>
-          <div id="bloqueComFam" class="d-none">
+          <div id="bloqueComFam1" class="d-none">
             <h6 class="font-weight-bold">3. Comunicación con familiar. &nbsp;<i class="fas fa-hands-helping"></i></h6>
             <hr>
             <div class="row">
@@ -419,32 +414,35 @@
               <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="input-group clearfix">
                   <div class="icheck-dark d-inline">
-                    <input type="radio" id="comSi" name="comunicaFamilia" value="SI">
-                    <label for="comSi">
+                    <input type="radio" id="comSi1" name="comunicaFamilia1" value="SI">
+                    <label for="comSi1">
                       SI
                     </label>
                   </div>
                   <div class="icheck-dark d-inline">
                     &nbsp;
-                    <input type="radio" id="comNo" name="comunicaFamilia" value="NO" checked="">
-                    <label for="comNo">
+                    <input type="radio" id="comNo1" name="comunicaFamilia1" value="NO" checked="">
+                    <label for="comNo1">
                       NO
                     </label>
                   </div>
                 </div>
-                <input type="hidden" name="comFami" id="comFami" value="SI">
+                <input type="hidden" name="comFami1" id="comFami1" value="SI">
               </div>
             </div>
             <hr>
-            <div id="block1">
+            <div id="block11">
               <div class="row">
                 <div class="col-12">
                   <div class="form-group">
-                    <label for="rgSegFam">Familiar del Paciente: <span class="text-danger">&nbsp;*</span></label>
+                    <label for="edtSegFam">Familiar del Paciente: <span class="text-danger">&nbsp;*</span></label>
                     <i class="fas fa-chalkboard-teacher"></i>
+                    <input type="hidden" name="idFamAnt">
+                    <span class="font-weight-bolder text-danger" id="seleccionActual3">ACTUAL : </span>
+                    <span class="font-weight-bolder" id="seleccionActual31"></span>
                     <div class="input-group">
-                      <select class="form-control" id="rgSegFam" name="rgSegFam">
-                        <option value="0">Seleccione Familiar</option>
+                      <select class="form-control" id="edtSegFam" name="edtSegFam">
+                        <option id="edtSegFam1"></option>
                       </select>
                     </div>
                   </div>
@@ -453,11 +451,11 @@
               <div class="row">
                 <div class="col-12">
                   <div class="form-group">
-                    <label for="rgSegDf1">Diagnóstico 1: <span class="text-danger">&nbsp;*</span></label>
+                    <label for="edtSegDf1">Diagnóstico 1: <span class="text-danger">&nbsp;*</span></label>
                     <i class="fas fa-stethoscope"></i>
                     <div class="input-group">
-                      <select class="form-control" id="rgSegDf1" name="rgSegDf1">
-                        <option value="0">Seleccione Diagnóstico 1</option>
+                      <select class="form-control" id="edtSegDf1" name="edtSegDf1">
+                        <option id="edtSegDf11"></option>
                         <?php
                         $item = null;
                         $val = null;
@@ -474,11 +472,11 @@
               <div class="row">
                 <div class="col-12">
                   <div class="form-group">
-                    <label for="rgSegDf2">Actividad (OPCIONAL): &nbsp;</label>
+                    <label for="edtSegDf2">Actividad (OPCIONAL): &nbsp;</label>
                     <i class="fas fa-stethoscope"></i>
                     <div class="input-group">
-                      <select class="form-control" id="rgSegDf2" name="rgSegDf2">
-                        <option value="0">Seleccione Actividad (Opcional)</option>
+                      <select class="form-control" id="edtSegDf2" name="edtSegDf2">
+                        <option id="edtSegDf21">Seleccione Actividad (Opcional)</option>
                       </select>
                     </div>
                   </div>
@@ -486,11 +484,26 @@
               </div>
             </div>
           </div>
-        </div> -->
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label for="edtSegObs">Observaciones: &nbsp;</label>
+                <i class="fas fa-search"></i>
+                <div class="input-group">
+                  <input type="text" class="form-control" name="edtSegObs" id="edtSegObs" placeholder="Ingrese observaciones (Opcional)">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="modal-footer justify-content-center">
           <button type="submit" class="btn btn-secondary" id="btnEdtSeg"><i class="fas fa-sync"></i> Actualizar</button>
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times-circle"></i> Salir</button>
         </div>
+        <?php
+        $edtSeguimiento = new SeguimientosControlador();
+        $edtSeguimiento->ctrEditarSeguimiento();
+        ?>
       </form>
     </div>
   </div>

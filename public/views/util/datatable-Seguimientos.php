@@ -15,13 +15,13 @@ class DatatableSeguimientos
             // Estado de Seguimiento
             if ($seguimientos[$i]["idStatusSeg"] == 1) {
                 $estadoSeg = "<button type='button' class='btn btn-block btn-success font-weight-bold'><i class='fas fa-clipboard-list'></i> " . $seguimientos[$i]["detaStatusSeg"] . "</button>";
-            }  else {
+            } else {
                 $estadoSeg = "<button type='button' class='btn btn-block btn-danger font-weight-bold'><i class='fas fa-ban'></i> " . $seguimientos[$i]["detaStatusSeg"] . "</button>";
             }
             // Estado de Seguimiento
 
             // Botones de Opciones
-            $botones = "<div class='btn-group'><button class='btn btn-warning btnEditarSeguimiento' idSeguimiento='" . $seguimientos[$i]["idSeguimiento"] . "' data-toggle='modal' data-target='#modal-editar-seguimiento'><i class='fas fa-edit'></i></button><button class='btn btn-secondary btnAnularSeguimiento' data-toggle='tooltip' data-placement='left' title='Anular Seguimiento' idSeguimiento='" . $seguimientos[$i]["idSeguimiento"] . "'><i class='fas fa-power-off'></i></button></div>";
+            $botones = "<div class='btn-group'><button class='btn btn-warning btnEditarSeguimiento' idSeguimiento='" . $seguimientos[$i]["idSeguimiento"] . "' idProfesional='" . $seguimientos[$i]["idProfesional"] . "' data-toggle='modal' data-target='#modal-editar-seguimiento'><i class='fas fa-edit'></i></button><button class='btn btn-secondary btnAnularSeguimiento' data-toggle='tooltip' data-placement='left' title='Anular Seguimiento' idSeguimiento='" . $seguimientos[$i]["idSeguimiento"] . "' idProfesional='" . $seguimientos[$i]["idProfesional"] . "'><i class='fas fa-power-off'></i></button></div>";
             // Botones de Opciones
             $datos_json .= '[
                     "' . ($i + 1) . '",
