@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 27-06-2021 a las 06:32:20
+-- Tiempo de generación: 01-07-2021 a las 19:56:50
 -- Versión del servidor: 5.7.24
 -- Versión de PHP: 7.4.15
 
@@ -26,6 +26,11 @@ DELIMITER $$
 -- Procedimientos
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ANULAR_ATENCION` (IN `_idAtencion` INT(11))  UPDATE acpsy_atencion SET idEpisodio = "ANULADA", cuentaAtencion = "ANULADA", idEstadoAte = 2 WHERE idAtencion = _idAtencion$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ANULAR_SEGUIMIENTO` (IN `_idSeguimiento` INT(11))  UPDATE acpsy_seguimiento 
+SET acpsy_seguimiento.idStatusSeg = 2
+WHERE
+	idSeguimiento = _idSeguimiento$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `BUSCAR_PACIENTE` (IN `_termino` TEXT)  SELECT
 idAtencion,cuentaAtencion,tipdocAtencion,nrodocAtencion,CONCAT(nombAtencion,' ',apPaternoAtencion,' ',apMaternoAtencion) AS paciente,acpsy_estadopaciente.detaEstadoPacAtencion
@@ -74,6 +79,22 @@ WHERE
 	idFamiliar = _idFamiliar$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `EDITAR_PROFESIONAL` (IN `_idProfesional` INT(11), IN `_idCondicion` INT(11), `_dniProfesional` VARCHAR(15), IN `_cpspProfesional` VARCHAR(25), IN `_apellidosProfesional` VARCHAR(50), IN `_nombresProfesional` VARCHAR(50))  UPDATE acpsy_profesionales SET idCondicion = _idCondicion, dniProfesional = _dniProfesional, cpspProfesional = _cpspProfesional, apellidosProfesional = _apellidosProfesional, nombresProfesional = _nombresProfesional WHERE idProfesional = _idProfesional$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EDITAR_SEGUIMIENTO` (IN `_idSeguimiento` INT(11), IN `_fRegistrSeg` DATE, IN `_idAtencionPac` INT(11), IN `_idProfesional` INT(11), IN `_idTipoSeguimiento` INT(11), IN `_idMotSeguimiento` INT(11), IN `_idDiag1Seg` INT(11), IN `_idDiag2Seg` INT(11), IN `_comunFamSeg` VARCHAR(10), IN `_idFamAtSeg` INT(11), IN `_idDiag1SegFam` INT(11), IN `_idDiag2SegFam` INT(11), IN `_obsSeg` VARCHAR(200))  UPDATE acpsy_seguimiento 
+SET fRegistrSeg = _fRegistrSeg,
+idAtencionPac = _idAtencionPac,
+idProfesional = _idProfesional,
+idTipoSeguimiento = _idTipoSeguimiento,
+idMotSeguimiento = _idMotSeguimiento,
+idDiag1Seg = _idDiag1Seg,
+idDiag2Seg = _idDiag2Seg,
+comunFamSeg = _comunFamSeg,
+idFamAtSeg = _idFamAtSeg,
+idDiag1SegFam = _idDiag1SegFam,
+idDiag2SegFam = _idDiag2SegFam,
+obsSeg = _obsSeg 
+WHERE
+	idSeguimiento = _idSeguimiento$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `EDITAR_USUARIO` (IN `_idUsuario` INT(11), IN `_idPerfil` INT(11), IN `_dniUsuario` VARCHAR(20), IN `_apellidosUsuario` VARCHAR(50), IN `_nombresUsuario` VARCHAR(50), IN `_cuentaUsuario` VARCHAR(50), IN `_correoUsuario` VARCHAR(50), IN `_claveUsuario` VARCHAR(100))  UPDATE acpsy_usuarios 
 SET idPerfil = _idPerfil,
@@ -259,7 +280,8 @@ FROM
 	INNER JOIN
 	acpsy_condicionprof
 	ON 
-		acpsy_profesionales.idCondicion = acpsy_condicionprof.idCondicion$$
+		acpsy_profesionales.idCondicion = acpsy_condicionprof.idCondicion
+	ORDER BY acpsy_profesionales.apellidosProfesional ASC$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_SEGUIMIENTOS` ()  SELECT
 	acpsy_seguimiento.idSeguimiento, 
@@ -270,26 +292,32 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_SEGUIMIENTOS` ()  SELECT
 	acpsy_atencion.nrodocAtencion,
 	acpsy_atencion.historiaAtencion, 
 	acpsy_atencion.nombAtencion, 
-	acpsy_atencion.apMaternoAtencion, 
 	acpsy_atencion.apPaternoAtencion, 
+	acpsy_atencion.apMaternoAtencion, 
 	acpsy_seguimiento.idTipoSeguimiento, 
 	acpsy_tiposeguimiento.detaTipSeguimiento, 
 	acpsy_seguimiento.idMotSeguimiento, 
 	acpsy_motivoseguimiento.detaMotivoSef, 
-	acpsy_seguimiento.idEtapSegui, 
-	acpsy_etapaseguimiento.detaEtapSegui, 
 	acpsy_seguimiento.idProfesional, 
 	acpsy_profesionales.nombresProfesional, 
 	acpsy_profesionales.apellidosProfesional, 
 	acpsy_seguimiento.comunFamSeg, 
 	acpsy_seguimiento.idDiag1Seg, 
-	acpsy_diagnosticos.cieDiagnostico, 
-	acpsy_diagnosticos.detaDiagnostico, 
+	acpsy_diagnosticos.cieDiagnostico as cieP1,
+	acpsy_diagnosticos.detaDiagnostico as detaD1, 
+	acpsy_seguimiento.idDiag2Seg,
+	dp2.cieDiagnostico as cieP2,
+	dp2.detaDiagnostico as detD2, 		
 	acpsy_seguimiento.idFamAtSeg, 
-	acpsy_famatencion.nombApFamiliar, 
-	acpsy_seguimiento.idDiag2Seg, 
-	acpsy_seguimiento.idDiag1SegFam, 
-	acpsy_seguimiento.idDiag2SegFam, 
+	acpsy_famatencion.nombApFamiliar,
+	acpsy_famatencion.telcelFamiliar,
+	acpsy_parentescofam.detaParentesco,
+	acpsy_seguimiento.idDiag1SegFam,
+	df1.cieDiagnostico as cieDF1,
+	df1.detaDiagnostico as detDF1,  
+	acpsy_seguimiento.idDiag2SegFam,
+	df2.cieDiagnostico as cieDF2,
+	df2.detaDiagnostico as detDF2,   
 	acpsy_seguimiento.obsSeg, 
 	acpsy_seguimiento.idStatusSeg, 
 	acpsy_estatusseguimiento.detaStatusSeg
@@ -312,10 +340,6 @@ FROM
 	ON 
 		acpsy_seguimiento.idMotSeguimiento = acpsy_motivoseguimiento.idMotSeguimiento
 	INNER JOIN
-	acpsy_etapaseguimiento
-	ON 
-		acpsy_seguimiento.idEtapSegui = acpsy_etapaseguimiento.idEtapSegui
-	INNER JOIN
 	acpsy_estatusseguimiento
 	ON 
 		acpsy_seguimiento.idStatusSeg = acpsy_estatusseguimiento.idStatusSeg
@@ -327,8 +351,202 @@ FROM
 	acpsy_diagnosticos
 	ON 
 		acpsy_seguimiento.idDiag1Seg = acpsy_diagnosticos.idDiagnostico
+	LEFT JOIN
+	acpsy_diagnosticos as dp2
+	ON 
+	acpsy_seguimiento.idDiag2Seg = dp2.idDiagnostico
+	LEFT JOIN
+	acpsy_diagnosticos as df1
+	ON 
+	acpsy_seguimiento.idDiag1SegFam = df1.idDiagnostico
+	LEFT JOIN
+	acpsy_diagnosticos as df2
+	ON 
+	acpsy_seguimiento.idDiag2SegFam = df2.idDiagnostico
+	LEFT JOIN
+	acpsy_parentescofam
+	ON
+	acpsy_famatencion.idParentesco = acpsy_parentescofam.idParentesco
 	WHERE acpsy_seguimiento.idStatusSeg != 2
-	ORDER BY acpsy_seguimiento.fRegistrSeg desc, idSeguimiento desc$$
+ORDER BY acpsy_seguimiento.fRegistrSeg desc, acpsy_seguimiento.idSeguimiento desc$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_SEGUIMIENTOS_F` ()  SELECT
+acpsy_seguimiento.idSeguimiento,
+date_format( acpsy_seguimiento.fRegistrSeg, '%d/%m/%Y' ) AS fRegistrSeg,
+acpsy_seguimiento.idAtencionPac,
+acpsy_atencion.cuentaAtencion,
+acpsy_atencion.tipdocAtencion,
+acpsy_atencion.nrodocAtencion,
+acpsy_atencion.historiaAtencion,
+acpsy_atencion.nombAtencion,
+acpsy_atencion.apPaternoAtencion,
+acpsy_atencion.apMaternoAtencion,
+acpsy_seguimiento.idTipoSeguimiento,
+acpsy_tiposeguimiento.detaTipSeguimiento,
+acpsy_seguimiento.idMotSeguimiento,
+acpsy_motivoseguimiento.detaMotivoSef,
+acpsy_seguimiento.idProfesional,
+acpsy_profesionales.nombresProfesional,
+acpsy_profesionales.apellidosProfesional,
+acpsy_seguimiento.comunFamSeg,
+acpsy_seguimiento.idDiag1Seg,
+acpsy_diagnosticos.cieDiagnostico AS cieP1,
+acpsy_diagnosticos.detaDiagnostico AS detaD1,
+acpsy_seguimiento.idDiag2Seg,
+dp2.cieDiagnostico AS cieP2,
+dp2.detaDiagnostico AS detD2,
+acpsy_seguimiento.idFamAtSeg,
+acpsy_famatencion.nombApFamiliar,
+acpsy_famatencion.telcelFamiliar,
+acpsy_parentescofam.detaParentesco,
+acpsy_seguimiento.idDiag1SegFam,
+df1.cieDiagnostico AS cieDF1,
+df1.detaDiagnostico AS detDF1,
+acpsy_seguimiento.idDiag2SegFam,
+df2.cieDiagnostico AS cieDF2,
+df2.detaDiagnostico AS detDF2,
+acpsy_seguimiento.obsSeg,
+acpsy_seguimiento.idStatusSeg,
+acpsy_estatusseguimiento.detaStatusSeg 
+FROM
+	acpsy_seguimiento
+	INNER JOIN acpsy_atencion ON acpsy_seguimiento.idAtencionPac = acpsy_atencion.idAtencion
+	INNER JOIN acpsy_profesionales ON acpsy_seguimiento.idProfesional = acpsy_profesionales.idProfesional
+	INNER JOIN acpsy_tiposeguimiento ON acpsy_seguimiento.idTipoSeguimiento = acpsy_tiposeguimiento.idTipoSeguimiento
+	INNER JOIN acpsy_motivoseguimiento ON acpsy_seguimiento.idMotSeguimiento = acpsy_motivoseguimiento.idMotSeguimiento
+	INNER JOIN acpsy_estatusseguimiento ON acpsy_seguimiento.idStatusSeg = acpsy_estatusseguimiento.idStatusSeg
+	LEFT JOIN acpsy_famatencion ON acpsy_seguimiento.idFamAtSeg = acpsy_famatencion.idFamiliar
+	INNER JOIN acpsy_diagnosticos ON acpsy_seguimiento.idDiag1Seg = acpsy_diagnosticos.idDiagnostico
+	LEFT JOIN acpsy_diagnosticos AS dp2 ON acpsy_seguimiento.idDiag2Seg = dp2.idDiagnostico
+	LEFT JOIN acpsy_diagnosticos AS df1 ON acpsy_seguimiento.idDiag1SegFam = df1.idDiagnostico
+	LEFT JOIN acpsy_diagnosticos AS df2 ON acpsy_seguimiento.idDiag2SegFam = df2.idDiagnostico
+	LEFT JOIN acpsy_parentescofam ON acpsy_famatencion.idParentesco = acpsy_parentescofam.idParentesco 
+WHERE
+	MONTH ( acpsy_seguimiento.fRegistrSeg ) = MONTH (
+	CURDATE()) 
+	AND acpsy_seguimiento.idStatusSeg != 2 
+ORDER BY
+	acpsy_seguimiento.fRegistrSeg DESC,
+	acpsy_seguimiento.idSeguimiento DESC$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_SEGUIMIENTOS_FECHAS` (IN `_fechaInicialSeg` DATE, IN `_fechaFinalSeg` DATE)  IF
+	( _fechaInicialSeg = _fechaFinalSeg ) THEN
+	SELECT
+		acpsy_seguimiento.idSeguimiento,
+		date_format( acpsy_seguimiento.fRegistrSeg, '%d/%m/%Y' ) AS fRegistrSeg,
+		acpsy_seguimiento.idAtencionPac,
+		acpsy_atencion.cuentaAtencion,
+		acpsy_atencion.tipdocAtencion,
+		acpsy_atencion.nrodocAtencion,
+		acpsy_atencion.historiaAtencion,
+		acpsy_atencion.nombAtencion,
+		acpsy_atencion.apPaternoAtencion,
+		acpsy_atencion.apMaternoAtencion,
+		acpsy_seguimiento.idTipoSeguimiento,
+		acpsy_tiposeguimiento.detaTipSeguimiento,
+		acpsy_seguimiento.idMotSeguimiento,
+		acpsy_motivoseguimiento.detaMotivoSef,
+		acpsy_seguimiento.idProfesional,
+		acpsy_profesionales.nombresProfesional,
+		acpsy_profesionales.apellidosProfesional,
+		acpsy_seguimiento.comunFamSeg,
+		acpsy_seguimiento.idDiag1Seg,
+		acpsy_diagnosticos.cieDiagnostico AS cieP1,
+		acpsy_diagnosticos.detaDiagnostico AS detaD1,
+		acpsy_seguimiento.idDiag2Seg,
+		dp2.cieDiagnostico AS cieP2,
+		dp2.detaDiagnostico AS detD2,
+		acpsy_seguimiento.idFamAtSeg,
+		acpsy_famatencion.nombApFamiliar,
+		acpsy_famatencion.telcelFamiliar,
+		acpsy_parentescofam.detaParentesco,
+		acpsy_seguimiento.idDiag1SegFam,
+		df1.cieDiagnostico AS cieDF1,
+		df1.detaDiagnostico AS detDF1,
+		acpsy_seguimiento.idDiag2SegFam,
+		df2.cieDiagnostico AS cieDF2,
+		df2.detaDiagnostico AS detDF2,
+		acpsy_seguimiento.obsSeg,
+		acpsy_seguimiento.idStatusSeg,
+		acpsy_estatusseguimiento.detaStatusSeg 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_atencion ON acpsy_seguimiento.idAtencionPac = acpsy_atencion.idAtencion
+		INNER JOIN acpsy_profesionales ON acpsy_seguimiento.idProfesional = acpsy_profesionales.idProfesional
+		INNER JOIN acpsy_tiposeguimiento ON acpsy_seguimiento.idTipoSeguimiento = acpsy_tiposeguimiento.idTipoSeguimiento
+		INNER JOIN acpsy_motivoseguimiento ON acpsy_seguimiento.idMotSeguimiento = acpsy_motivoseguimiento.idMotSeguimiento
+		INNER JOIN acpsy_estatusseguimiento ON acpsy_seguimiento.idStatusSeg = acpsy_estatusseguimiento.idStatusSeg
+		LEFT JOIN acpsy_famatencion ON acpsy_seguimiento.idFamAtSeg = acpsy_famatencion.idFamiliar
+		INNER JOIN acpsy_diagnosticos ON acpsy_seguimiento.idDiag1Seg = acpsy_diagnosticos.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS dp2 ON acpsy_seguimiento.idDiag2Seg = dp2.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS df1 ON acpsy_seguimiento.idDiag1SegFam = df1.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS df2 ON acpsy_seguimiento.idDiag2SegFam = df2.idDiagnostico
+		LEFT JOIN acpsy_parentescofam ON acpsy_famatencion.idParentesco = acpsy_parentescofam.idParentesco 
+	WHERE
+		acpsy_seguimiento.idStatusSeg != 2 
+		AND acpsy_seguimiento.fRegistrSeg = _fechaFinalSeg 
+	ORDER BY
+		acpsy_seguimiento.fRegistrSeg DESC,
+		acpsy_seguimiento.idSeguimiento DESC;
+	ELSE SELECT
+		acpsy_seguimiento.idSeguimiento,
+		date_format( acpsy_seguimiento.fRegistrSeg, '%d/%m/%Y' ) AS fRegistrSeg,
+		acpsy_seguimiento.idAtencionPac,
+		acpsy_atencion.cuentaAtencion,
+		acpsy_atencion.tipdocAtencion,
+		acpsy_atencion.nrodocAtencion,
+		acpsy_atencion.historiaAtencion,
+		acpsy_atencion.nombAtencion,
+		acpsy_atencion.apPaternoAtencion,
+		acpsy_atencion.apMaternoAtencion,
+		acpsy_seguimiento.idTipoSeguimiento,
+		acpsy_tiposeguimiento.detaTipSeguimiento,
+		acpsy_seguimiento.idMotSeguimiento,
+		acpsy_motivoseguimiento.detaMotivoSef,
+		acpsy_seguimiento.idProfesional,
+		acpsy_profesionales.nombresProfesional,
+		acpsy_profesionales.apellidosProfesional,
+		acpsy_seguimiento.comunFamSeg,
+		acpsy_seguimiento.idDiag1Seg,
+		acpsy_diagnosticos.cieDiagnostico AS cieP1,
+		acpsy_diagnosticos.detaDiagnostico AS detaD1,
+		acpsy_seguimiento.idDiag2Seg,
+		dp2.cieDiagnostico AS cieP2,
+		dp2.detaDiagnostico AS detD2,
+		acpsy_seguimiento.idFamAtSeg,
+		acpsy_famatencion.nombApFamiliar,
+		acpsy_famatencion.telcelFamiliar,
+		acpsy_parentescofam.detaParentesco,
+		acpsy_seguimiento.idDiag1SegFam,
+		df1.cieDiagnostico AS cieDF1,
+		df1.detaDiagnostico AS detDF1,
+		acpsy_seguimiento.idDiag2SegFam,
+		df2.cieDiagnostico AS cieDF2,
+		df2.detaDiagnostico AS detDF2,
+		acpsy_seguimiento.obsSeg,
+		acpsy_seguimiento.idStatusSeg,
+		acpsy_estatusseguimiento.detaStatusSeg 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_atencion ON acpsy_seguimiento.idAtencionPac = acpsy_atencion.idAtencion
+		INNER JOIN acpsy_profesionales ON acpsy_seguimiento.idProfesional = acpsy_profesionales.idProfesional
+		INNER JOIN acpsy_tiposeguimiento ON acpsy_seguimiento.idTipoSeguimiento = acpsy_tiposeguimiento.idTipoSeguimiento
+		INNER JOIN acpsy_motivoseguimiento ON acpsy_seguimiento.idMotSeguimiento = acpsy_motivoseguimiento.idMotSeguimiento
+		INNER JOIN acpsy_estatusseguimiento ON acpsy_seguimiento.idStatusSeg = acpsy_estatusseguimiento.idStatusSeg
+		LEFT JOIN acpsy_famatencion ON acpsy_seguimiento.idFamAtSeg = acpsy_famatencion.idFamiliar
+		INNER JOIN acpsy_diagnosticos ON acpsy_seguimiento.idDiag1Seg = acpsy_diagnosticos.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS dp2 ON acpsy_seguimiento.idDiag2Seg = dp2.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS df1 ON acpsy_seguimiento.idDiag1SegFam = df1.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS df2 ON acpsy_seguimiento.idDiag2SegFam = df2.idDiagnostico
+		LEFT JOIN acpsy_parentescofam ON acpsy_famatencion.idParentesco = acpsy_parentescofam.idParentesco 
+	WHERE
+		acpsy_seguimiento.idStatusSeg != 2 
+		AND 
+		acpsy_seguimiento.fRegistrSeg BETWEEN _fechaInicialSeg AND _fechaFinalSeg
+	ORDER BY
+		acpsy_seguimiento.fRegistrSeg DESC,
+	acpsy_seguimiento.idSeguimiento DESC ;
+	END IF$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_SEXO` ()  SELECT
 	acpsy_tipsexo.idTipSexo, 
@@ -491,14 +709,13 @@ VALUES
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `REGISTRAR_PROFESIONAL` (IN `_idCondicion` INT(11), `_dniProfesional` VARCHAR(15), IN `_cpspProfesional` VARCHAR(25), IN `_apellidosProfesional` VARCHAR(50), IN `_nombresProfesional` VARCHAR(50))  INSERT INTO acpsy_profesionales(idCondicion,dniProfesional,cpspProfesional,apellidosProfesional,nombresProfesional) VALUES(_idCondicion,_dniProfesional,_cpspProfesional,_apellidosProfesional,_nombresProfesional)$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `REGISTRAR_SEGUIMIENTO` (IN `_fRegistrSeg` DATE, IN `_idUsuario` INT(11), IN `_idAtencionPac` INT(11), IN `_idProfesional` INT(11), IN `_idTipoSeguimiento` INT(11), IN `_idMotSeguimiento` INT(11), IN `_idEtapSegui` INT(11), IN `_idDiag1Seg` INT(11), IN `_idDiag2Seg` INT(11), IN `_comunFamSeg` VARCHAR(10), IN `_idFamAtSeg` INT(11), IN `_idDiag1SegFam` INT(11), IN `_idDiag2SegFam` INT(11), IN `_obsSeg` VARCHAR(200))  INSERT INTO acpsy_seguimiento (
+CREATE DEFINER=`root`@`localhost` PROCEDURE `REGISTRAR_SEGUIMIENTO` (IN `_fRegistrSeg` DATE, IN `_idUsuario` INT(11), IN `_idAtencionPac` INT(11), IN `_idProfesional` INT(11), IN `_idTipoSeguimiento` INT(11), IN `_idMotSeguimiento` INT(11), IN `_idDiag1Seg` INT(11), IN `_idDiag2Seg` INT(11), IN `_comunFamSeg` VARCHAR(10), IN `_idFamAtSeg` INT(11), IN `_idDiag1SegFam` INT(11), IN `_idDiag2SegFam` INT(11), IN `_obsSeg` VARCHAR(200))  INSERT INTO acpsy_seguimiento (
 	fRegistrSeg,
 	idUsuario,
 	idAtencionPac,
 	idProfesional,
 	idTipoSeguimiento,
 	idMotSeguimiento,
-	idEtapSegui,
 	idDiag1Seg,
 	idDiag2Seg,
 	comunFamSeg,
@@ -515,7 +732,6 @@ VALUES
 		_idProfesional,
 		_idTipoSeguimiento,
 		_idMotSeguimiento,
-		_idEtapSegui,
 		_idDiag1Seg,
 		_idDiag2Seg,
 		_comunFamSeg,
@@ -622,12 +838,12 @@ INSERT INTO `acpsy_atencion` (`idAtencion`, `correlativo_Atencion`, `fRegistroAt
 (42, 'ACP-2021-000042', '2021-05-18', '450223', '1899192', '1336633', 2, '1989-02-08', 'DNI', '45595288', 'CHAVEZ', 'CRISOSTOMO', 'GIANCARLO', '2021-05-18', 'COVID LEGADO - HOSPITALIZACIÓN ', 'CL25', 'CARABAYLLO', '32', 1, 'PARTICULAR', 1, 1),
 (43, 'ACP-2021-000043', '2021-05-18', '449694', '1898420', '1336386', 2, '1951-03-17', 'DNI', '06850616', 'PALLIN', 'HUARCAYA', 'ALEJANDRO', '2021-05-15', 'COVID LEGADO - HOSPITALIZACIÓN ', 'CL45', 'COMAS', '70', 1, 'PARTICULAR', 1, 1),
 (44, 'ACP-2021-000044', '2021-05-18', '447603', '1887281', '204522', 1, '1972-05-10', 'DNI', '10396972', 'CALDERON', 'ARGUME', 'ISAAC', '2021-05-05', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '49', 1, 'PARTICULAR', 1, 1),
-(45, 'ACP-2021-000045', '2021-05-19', '1904579', '1898538', '634164', 1, '1965-06-23', 'DNI', '09113777', 'BUITRON', 'VEGA', 'TELMA', '2021-05-12', 'SALUD OCUPACIONAL - CONSULTORIOS EXTERNOS', '', 'VILLA MARIA DEL TRIUNFO', '56', 2, 'PARTICULAR', 1, 1),
+(45, 'ACP-2021-000045', '2021-05-19', '1904579', '1898538', '634164', 2, '1965-06-23', 'DNI', '09113777', 'BUITRON', 'VEGA', 'TELMA ROSALIA', '2021-05-12', 'SALUD OCUPACIONAL - CONSULTORIOS EXTERNOS', '', 'VILLA MARIA DEL TRIUNFO', '56', 2, 'PARTICULAR', 1, 1),
 (46, 'ACP-2021-000046', '2021-05-19', '0', '1904362', '221448', 2, '1959-10-02', 'DNI', '09193811', 'REINA', 'RODRIGUEZ', 'ADELAIDA', '2021-05-11', 'SALUD OCUPACIONAL - CONSULTORIOS EXTERNOS', NULL, 'COMAS', '62', 2, 'PARTICULAR', 1, 1),
 (47, 'ACP-2021-000047', '2021-05-19', '0', '1897247', '846432', 2, '1984-07-02', 'DNI', '42510126', 'FLORES', 'HUETE', 'DIANA YOLANDA', '2021-05-05', 'SALUD OCUPACIONAL - CONSULTORIOS EXTERNOS', NULL, 'COMAS', '37', 2, 'PARTICULAR', 1, 1),
 (48, 'ACP-2021-000048', '2021-05-19', '449224', '1898174', '1170373', 3, '1938-02-23', 'DNI', '06933881', 'YSUSQUIZA', 'ARIAS VDA DE FLORES', 'MARGARITA', '2021-05-13', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '83', 2, 'SOAT', 1, 1),
 (49, 'ACP-2021-000049', '2021-05-19', '448436', '1897944', '1336193', 2, '1969-08-19', 'DNI', '09545466', 'RAMIREZ', 'LOZANO DE DELGADO', 'ANA', '2021-05-10', 'COVID LEGADO - HOSPITALIZACIÓN ', 'C009', 'COMAS', '52', 2, 'PARTICULAR', 1, 1),
-(50, 'ACP-2021-000050', '2021-05-19', '443658', '1892871', '821090', 2, '1952-06-30', 'DNI', '06895144', 'CANALES', 'SUAREZ', 'JOSE', '2021-04-16', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '69', 1, 'PARTICULAR', 1, 1),
+(50, 'ACP-2021-000050', '2021-05-19', '1898912', '1892871', '821090', 2, '1952-06-30', 'DNI', '06895144', 'CANALES', 'SUAREZ', 'JOSE ISMAEL', '2021-04-16', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '69', 1, 'PARTICULAR', 1, 1),
 (51, 'ACP-2021-000051', '2021-05-19', '450400', '1899641', '833277', 1, '1955-12-25', 'DNI', '08740384', 'QUISPE', 'MALCA', 'JUANA', '2021-05-19', 'COVID LEGADO - HOSPITALIZACIÓN ', 'CL36', 'CARABAYLLO', '66', 2, 'PARTICULAR', 1, 1),
 (52, 'ACP-2021-000052', '2021-05-19', '450228', '1899508', '1289162', 3, '1951-08-29', 'DNI', '32116792', 'VILLANUEVA', 'DE URQUIZA', 'MARIA', '2021-05-18', 'COVID LEGADO - HOSPITALIZACIÓN ', 'CL21', 'MAGDALENA DEL MAR', '70', 2, 'PARTICULAR', 1, 1),
 (53, 'ACP-2021-000053', '2021-05-19', '448734', '1897459', '1336041', 2, '1952-11-19', 'DNI', '06209024', 'ZEVALLOS', 'RODRIGUEZ', 'LUIS', '2021-05-11', 'COVID LEGADO - HOSPITALIZACIÓN ', 'CL30', 'LOS OLIVOS', '69', 1, 'CONVENIOS PÚBLICOS', 1, 1),
@@ -653,7 +869,7 @@ INSERT INTO `acpsy_atencion` (`idAtencion`, `correlativo_Atencion`, `fRegistroAt
 (73, 'ACP-2021-000073', '2021-05-24', '451353', '1900634', '1337051', 1, '1952-02-21', 'DNI', '07155112', 'REATEGUI', 'GUERRA', 'MIRTHA', '2021-05-23', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'INDEPENDENCIA', '69', 2, 'PARTICULAR', 1, 1),
 (74, 'ACP-2021-000074', '2021-05-24', '451686', '1900504', '1337007', 1, '1986-08-30', 'DNI', '43858360', 'AMADO', 'GUERRERO', 'ROSA', '2021-05-25', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'PUENTE PIEDRA', '35', 2, 'PARTICULAR', 1, 1),
 (75, 'ACP-2021-000075', '2021-05-24', '445682', '1895119', '597057', 1, '1976-03-06', 'DNI', '80066220', 'NOLASCO', 'HILARIO', 'LUIS', '2021-04-26', 'COVID VI HOSPITALIZACION (PAB_PEDIATRIA) - HOSPITALIZACIÓN ', '', 'COMAS', '45', 1, 'PARTICULAR', 1, 1),
-(76, 'ACP-2021-000076', '2021-05-24', '1903969', '1897928', '1336188', 2, '1982-07-25', 'DNI', '46338604', 'HUAMANCCARI', 'AÑO', 'YANET', '2021-05-10', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '39', 2, 'PARTICULAR', 1, 1),
+(76, 'ACP-2021-000076', '2021-05-24', '1903969', '1897928', '1336188', 2, '1982-07-25', 'DNI', '46338604', 'HUAMANCCARI', 'AÑO', 'YANET ', '2021-05-10', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '39', 2, 'PARTICULAR', 1, 1),
 (77, 'ACP-2021-000077', '2021-05-24', '1902948', '1896907', '1335749', 2, '1960-08-10', 'DNI', '06041838', 'INGAROCA', 'VARGAS', 'NERI', '2021-05-10', 'COVID UCI - HOSPITALIZACIÓN ', '', 'SAN MARTIN DE PORRES', '61', 1, 'SOAT', 1, 1),
 (78, 'ACP-2021-000078', '2021-05-24', '440495', '1890628', '86365', 1, '1969-09-10', 'DNI', '09730060', 'FLORES', 'LAZARO', 'LUIS', '2021-04-01', 'COVID VII - HOSPITALIZACIÓN ', '', 'COMAS', '52', 1, 'PARTICULAR', 1, 1),
 (79, 'ACP-2021-000079', '2021-05-24', '446672', '1896343', '1335549', 1, '1972-08-28', 'DIE', '11418077', 'VERDE', 'BENAVIDES', 'MIGUEL', '2021-05-01', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '49', 1, 'CONVENIOS PÚBLICOS', 1, 1),
@@ -661,7 +877,7 @@ INSERT INTO `acpsy_atencion` (`idAtencion`, `correlativo_Atencion`, `fRegistroAt
 (81, 'ACP-2021-000081', '2021-05-24', '446669', '1896280', '1335488', 3, '1984-06-17', 'DNI', '42828368', 'YCHPAS', 'VILCA', 'KARINA', '2021-05-01', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '37', 2, 'PARTICULAR', 1, 1),
 (82, 'ACP-2021-000082', '2021-05-24', '445681', '1895363', '358404', 3, '1971-08-13', 'DNI', '10113788', 'CONDORI', 'ANGELINO', 'JOHNNY', '2021-04-26', 'COVID VI HOSPITALIZACION (PAB_PEDIATRIA) - HOSPITALIZACIÓN ', '', 'COMAS', '50', 1, 'PARTICULAR', 1, 1),
 (83, 'ACP-2021-000083', '2021-05-24', '451894', '1900573', '1337032', 1, '1963-12-29', 'CE', '8732952', 'GONZALES', 'PAREDES', 'SOL', '2021-05-26', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'CARABAYLLO', '58', 2, 'CONVENIOS PÚBLICOS', 1, 1),
-(84, 'ACP-2021-000084', '2021-05-24', '451148', '1900524', '1337015', 1, '1984-08-31', 'DNI', '45638538', 'CARHUAZ', 'VILLARREAL', 'IVAN', '2021-05-22', 'CORONAVIRUS - EMERGENCIA', '', 'JUNIN', '37', 1, 'PARTICULAR', 1, 1),
+(84, 'ACP-2021-000084', '2021-05-24', '1906565', '1900524', '1337015', 2, '1984-08-31', 'DNI', '45638538', 'CARHUAZ', 'VILLARREAL', 'IVAN ALEX', '2021-06-04', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'JUNIN', '37', 1, 'PARTICULAR', 1, 1),
 (85, 'ACP-2021-000085', '2021-05-24', '451626', '1900822', '1156002', 1, '1976-07-16', 'DNI', '10391887', 'PAMPAS', 'ROJAS', 'PERCY', '2021-05-25', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '45', 1, 'PARTICULAR', 1, 1),
 (86, 'ACP-2021-000086', '2021-05-24', '451192', '1900562', '1337028', 3, '1984-03-08', 'DNI', '43478754', 'QUISPE', 'QUINTO', 'JUAN', '2021-05-22', 'CORONAVIRUS - EMERGENCIA', '', 'SAN JUAN DE LURIGANCHO', '37', 1, 'PARTICULAR', 1, 1),
 (87, 'ACP-2021-000087', '2021-05-25', '449981', '1899423', '1094254', 1, '1974-09-19', 'DNI', '09980430', 'CONTRERAS', 'TICONA', 'EUCLIDES', '2021-05-17', 'CORONAVIRUS - EMERGENCIA', '', 'COMAS', '47', 1, 'PARTICULAR', 1, 1),
@@ -674,7 +890,7 @@ INSERT INTO `acpsy_atencion` (`idAtencion`, `correlativo_Atencion`, `fRegistroAt
 (94, 'ACP-2021-000094', '2021-05-26', '1898867', '1892826', '437285', 2, '1950-10-02', 'DNI', '09017936', 'PAULINO', 'VELIZ', 'TEOFILO', '2021-05-11', 'COVID VI HOSPITALIZACION (PAB_PEDIATRIA) - HOSPITALIZACIÓN ', 'CL30', 'COMAS', '71', 1, 'PARTICULAR', 1, 1),
 (95, 'ACP-2021-000095', '2021-05-26', '451030', '1900341', '1325123', 1, '1956-12-01', 'DNI', '16537352', 'LARA', 'CRUZADO', 'JORGE', '2021-05-22', 'CIRUGIA GENERAL - HOSPITALIZACIÓN ', '', 'CHICLAYO', '65', 1, 'PARTICULAR', 1, 1),
 (96, 'ACP-2021-000096', '2021-05-26', '451810', '1901095', '1337179', 3, '1955-12-25', 'DNI', '08543036', 'JARA', 'CHACON', 'MANUEL', '2021-05-25', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'LOS OLIVOS', '66', 1, 'PARTICULAR', 1, 1),
-(97, 'ACP-2021-000097', '2021-05-26', '451735', '1901040', '835802', 1, '1952-03-21', 'DNI', '06933227', 'CHAVEZ', 'CARPIO', 'JORGE', '2021-05-25', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '69', 1, 'SOAT', 1, 1),
+(97, 'ACP-2021-000097', '2021-05-26', '1907081', '1901040', '835802', 2, '1952-03-21', 'DNI', '06933227', 'CHAVEZ', 'CARPIO', 'JORGE ADOLFO', '2021-05-25', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '69', 1, 'SOAT', 1, 1),
 (98, 'ACP-2021-000098', '2021-05-26', '451839', '1901138', '1337191', 3, '1966-10-09', 'DNI', '09173481', 'VILA', 'MENDOZA DE LIÑAN', 'EMILIA', '2021-05-26', 'CORONAVIRUS - EMERGENCIA', '', 'CARABAYLLO', '55', 2, 'PARTICULAR', 1, 1),
 (99, 'ACP-2021-000099', '2021-05-26', '1907106', '1901065', '169770', 2, '1980-08-26', 'DNI', '40609520', 'DURAND', 'SANCHEZ', 'MARIA', '2021-06-08', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '41', 2, 'PARTICULAR', 1, 1),
 (100, 'ACP-2021-000100', '2021-05-27', '451967', '1901270', '1337235', 3, '1961-07-29', 'DNI', '06891299', 'ARANDA', 'GARCIA', 'JORGE', '2021-05-26', 'CORONAVIRUS - EMERGENCIA', '', 'COMAS', '60', 1, 'PARTICULAR', 1, 1),
@@ -712,12 +928,12 @@ INSERT INTO `acpsy_atencion` (`idAtencion`, `correlativo_Atencion`, `fRegistroAt
 (133, 'ACP-2021-000132', '2021-06-03', '452816', '1902005', '37652', 3, '1971-04-14', 'DNI', '80145883', 'MOLERO', 'RAYMI', 'BEATRIZ', '2021-05-30', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'CARABAYLLO', '50', 2, 'PARTICULAR', 1, 1),
 (134, 'ACP-2021-000133', '2021-06-03', '453380', '1902340', '113374', 2, '1973-10-03', 'DNI', '09971995', 'RAMOS', 'SAENZ', 'MARGARITA', '2021-06-02', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '48', 2, 'PARTICULAR', 1, 1),
 (135, 'ACP-2021-000134', '2021-06-03', '454663', '1902613', '1156483', 2, '1987-08-24', 'DNI', '44499337', 'RODRIGUEZ', 'NAVEDA', 'JUAN', '2021-06-08', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'CARABAYLLO', '34', 1, 'PARTICULAR', 1, 1),
-(136, 'ACP-2021-000135', '2021-06-04', '453519', '1902678', '616802', 3, '1967-04-26', 'DNI', '09466831', 'MENDOZA', 'REVILLA', 'ALFREDO', '2021-06-02', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '54', 1, 'PARTICULAR', 1, 1),
+(136, 'ACP-2021-000135', '2021-06-04', '1908719', '1902678', '616802', 3, '1967-04-26', 'DNI', '09466831', 'MENDOZA', 'REVILLA', 'ALFREDO EDUARDO', '2021-06-02', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '54', 1, 'PARTICULAR', 1, 1),
 (137, 'ACP-2021-000136', '2021-06-04', '453499', '1902652', '1337636', 3, '1955-05-03', 'DNI', '08554136', 'GONZALES', 'EGUSQUIZA', 'BERTHA', '2021-06-02', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '66', 2, 'PARTICULAR', 1, 1),
 (138, 'ACP-2021-000137', '2021-06-04', '453266', '1902356', '713937', 3, '1951-06-01', 'DNI', '06880338', 'DE LA CRUZ', 'AVILA', 'SEGUNDO', '2021-06-01', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '70', 1, 'PARTICULAR', 1, 1),
 (139, 'ACP-2021-000138', '2021-06-04', '453717', '1902904', '1307788', 1, '1964-04-12', 'DNI', '00033764', 'CAPUENA', 'ASPAJO', 'MARIA', '2021-06-03', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'CARABAYLLO', '57', 2, 'SOAT', 1, 1),
 (140, 'ACP-2021-000139', '2021-06-04', '453851', '1902876', '1337698', 2, '1961-09-23', 'DNI', '25459554', 'CORDOVA', 'ALONSO', 'CARLOS', '2021-06-04', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'CARABAYLLO', '60', 1, 'PARTICULAR', 1, 1),
-(141, 'ACP-2021-000140', '2021-06-04', '453751', '1902920', '1337710', 2, '1991-10-27', 'DNI', '47597172', 'ALMANZA', 'CCAMA', 'ALEX', '2021-06-03', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '30', 1, 'PARTICULAR', 1, 1),
+(141, 'ACP-2021-000140', '2021-06-04', '1908961', '1902920', '1337710', 2, '1991-10-27', 'DNI', '47597172', 'ALMANZA', 'CCAMA', 'ALEX DANIEL', '2021-06-03', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '30', 1, 'PARTICULAR', 1, 1),
 (142, 'ACP-2021-000141', '2021-06-04', '453761', '1902932', '987579', 2, '1976-09-26', 'DNI', '25836893', 'SANTOS', 'HOLGUIN', 'ROBERTO', '2021-06-03', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '45', 1, 'PARTICULAR', 1, 1),
 (143, 'ACP-2021-000142', '2021-06-05', '455841', '1903260', '211403', 1, '1983-02-11', 'DNI', '41646789', 'FERNANDEZ', 'MENDIETA', 'LENNART', '2021-06-13', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'CARABAYLLO', '38', 1, 'PARTICULAR', 1, 1),
 (144, 'ACP-2021-000143', '2021-06-05', '454755', '1903062', '548921', 1, '1963-08-09', 'DNI', '08381097', 'SALAS', 'GUZMAN', 'JAVIER', '2021-06-08', 'MEDICINA - HOSPITALIZACIÓN ', '', 'COMAS', '58', 1, 'PARTICULAR', 1, 1),
@@ -776,12 +992,17 @@ INSERT INTO `acpsy_atencion` (`idAtencion`, `correlativo_Atencion`, `fRegistroAt
 (197, 'ACP-2021-000196', '2021-06-22', '1912767', '1906726', '948965', 1, '1955-04-20', 'DNI', '41689809', 'MINA', 'ROQUE', 'ELIAS', '2021-06-21', 'CORONAVIRUS - EMERGENCIA', '', 'COMAS', '66', 1, 'CONVENIOS PÚBLICOS', 1, 1),
 (198, 'ACP-2021-000197', '2021-06-22', '1912962', '1906921', '572368', 1, '1975-07-29', 'DNI', '33819289', 'SANCHEZ', 'SALDAÑA', 'MERI', '2021-06-22', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '46', 2, 'PARTICULAR', 1, 1),
 (199, 'ACP-2021-000198', '2021-06-23', '1912784', '1906743', '1279861', 1, '1951-09-12', 'DNI', '07356967', 'PAREDES', 'BARBOZA', 'ROBERTO', '2021-06-21', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '70', 1, 'PARTICULAR', 1, 1),
-(200, 'ACP-2021-000199', '2021-06-25', '1913512', '1907471', '622143', 1, '1979-08-28', 'DNI', '40556820', 'SOTO', 'OSORIO', 'YANINA', '2021-06-25', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '42', 2, 'SOAT', 1, 1),
+(200, 'ACP-2021-000199', '2021-06-25', '1913512', '1907471', '622143', 1, '1979-08-28', 'DNI', '40556820', 'SOTO', 'OSORIO', 'YANINA SOLEDAD', '2021-06-25', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '42', 2, 'SOAT', 1, 1),
 (201, 'ACP-2021-000200', '2021-06-25', '1913206', '1907165', '762107', 1, '1960-10-02', 'DNI', '08568688', 'CASTRO', 'SINCHI', 'JORGE', '2021-06-23', 'CORONAVIRUS - EMERGENCIA', '', 'COMAS', '61', 1, 'PARTICULAR', 1, 1),
 (202, 'ACP-2021-000201', '2021-06-25', '1913546', '1907505', '1338852', 1, '1971-01-16', 'DNI', '09610131', 'PALACIOS', 'RICALDI', 'MIRTHA', '2021-06-25', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'SAN MARTIN DE PORRES', '50', 2, 'PARTICULAR', 1, 1),
 (203, 'ACP-2021-000202', '2021-06-26', '1905387', '1899346', '109201', 2, '1975-02-20', 'DNI', '10381767', 'COBEÑAS', 'JARA', 'OMAR', '2021-05-18', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '46', 1, 'PARTICULAR', 1, 1),
 (204, 'ACP-2021-000203', '2021-06-26', '1909382', '1903341', '1337838', 3, '1953-10-05', 'DNI', '08658555', 'CORDOVA', 'GRIMALDO', 'JUAN', '2021-06-05', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '68', 1, 'PARTICULAR', 1, 1),
-(205, 'ACP-2021-000204', '2021-06-26', '1913764', '1907723', '347290', 1, '1963-10-03', 'DNI', '06843001', 'YUPANQUI', 'HUANCAYA', 'ABEL', '2021-06-25', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '58', 1, 'PARTICULAR', 1, 1);
+(205, 'ACP-2021-000204', '2021-06-26', '1913764', '1907723', '347290', 1, '1963-10-03', 'DNI', '06843001', 'YUPANQUI', 'HUANCAYA', 'ABEL FRANCISCO', '2021-06-25', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '58', 1, 'PARTICULAR', 1, 1),
+(206, 'ACP-2021-000205', '2021-06-28', '1914167', '1908126', '578257', 1, '1965-04-14', 'DNI', '08039077', 'HUAMANI', 'CHAVEZ', 'FREDDY RUBEN', '2021-06-27', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '56', 1, 'CONVENIOS PÚBLICOS', 1, 1),
+(207, 'ACP-2021-000206', '2021-06-28', '1913912', '1907871', '1254301', 1, '1980-01-10', 'DNI', '40688338', 'TREBEJO', 'AGAMA', 'WILMAN ALFREDO', '2021-06-26', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'CHACCHO', '41', 1, 'PARTICULAR', 1, 1),
+(208, 'ACP-2021-000207', '2021-06-28', '1914161', '1908120', '796304', 1, '1991-01-16', 'DNI', '47878500', 'RIVERA', 'VARA', 'ANA MARIA', '2021-06-27', 'CORONAVIRUS - EMERGENCIA', '', 'COMAS', '30', 2, 'PARTICULAR', 1, 1),
+(209, 'ACP-2021-000208', '2021-06-28', '1913803', '1907762', '256170', 1, '1984-11-18', 'DNI', '42805046', 'RIVERA', 'VARA', 'JULIO CESAR', '2021-06-26', 'COVID UCI - HOSPITALIZACIÓN ', '', 'CARABAYLLO', '37', 1, 'PARTICULAR', 1, 1),
+(210, 'ACP-2021-000209', '2021-06-28', '1913938', '1907897', '986000', 1, '1973-10-15', 'DNI', '06785135', 'YNOÑAN', 'VENTURA', 'RUBEN ', '2021-06-26', 'CORONAVIRUS - EMERGENCIA', '', 'COMAS', '48', 1, 'PARTICULAR', 1, 1);
 
 --
 -- Disparadores `acpsy_atencion`
@@ -956,26 +1177,6 @@ INSERT INTO `acpsy_estatusseguimiento` (`idStatusSeg`, `detaStatusSeg`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `acpsy_etapaseguimiento`
---
-
-CREATE TABLE `acpsy_etapaseguimiento` (
-  `idEtapSegui` int(11) NOT NULL,
-  `detaEtapSegui` varchar(30) COLLATE utf8_bin DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Volcado de datos para la tabla `acpsy_etapaseguimiento`
---
-
-INSERT INTO `acpsy_etapaseguimiento` (`idEtapSegui`, `detaEtapSegui`) VALUES
-(1, 'INICIO'),
-(2, 'EN PROCESO'),
-(3, 'FINALIZADO');
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `acpsy_famatencion`
 --
 
@@ -1038,7 +1239,7 @@ INSERT INTO `acpsy_famatencion` (`idFamiliar`, `fechaRegistro`, `idUsuario`, `id
 (38, '2021-06-18', 1, 35, 3, 2, 'DNI', '46123673', 'ELISA KATHERINE SAHUANGA PEÑA', '31', ''),
 (39, '2021-06-18', 1, 37, 3, 2, 'DNI', '43733218', 'ALCIRA SANCHEZ CASTRO', '34', ''),
 (40, '2021-06-18', 1, 38, 9, 1, 'DNI', '06845974', 'TEODORO JUAN DE DIOS CACERES', '60', ''),
-(41, '2021-06-18', 1, 39, 8, 2, 'DNI', '40879094', 'MAGALY YEREN VARGAS', '40', ''),
+(41, '2021-06-18', 1, 39, 8, 1, 'DNI', '40879074', 'ANGEL MIGUEL OLARTE ESTRELLA', '40', ''),
 (42, '2021-06-18', 1, 94, 3, 2, 'DNI', '10395972', 'ELIZABETH PAULINO VELIZ', '45', ''),
 (43, '2021-06-18', 1, 41, 6, 1, 'DNI', '71648162', 'JHAN CARLOS ROQUE JARAMILLO', '23', ''),
 (44, '2021-06-18', 1, 42, 2, 2, 'DNI', '06829321', 'JUANA ISABEL CRISOSTOMO VASQUEZ', '61', ''),
@@ -1193,7 +1394,13 @@ INSERT INTO `acpsy_famatencion` (`idFamiliar`, `fechaRegistro`, `idUsuario`, `id
 (194, '2021-06-27', 1, 177, 9, 2, 'DNI', '42504572', 'LOURDES YSABEL SALCEDO MACEDO', '36', ''),
 (195, '2021-06-27', 1, 204, 3, 1, 'DNI', '45632016', 'JUAN ADEMIR CORDOVA URBINA', '32', ''),
 (196, '2021-06-27', 1, 59, 8, 2, 'DNI', '48062284', 'SARBIA FERNANDITA TORREJON CASTRO', '27', ''),
-(197, '2021-06-27', 1, 205, 9, 2, 'DNI', '09735645', 'MERCEDES FAVIOLA ATOCHE RODRIGUEZ', '51', '');
+(197, '2021-06-27', 1, 205, 9, 2, 'DNI', '09735645', 'MERCEDES FAVIOLA ATOCHE RODRIGUEZ', '51', ''),
+(198, '2021-06-28', 1, 206, 9, 2, 'DNI', '48885410', 'ROSA MABEL FHON GUISAZOLA', '39', ''),
+(199, '2021-06-28', 1, 207, 9, 2, 'DNI', '48384806', 'MARIA VANEZA CASTRO VILLAFANE', '26', ''),
+(200, '2021-06-28', 1, 201, 3, 2, 'DNI', '77344331', 'MARJORYE ARACELY SOTIL HERNANDEZ', '25', ''),
+(201, '2021-06-28', 1, 208, 9, 2, 'DNI', '71762385', 'SERGIO ROMULO ALVAREZ MORENO', '22', ''),
+(202, '2021-06-28', 1, 209, 6, 2, 'DNI', '10213019', 'SILVIA VERONICA RIVERA VARA', '47', ''),
+(203, '2021-06-28', 1, 210, 9, 2, 'DNI', '10862530', 'GINA FLOR RIVERA GALLEGOS', '43', '');
 
 -- --------------------------------------------------------
 
@@ -1294,8 +1501,7 @@ INSERT INTO `acpsy_profesionales` (`idProfesional`, `idEstado`, `idCondicion`, `
 (7, 1, 1, '06123251', '10097', 'SANCHEZ AQUINO', 'NORMA NELIDA'),
 (8, 1, 2, '10288615', '25775', 'TRUJILLO CASTILLO', 'MIRIAM ROCIO'),
 (9, 1, 1, '07178930', '34522', 'VELASQUEZ REYES', 'MARIA ANGELA'),
-(10, 1, 2, '46624029', '21470', 'ZAVALETA LOPEZ', 'DARNELLY JAHAIRA'),
-(11, 1, 2, '77478995', '152245', 'CASTRO PALACIOS', 'OLGER IVAN');
+(10, 1, 2, '46624029', '21470', 'ZAVALETA LOPEZ', 'DARNELLY JAHAIRA');
 
 -- --------------------------------------------------------
 
@@ -1311,7 +1517,6 @@ CREATE TABLE `acpsy_seguimiento` (
   `idProfesional` int(11) NOT NULL,
   `idTipoSeguimiento` int(11) NOT NULL,
   `idMotSeguimiento` int(11) NOT NULL,
-  `idEtapSegui` int(11) NOT NULL,
   `idDiag1Seg` int(11) NOT NULL,
   `idDiag2Seg` int(11) NOT NULL DEFAULT '0',
   `comunFamSeg` varchar(10) COLLATE utf8_bin DEFAULT NULL,
@@ -1327,10 +1532,664 @@ CREATE TABLE `acpsy_seguimiento` (
 -- Volcado de datos para la tabla `acpsy_seguimiento`
 --
 
-INSERT INTO `acpsy_seguimiento` (`idSeguimiento`, `fRegistrSeg`, `idUsuario`, `idAtencionPac`, `idProfesional`, `idTipoSeguimiento`, `idMotSeguimiento`, `idEtapSegui`, `idDiag1Seg`, `idDiag2Seg`, `comunFamSeg`, `idFamAtSeg`, `idDiag1SegFam`, `idDiag2SegFam`, `obsSeg`, `idStatusSeg`, `registroSistema`) VALUES
-(1, '2021-05-15', 1, 1, 1, 2, 1, 1, 1, 2, 'SI', 1, 1, 2, 'XD', 1, '2021-06-21 19:40:18'),
-(2, '2021-06-25', 1, 1, 1, 1, 1, 1, 1, 0, 'SI', 1, 1, 0, 'XD', 1, '2021-06-25 16:04:53'),
-(3, '2021-06-25', 1, 1, 1, 3, 1, 1, 1, 0, 'NO', 0, 0, 0, 'XD', 1, '2021-06-25 17:00:25');
+INSERT INTO `acpsy_seguimiento` (`idSeguimiento`, `fRegistrSeg`, `idUsuario`, `idAtencionPac`, `idProfesional`, `idTipoSeguimiento`, `idMotSeguimiento`, `idDiag1Seg`, `idDiag2Seg`, `comunFamSeg`, `idFamAtSeg`, `idDiag1SegFam`, `idDiag2SegFam`, `obsSeg`, `idStatusSeg`, `registroSistema`) VALUES
+(1, '2021-05-14', 1, 1, 10, 2, 2, 1, 0, 'SI', 1, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(2, '2021-05-14', 1, 2, 1, 2, 2, 5, 0, 'SI', 3, 5, 0, NULL, 1, '2021-06-29 00:54:42'),
+(3, '2021-05-14', 1, 3, 1, 2, 2, 5, 0, 'SI', 4, 5, 0, NULL, 1, '2021-06-29 00:54:42'),
+(4, '2021-05-14', 1, 3, 10, 2, 2, 1, 0, 'SI', 5, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(5, '2021-05-14', 1, 4, 1, 2, 2, 5, 0, 'SI', 6, 5, 0, NULL, 1, '2021-06-29 00:54:42'),
+(6, '2021-05-14', 1, 5, 1, 2, 2, 5, 2, 'SI', 7, 2, 0, NULL, 1, '2021-06-29 00:54:42'),
+(7, '2021-05-14', 1, 6, 1, 2, 2, 5, 0, 'SI', 8, 2, 0, NULL, 1, '2021-06-29 00:54:42'),
+(8, '2021-05-14', 1, 7, 1, 2, 2, 5, 0, 'SI', 9, 5, 0, NULL, 1, '2021-06-29 00:54:42'),
+(9, '2021-05-14', 1, 8, 1, 2, 2, 5, 0, 'SI', 10, 5, 0, NULL, 1, '2021-06-29 00:54:42'),
+(10, '2021-05-14', 1, 9, 10, 2, 2, 4, 0, 'SI', 11, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(11, '2021-05-14', 1, 9, 10, 2, 2, 4, 0, 'SI', 11, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(12, '2021-05-14', 1, 10, 10, 2, 2, 1, 0, 'SI', 12, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(13, '2021-05-14', 1, 11, 10, 2, 2, 2, 0, 'SI', 13, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(14, '2021-05-14', 1, 12, 10, 2, 2, 4, 0, 'SI', 14, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(15, '2021-05-14', 1, 13, 10, 2, 2, 2, 0, 'SI', 15, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(16, '2021-05-14', 1, 14, 10, 2, 2, 4, 0, 'SI', 16, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(17, '2021-05-14', 1, 15, 10, 2, 2, 1, 0, 'SI', 17, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(18, '2021-05-15', 1, 2, 8, 2, 2, 4, 0, 'SI', 3, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(19, '2021-05-15', 1, 5, 8, 2, 2, 4, 0, 'SI', 7, 2, 0, NULL, 1, '2021-06-29 00:54:42'),
+(20, '2021-05-15', 1, 16, 8, 2, 2, 4, 0, 'SI', 18, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(21, '2021-05-15', 1, 17, 8, 2, 2, 4, 0, 'SI', 19, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(22, '2021-05-15', 1, 18, 8, 2, 2, 4, 0, 'SI', 20, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(23, '2021-05-15', 1, 19, 8, 2, 2, 4, 0, 'SI', 21, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(24, '2021-05-15', 1, 20, 8, 2, 2, 4, 0, 'SI', 22, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(25, '2021-05-15', 1, 21, 8, 2, 2, 4, 0, 'SI', 90, 2, 0, NULL, 1, '2021-06-29 00:54:42'),
+(26, '2021-05-15', 1, 22, 8, 2, 2, 4, 0, 'SI', 24, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(27, '2021-05-15', 1, 23, 8, 2, 2, 4, 0, 'SI', 25, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(28, '2021-05-15', 1, 24, 8, 2, 2, 4, 0, 'SI', 26, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(29, '2021-05-15', 1, 25, 8, 2, 2, 2, 0, 'SI', 27, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(30, '2021-05-17', 1, 6, 10, 2, 2, 1, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(31, '2021-05-17', 1, 26, 10, 2, 2, 4, 0, 'SI', 28, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(32, '2021-05-17', 1, 27, 10, 2, 2, 1, 0, 'SI', 29, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(33, '2021-05-17', 1, 28, 10, 2, 2, 1, 0, 'SI', 30, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(34, '2021-05-17', 1, 29, 10, 2, 2, 4, 0, 'SI', 31, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(35, '2021-05-17', 1, 30, 10, 2, 2, 4, 0, 'SI', 32, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(36, '2021-05-17', 1, 31, 10, 2, 2, 4, 0, 'SI', 33, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(37, '2021-05-17', 1, 32, 10, 2, 2, 4, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(38, '2021-05-17', 1, 33, 10, 2, 2, 4, 0, 'SI', 35, 2, 0, NULL, 1, '2021-06-29 00:54:42'),
+(39, '2021-05-17', 1, 34, 10, 2, 2, 1, 0, 'SI', 36, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(40, '2021-05-17', 1, 35, 10, 2, 2, 4, 0, 'SI', 37, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(41, '2021-05-17', 1, 36, 10, 2, 2, 4, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(42, '2021-05-18', 1, 1, 8, 2, 2, 4, 0, 'SI', 2, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(43, '2021-05-18', 1, 9, 8, 2, 2, 4, 0, 'SI', 11, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(44, '2021-05-18', 1, 22, 1, 2, 2, 5, 0, 'SI', 24, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(45, '2021-05-18', 1, 33, 8, 2, 2, 4, 0, 'SI', 35, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(46, '2021-05-18', 1, 34, 1, 2, 2, 5, 0, 'SI', 36, 2, 5, NULL, 1, '2021-06-29 00:54:42'),
+(47, '2021-05-18', 1, 35, 1, 2, 2, 5, 0, 'SI', 38, 2, 5, NULL, 1, '2021-06-29 00:54:42'),
+(48, '2021-05-18', 1, 36, 8, 2, 2, 4, 0, 'SI', 45, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(49, '2021-05-18', 1, 37, 1, 2, 2, 5, 0, 'SI', 39, 5, 0, NULL, 1, '2021-06-29 00:54:42'),
+(50, '2021-05-18', 1, 38, 1, 2, 2, 5, 0, 'SI', 40, 5, 0, NULL, 1, '2021-06-29 00:54:42'),
+(51, '2021-05-18', 1, 39, 1, 2, 2, 5, 0, 'SI', 41, 5, 0, NULL, 1, '2021-06-29 00:54:42'),
+(52, '2021-05-18', 1, 39, 8, 2, 2, 4, 0, 'SI', 41, 3, 0, NULL, 1, '2021-06-29 00:54:42'),
+(53, '2021-05-18', 1, 40, 8, 2, 2, 4, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(54, '2021-05-18', 1, 41, 8, 2, 2, 4, 0, 'SI', 43, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(55, '2021-05-18', 1, 42, 8, 2, 2, 3, 0, 'SI', 44, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(56, '2021-05-18', 1, 43, 8, 2, 2, 4, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(57, '2021-05-18', 1, 44, 8, 2, 2, 4, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(58, '2021-05-18', 1, 94, 1, 2, 2, 5, 0, 'SI', 42, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(59, '2021-05-18', 1, 94, 8, 2, 2, 4, 0, 'SI', 42, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(60, '2021-05-19', 1, 2, 1, 2, 2, 5, 0, 'SI', 3, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(61, '2021-05-19', 1, 19, 10, 2, 2, 4, 0, 'SI', 21, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(62, '2021-05-19', 1, 24, 1, 2, 2, 5, 0, 'SI', 26, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(63, '2021-05-19', 1, 36, 1, 2, 2, 5, 0, 'SI', 45, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(64, '2021-05-19', 1, 44, 10, 2, 2, 3, 0, 'SI', 53, 2, 0, NULL, 1, '2021-06-29 00:54:42'),
+(65, '2021-05-19', 1, 45, 9, 4, 2, 2, 1, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(66, '2021-05-19', 1, 46, 9, 4, 2, 5, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(67, '2021-05-19', 1, 47, 9, 4, 2, 3, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(68, '2021-05-19', 1, 48, 1, 2, 2, 5, 0, 'SI', 46, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(69, '2021-05-19', 1, 49, 1, 2, 2, 5, 0, 'SI', 47, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(70, '2021-05-19', 1, 50, 1, 2, 2, 5, 0, 'SI', 48, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(71, '2021-05-19', 1, 51, 10, 2, 2, 4, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(72, '2021-05-19', 1, 52, 10, 2, 2, 1, 0, 'SI', 49, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(73, '2021-05-19', 1, 53, 10, 2, 2, 4, 0, 'SI', 50, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(74, '2021-05-19', 1, 54, 10, 2, 2, 1, 0, 'SI', 51, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(75, '2021-05-19', 1, 55, 10, 2, 2, 1, 0, 'SI', 52, 1, 0, NULL, 1, '2021-06-29 00:54:42'),
+(76, '2021-05-21', 1, 9, 10, 2, 2, 4, 10, 'SI', 11, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(77, '2021-05-21', 1, 12, 10, 2, 2, 13, 10, 'SI', 14, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(78, '2021-05-21', 1, 29, 10, 2, 2, 2, 10, 'SI', 31, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(79, '2021-05-21', 1, 33, 10, 2, 2, 4, 10, 'SI', 35, 2, 15, NULL, 1, '2021-06-29 00:54:42'),
+(80, '2021-05-21', 1, 33, 10, 2, 2, 4, 10, 'SI', 35, 2, 15, NULL, 1, '2021-06-29 00:54:42'),
+(81, '2021-05-21', 1, 33, 10, 2, 2, 4, 10, 'SI', 35, 2, 15, NULL, 1, '2021-06-29 00:54:42'),
+(82, '2021-05-21', 1, 33, 10, 2, 2, 4, 10, 'SI', 35, 2, 15, NULL, 1, '2021-06-29 00:54:42'),
+(83, '2021-05-21', 1, 33, 10, 2, 2, 4, 10, 'SI', 35, 2, 15, NULL, 1, '2021-06-29 00:54:42'),
+(84, '2021-05-21', 1, 33, 10, 2, 2, 4, 10, 'SI', 35, 2, 15, NULL, 1, '2021-06-29 00:54:42'),
+(85, '2021-05-21', 1, 33, 10, 2, 2, 4, 10, 'SI', 35, 2, 15, NULL, 1, '2021-06-29 00:54:42'),
+(86, '2021-05-21', 1, 33, 10, 2, 2, 4, 10, 'SI', 35, 2, 15, NULL, 1, '2021-06-29 00:54:42'),
+(87, '2021-05-21', 1, 33, 10, 2, 2, 4, 10, 'SI', 35, 2, 15, NULL, 1, '2021-06-29 00:54:42'),
+(88, '2021-05-21', 1, 33, 10, 2, 2, 4, 10, 'SI', 35, 2, 15, NULL, 1, '2021-06-29 00:54:42'),
+(89, '2021-05-21', 1, 33, 10, 2, 2, 4, 10, 'SI', 35, 2, 15, NULL, 1, '2021-06-29 00:54:42'),
+(90, '2021-05-21', 1, 33, 10, 2, 2, 4, 10, 'SI', 35, 2, 15, NULL, 1, '2021-06-29 00:54:42'),
+(91, '2021-05-21', 1, 33, 10, 2, 2, 4, 10, 'SI', 35, 2, 15, NULL, 1, '2021-06-29 00:54:42'),
+(92, '2021-05-21', 1, 33, 10, 2, 2, 4, 10, 'SI', 35, 2, 15, NULL, 1, '2021-06-29 00:54:42'),
+(93, '2021-05-21', 1, 33, 10, 2, 2, 4, 10, 'SI', 35, 2, 15, NULL, 1, '2021-06-29 00:54:42'),
+(94, '2021-05-21', 1, 33, 10, 2, 2, 4, 10, 'SI', 35, 2, 15, NULL, 1, '2021-06-29 00:54:42'),
+(95, '2021-05-21', 1, 33, 10, 2, 2, 4, 10, 'SI', 35, 2, 15, NULL, 1, '2021-06-29 00:54:42'),
+(96, '2021-05-21', 1, 33, 10, 2, 2, 4, 10, 'SI', 35, 2, 15, NULL, 1, '2021-06-29 00:54:42'),
+(97, '2021-05-21', 1, 40, 8, 2, 2, 4, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(98, '2021-05-21', 1, 51, 10, 2, 2, 4, 10, 'SI', 57, 9, 14, NULL, 1, '2021-06-29 00:54:42'),
+(99, '2021-05-21', 1, 52, 10, 2, 2, 13, 10, 'SI', 49, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(100, '2021-05-21', 1, 56, 10, 2, 2, 13, 9, 'SI', 54, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(101, '2021-05-21', 1, 57, 10, 2, 2, 4, 9, 'SI', 55, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(102, '2021-05-21', 1, 58, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(103, '2021-05-21', 1, 59, 10, 2, 2, 13, 9, 'SI', 56, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(104, '2021-05-21', 1, 60, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(105, '2021-05-21', 1, 61, 8, 2, 2, 9, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(106, '2021-05-21', 1, 62, 8, 2, 2, 13, 0, 'SI', 58, 9, 0, NULL, 1, '2021-06-29 00:54:42'),
+(107, '2021-05-21', 1, 63, 8, 2, 2, 4, 0, 'SI', 59, 9, 0, NULL, 1, '2021-06-29 00:54:42'),
+(108, '2021-05-21', 1, 64, 8, 2, 2, 13, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(109, '2021-05-21', 1, 64, 8, 2, 2, 13, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(110, '2021-05-23', 1, 13, 8, 2, 2, 4, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(111, '2021-05-23', 1, 17, 8, 2, 2, 4, 0, 'SI', 19, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(112, '2021-05-23', 1, 57, 8, 2, 2, 4, 0, 'SI', 55, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(113, '2021-05-23', 1, 58, 8, 2, 2, 4, 0, 'SI', 61, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(114, '2021-05-23', 1, 62, 8, 2, 2, 13, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(115, '2021-05-23', 1, 65, 8, 2, 2, 13, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(116, '2021-05-23', 1, 66, 8, 2, 2, 4, 0, 'SI', 60, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(117, '2021-05-23', 1, 67, 8, 2, 2, 4, 0, 'SI', 62, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(118, '2021-05-23', 1, 68, 8, 2, 2, 3, 0, 'SI', 63, 3, 0, NULL, 1, '2021-06-29 00:54:42'),
+(119, '2021-05-23', 1, 69, 8, 2, 2, 4, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(120, '2021-05-23', 1, 70, 8, 2, 2, 4, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(121, '2021-05-23', 1, 71, 8, 2, 2, 4, 0, 'SI', 64, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(122, '2021-05-24', 1, 13, 10, 2, 2, 13, 10, 'SI', 15, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(123, '2021-05-24', 1, 27, 10, 2, 2, 4, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(124, '2021-05-24', 1, 30, 10, 2, 2, 4, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(125, '2021-05-24', 1, 51, 10, 2, 2, 4, 11, 'SI', 57, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(126, '2021-05-24', 1, 57, 10, 2, 2, 4, 10, 'SI', 55, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(127, '2021-05-24', 1, 59, 10, 2, 2, 13, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(128, '2021-05-24', 1, 70, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(129, '2021-05-24', 1, 72, 10, 2, 2, 13, 9, 'SI', 65, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(130, '2021-05-24', 1, 73, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(131, '2021-05-24', 1, 74, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(132, '2021-05-24', 1, 75, 1, 2, 2, 5, 0, 'SI', 66, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(133, '2021-05-24', 1, 76, 1, 2, 2, 5, 0, 'SI', 67, 5, 12, NULL, 1, '2021-06-29 00:54:42'),
+(134, '2021-05-24', 1, 77, 1, 2, 2, 5, 0, 'SI', 68, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(135, '2021-05-24', 1, 78, 1, 2, 2, 5, 0, 'SI', 69, 13, 5, NULL, 1, '2021-06-29 00:54:42'),
+(136, '2021-05-24', 1, 79, 1, 2, 2, 5, 0, 'SI', 70, 5, 13, NULL, 1, '2021-06-29 00:54:42'),
+(137, '2021-05-24', 1, 80, 1, 2, 2, 5, 0, 'SI', 71, 5, 13, NULL, 1, '2021-06-29 00:54:42'),
+(138, '2021-05-24', 1, 81, 1, 2, 2, 5, 0, 'SI', 72, 12, 5, NULL, 1, '2021-06-29 00:54:42'),
+(139, '2021-05-24', 1, 82, 1, 2, 2, 5, 0, 'SI', 73, 2, 1, NULL, 1, '2021-06-29 00:54:42'),
+(140, '2021-05-24', 1, 83, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(141, '2021-05-24', 1, 84, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(142, '2021-05-24', 1, 85, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(143, '2021-05-24', 1, 85, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(144, '2021-05-24', 1, 85, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(145, '2021-05-24', 1, 85, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(146, '2021-05-24', 1, 86, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(147, '2021-05-24', 1, 86, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(148, '2021-05-24', 1, 86, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(149, '2021-05-24', 1, 86, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(150, '2021-05-24', 1, 86, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(151, '2021-05-24', 1, 86, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(152, '2021-05-24', 1, 86, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(153, '2021-05-24', 1, 86, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(154, '2021-05-24', 1, 86, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(155, '2021-05-24', 1, 86, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(156, '2021-05-24', 1, 86, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(157, '2021-05-24', 1, 86, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(158, '2021-05-24', 1, 86, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(159, '2021-05-25', 1, 36, 8, 2, 2, 4, 0, 'SI', 45, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(160, '2021-05-25', 1, 44, 8, 2, 2, 4, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(161, '2021-05-25', 1, 65, 8, 2, 2, 13, 0, 'SI', 82, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(162, '2021-05-25', 1, 70, 8, 2, 2, 4, 0, 'SI', 83, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(163, '2021-05-25', 1, 84, 8, 2, 2, 4, 0, 'SI', 74, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(164, '2021-05-25', 1, 87, 8, 2, 2, 4, 0, 'SI', 76, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(165, '2021-05-25', 1, 88, 8, 2, 2, 8, 0, 'SI', 77, 3, 0, NULL, 1, '2021-06-29 00:54:42'),
+(166, '2021-05-25', 1, 89, 8, 2, 2, 4, 0, 'SI', 78, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(167, '2021-05-25', 1, 90, 8, 2, 2, 4, 0, 'SI', 79, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(168, '2021-05-25', 1, 91, 8, 2, 2, 13, 0, 'SI', 80, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(169, '2021-05-25', 1, 92, 8, 2, 2, 13, 0, 'SI', 81, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(170, '2021-05-25', 1, 94, 8, 2, 2, 4, 0, 'SI', 42, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(171, '2021-05-26', 1, 29, 10, 2, 2, 2, 11, 'SI', 31, 13, 16, NULL, 1, '2021-06-29 00:54:42'),
+(172, '2021-05-26', 1, 30, 10, 2, 2, 4, 11, 'SI', 32, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(173, '2021-05-26', 1, 38, 1, 2, 2, 5, 0, 'SI', 40, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(174, '2021-05-26', 1, 49, 1, 2, 2, 5, 0, 'SI', 47, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(175, '2021-05-26', 1, 59, 10, 2, 2, 13, 11, 'SI', 56, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(176, '2021-05-26', 1, 60, 10, 2, 2, 13, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(177, '2021-05-26', 1, 67, 10, 2, 2, 13, 9, 'SI', 62, 13, 9, NULL, 1, '2021-06-29 00:54:42'),
+(178, '2021-05-26', 1, 72, 10, 2, 2, 13, 10, 'SI', 65, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(179, '2021-05-26', 1, 74, 10, 2, 2, 13, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(180, '2021-05-26', 1, 83, 10, 2, 2, 4, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(181, '2021-05-26', 1, 85, 10, 2, 2, 13, 10, 'SI', 84, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(182, '2021-05-26', 1, 89, 1, 2, 2, 5, 0, 'SI', 78, 5, 2, NULL, 1, '2021-06-29 00:54:42'),
+(183, '2021-05-26', 1, 93, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(184, '2021-05-26', 1, 94, 1, 2, 2, 5, 0, 'SI', 42, 5, 13, NULL, 1, '2021-06-29 00:54:42'),
+(185, '2021-05-26', 1, 95, 1, 2, 2, 5, 0, 'SI', 85, 5, 13, NULL, 1, '2021-06-29 00:54:42'),
+(186, '2021-05-26', 1, 96, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(187, '2021-05-26', 1, 97, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(188, '2021-05-26', 1, 98, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(189, '2021-05-26', 1, 99, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(190, '2021-05-27', 1, 20, 8, 2, 2, 4, 0, 'SI', 22, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(191, '2021-05-27', 1, 21, 8, 2, 2, 4, 11, 'SI', 90, 2, 10, NULL, 1, '2021-06-29 00:54:42'),
+(192, '2021-05-27', 1, 62, 8, 2, 2, 13, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(193, '2021-05-27', 1, 69, 8, 2, 2, 4, 0, 'SI', 87, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(194, '2021-05-27', 1, 74, 8, 2, 2, 13, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(195, '2021-05-27', 1, 84, 8, 2, 2, 4, 0, 'SI', 74, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(196, '2021-05-27', 1, 87, 8, 2, 2, 4, 0, 'SI', 76, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(197, '2021-05-27', 1, 100, 8, 2, 2, 4, 0, 'SI', 86, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(198, '2021-05-27', 1, 101, 8, 2, 2, 4, 0, 'SI', 88, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(199, '2021-05-27', 1, 102, 8, 2, 2, 13, 0, 'SI', 89, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(200, '2021-05-27', 1, 103, 8, 2, 2, 13, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(201, '2021-05-27', 1, 104, 8, 2, 2, 4, 0, 'SI', 91, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(202, '2021-05-28', 1, 17, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(203, '2021-05-28', 1, 64, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(204, '2021-05-28', 1, 67, 10, 2, 2, 13, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(205, '2021-05-28', 1, 72, 10, 2, 2, 13, 11, 'SI', 65, 4, 16, NULL, 1, '2021-06-29 00:54:42'),
+(206, '2021-05-28', 1, 74, 10, 2, 2, 13, 11, 'SI', 92, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(207, '2021-05-28', 1, 94, 10, 2, 2, 13, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(208, '2021-05-28', 1, 96, 10, 2, 2, 13, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(209, '2021-05-28', 1, 97, 10, 2, 2, 13, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(210, '2021-05-28', 1, 99, 10, 2, 2, 4, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(211, '2021-05-28', 1, 105, 10, 2, 2, 2, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(212, '2021-05-28', 1, 105, 10, 2, 2, 2, 9, 'SI', 93, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(213, '2021-05-28', 1, 106, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(214, '2021-05-28', 1, 107, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(215, '2021-05-28', 1, 108, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(216, '2021-05-28', 1, 109, 10, 2, 2, 4, 9, 'SI', 94, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(217, '2021-05-29', 1, 15, 8, 2, 2, 4, 9, 'SI', 17, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(218, '2021-05-29', 1, 31, 8, 2, 2, 4, 9, 'SI', 33, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(219, '2021-05-29', 1, 69, 8, 2, 2, 4, 9, 'SI', 87, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(220, '2021-05-29', 1, 76, 8, 2, 2, 13, 0, 'SI', 67, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(221, '2021-05-29', 1, 84, 8, 2, 2, 4, 0, 'SI', 74, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(222, '2021-05-29', 1, 87, 8, 2, 2, 4, 11, 'SI', 76, 13, 16, NULL, 1, '2021-06-29 00:54:42'),
+(223, '2021-05-29', 1, 96, 8, 2, 2, 4, 9, 'SI', 95, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(224, '2021-05-29', 1, 99, 8, 2, 2, 13, 9, 'SI', 97, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(225, '2021-05-29', 1, 101, 8, 2, 2, 4, 10, 'SI', 88, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(226, '2021-05-29', 1, 110, 8, 2, 2, 4, 9, 'SI', 96, 13, 9, NULL, 1, '2021-06-29 00:54:42'),
+(227, '2021-05-31', 1, 21, 1, 2, 2, 5, 0, 'SI', 90, 5, 13, NULL, 1, '2021-06-29 00:54:42'),
+(228, '2021-05-31', 1, 39, 1, 2, 2, 5, 0, 'SI', 41, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(229, '2021-05-31', 1, 59, 1, 2, 2, 5, 0, 'SI', 56, 5, 13, NULL, 1, '2021-06-29 00:54:42'),
+(230, '2021-05-31', 1, 62, 1, 2, 2, 5, 0, 'SI', 58, 5, 13, NULL, 1, '2021-06-29 00:54:42'),
+(231, '2021-05-31', 1, 64, 10, 2, 2, 13, 10, 'SI', 102, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(232, '2021-05-31', 1, 73, 10, 2, 2, 13, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(233, '2021-05-31', 1, 76, 10, 2, 2, 4, 9, 'SI', 67, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(234, '2021-05-31', 1, 85, 10, 2, 2, 13, 11, 'SI', 84, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(235, '2021-05-31', 1, 105, 10, 2, 2, 2, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(236, '2021-05-31', 1, 105, 1, 2, 2, 5, 0, 'SI', 93, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(237, '2021-05-31', 1, 107, 10, 2, 2, 13, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(238, '2021-05-31', 1, 108, 10, 2, 2, 4, 10, 'SI', 100, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(239, '2021-05-31', 1, 111, 10, 2, 2, 13, 9, 'SI', 99, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(240, '2021-05-31', 1, 112, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(241, '2021-05-31', 1, 113, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(242, '2021-05-31', 1, 114, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(243, '2021-05-31', 1, 115, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(244, '2021-05-31', 1, 116, 1, 2, 2, 5, 0, 'SI', 103, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(245, '2021-06-01', 1, 26, 8, 2, 2, 13, 10, 'SI', 28, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(246, '2021-06-01', 1, 39, 8, 2, 2, 4, 10, 'SI', 41, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(247, '2021-06-01', 1, 67, 8, 2, 2, 4, 10, 'SI', 62, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(248, '2021-06-01', 1, 97, 8, 2, 2, 4, 9, 'SI', 110, 13, 9, NULL, 1, '2021-06-29 00:54:42'),
+(249, '2021-06-01', 1, 117, 8, 2, 2, 4, 9, 'SI', 104, 13, 9, NULL, 1, '2021-06-29 00:54:42'),
+(250, '2021-06-01', 1, 118, 8, 2, 2, 4, 9, 'SI', 105, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(251, '2021-06-01', 1, 119, 8, 2, 2, 13, 9, 'SI', 106, 13, 9, NULL, 1, '2021-06-29 00:54:42'),
+(252, '2021-06-01', 1, 120, 8, 2, 2, 13, 9, 'SI', 107, 13, 9, NULL, 1, '2021-06-29 00:54:42'),
+(253, '2021-06-01', 1, 121, 8, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(254, '2021-06-01', 1, 122, 8, 2, 2, 4, 9, 'SI', 108, 12, 9, NULL, 1, '2021-06-29 00:54:42'),
+(255, '2021-06-01', 1, 123, 8, 2, 2, 4, 9, 'SI', 109, 4, 9, NULL, 1, '2021-06-29 00:54:42'),
+(256, '2021-06-02', 1, 31, 1, 2, 2, 5, 0, 'SI', 33, 13, 5, NULL, 1, '2021-06-29 00:54:42'),
+(257, '2021-06-02', 1, 53, 4, 3, 2, 5, 1, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(258, '2021-06-02', 1, 54, 4, 3, 2, 15, 1, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(259, '2021-06-02', 1, 64, 10, 2, 2, 13, 11, 'SI', 102, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(260, '2021-06-02', 1, 76, 10, 2, 2, 4, 10, 'SI', 67, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(261, '2021-06-02', 1, 76, 10, 2, 2, 4, 10, 'SI', 67, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(262, '2021-06-02', 1, 76, 10, 2, 2, 4, 10, 'SI', 67, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(263, '2021-06-02', 1, 76, 10, 2, 2, 4, 10, 'SI', 67, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(264, '2021-06-02', 1, 76, 10, 2, 2, 4, 10, 'SI', 67, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(265, '2021-06-02', 1, 76, 10, 2, 2, 4, 10, 'SI', 67, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(266, '2021-06-02', 1, 76, 10, 2, 2, 4, 10, 'SI', 67, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(267, '2021-06-02', 1, 76, 10, 2, 2, 4, 10, 'SI', 67, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(268, '2021-06-02', 1, 76, 10, 2, 2, 4, 10, 'SI', 67, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(269, '2021-06-02', 1, 76, 10, 2, 2, 4, 10, 'SI', 67, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(270, '2021-06-02', 1, 76, 10, 2, 2, 4, 10, 'SI', 67, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(271, '2021-06-02', 1, 76, 10, 2, 2, 4, 10, 'SI', 67, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(272, '2021-06-02', 1, 84, 1, 2, 2, 5, 0, 'SI', 75, 5, 2, NULL, 1, '2021-06-29 00:54:42'),
+(273, '2021-06-02', 1, 97, 10, 2, 2, 13, 11, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(274, '2021-06-02', 1, 99, 1, 2, 2, 5, 0, 'SI', 98, 5, 2, NULL, 1, '2021-06-29 00:54:42'),
+(275, '2021-06-02', 1, 101, 1, 2, 2, 2, 0, 'SI', 88, 5, 13, NULL, 1, '2021-06-29 00:54:42'),
+(276, '2021-06-02', 1, 105, 10, 2, 2, 2, 11, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(277, '2021-06-02', 1, 106, 10, 2, 2, 13, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(278, '2021-06-02', 1, 111, 10, 2, 2, 13, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(279, '2021-06-02', 1, 113, 10, 2, 2, 13, 10, 'SI', 112, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(280, '2021-06-02', 1, 114, 1, 2, 2, 5, 0, 'SI', 113, 5, 2, NULL, 1, '2021-06-29 00:54:42'),
+(281, '2021-06-02', 1, 115, 1, 2, 2, 5, 0, 'SI', 115, 5, 13, NULL, 1, '2021-06-29 00:54:42'),
+(282, '2021-06-02', 1, 115, 10, 2, 2, 4, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(283, '2021-06-02', 1, 121, 10, 2, 2, 13, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(284, '2021-06-02', 1, 122, 1, 2, 2, 13, 0, 'SI', 108, 12, 2, NULL, 1, '2021-06-29 00:54:42'),
+(285, '2021-06-02', 1, 124, 4, 3, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(286, '2021-06-02', 1, 125, 10, 2, 2, 13, 9, 'SI', 111, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(287, '2021-06-02', 1, 126, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(288, '2021-06-02', 1, 127, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(289, '2021-06-02', 1, 129, 4, 3, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(290, '2021-06-02', 1, 129, 4, 3, 2, 4, 1, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(291, '2021-06-02', 1, 130, 4, 3, 2, 6, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(292, '2021-06-02', 1, 131, 10, 2, 2, 13, 9, 'SI', 116, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(293, '2021-06-02', 1, 132, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(294, '2021-06-03', 1, 59, 8, 2, 2, 4, 9, 'SI', 56, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(295, '2021-06-03', 1, 64, 8, 2, 2, 6, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(296, '2021-06-03', 1, 97, 8, 3, 2, 4, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(297, '2021-06-03', 1, 108, 8, 2, 2, 13, 9, 'SI', 101, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(298, '2021-06-03', 1, 114, 8, 2, 2, 8, 0, 'SI', 113, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(299, '2021-06-03', 1, 115, 8, 2, 2, 8, 0, 'SI', 114, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(300, '2021-06-03', 1, 117, 8, 3, 2, 4, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(301, '2021-06-03', 1, 120, 8, 2, 2, 4, 10, 'SI', 107, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(302, '2021-06-03', 1, 121, 8, 3, 2, 13, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(303, '2021-06-03', 1, 122, 8, 2, 2, 4, 10, 'SI', 108, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(304, '2021-06-03', 1, 127, 8, 2, 2, 4, 9, 'SI', 120, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(305, '2021-06-03', 1, 133, 8, 1, 2, 8, 0, 'SI', 118, 12, 14, NULL, 1, '2021-06-29 00:54:42'),
+(306, '2021-06-03', 1, 134, 8, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(307, '2021-06-03', 1, 135, 8, 2, 2, 4, 9, 'SI', 119, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(308, '2021-06-04', 1, 2, 4, 3, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(309, '2021-06-04', 1, 3, 4, 3, 2, 15, 1, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(310, '2021-06-04', 1, 5, 4, 3, 2, 5, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(311, '2021-06-04', 1, 7, 4, 3, 2, 1, 15, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(312, '2021-06-04', 1, 9, 1, 2, 2, 5, 0, 'SI', 11, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(313, '2021-06-04', 1, 19, 1, 2, 2, 5, 0, 'SI', 21, 2, 0, NULL, 1, '2021-06-29 00:54:42'),
+(314, '2021-06-04', 1, 24, 4, 3, 2, 14, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(315, '2021-06-04', 1, 26, 1, 2, 2, 5, 0, 'SI', 28, 12, 2, NULL, 1, '2021-06-29 00:54:42'),
+(316, '2021-06-04', 1, 34, 4, 3, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(317, '2021-06-04', 1, 41, 4, 3, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(318, '2021-06-04', 1, 84, 1, 2, 2, 5, 0, 'SI', 74, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(319, '2021-06-04', 1, 85, 1, 2, 2, 5, 0, 'SI', 84, 5, 2, NULL, 1, '2021-06-29 00:54:42'),
+(320, '2021-06-04', 1, 111, 10, 2, 2, 13, 11, 'SI', 99, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(321, '2021-06-04', 1, 112, 1, 2, 2, 5, 0, 'SI', 122, 5, 13, NULL, 1, '2021-06-29 00:54:42'),
+(322, '2021-06-04', 1, 113, 10, 2, 2, 13, 11, 'SI', 112, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(323, '2021-06-04', 1, 119, 10, 2, 2, 13, 9, 'SI', 106, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(324, '2021-06-04', 1, 125, 10, 2, 2, 13, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(325, '2021-06-04', 1, 126, 10, 2, 2, 13, 10, 'SI', 123, 13, 9, NULL, 1, '2021-06-29 00:54:42'),
+(326, '2021-06-04', 1, 136, 1, 2, 2, 5, 0, 'SI', 121, 2, 5, NULL, 1, '2021-06-29 00:54:42'),
+(327, '2021-06-04', 1, 137, 10, 2, 2, 4, 9, 'SI', 125, 13, 9, NULL, 1, '2021-06-29 00:54:42'),
+(328, '2021-06-04', 1, 138, 10, 2, 2, 4, 9, 'SI', 126, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(329, '2021-06-04', 1, 139, 10, 2, 2, 4, 9, 'SI', 127, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(330, '2021-06-04', 1, 140, 10, 2, 2, 2, 9, 'SI', 128, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(331, '2021-06-04', 1, 141, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(332, '2021-06-04', 1, 142, 10, 2, 2, 13, 9, 'SI', 129, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(333, '2021-06-05', 1, 9, 8, 3, 2, 4, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(334, '2021-06-05', 1, 17, 8, 3, 2, 4, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(335, '2021-06-05', 1, 21, 8, 3, 2, 4, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(336, '2021-06-05', 1, 26, 8, 2, 2, 4, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(337, '2021-06-05', 1, 39, 8, 2, 2, 2, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(338, '2021-06-05', 1, 87, 8, 3, 2, 4, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(339, '2021-06-05', 1, 99, 8, 2, 2, 13, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(340, '2021-06-05', 1, 101, 8, 2, 2, 4, 9, 'SI', 88, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(341, '2021-06-05', 1, 122, 8, 2, 2, 4, 11, 'SI', 108, 12, 17, NULL, 1, '2021-06-29 00:54:42'),
+(342, '2021-06-05', 1, 132, 8, 2, 2, 4, 9, 'SI', 131, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(343, '2021-06-05', 1, 136, 8, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(344, '2021-06-05', 1, 137, 8, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(345, '2021-06-05', 1, 143, 8, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(346, '2021-06-05', 1, 144, 8, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(347, '2021-06-05', 1, 145, 8, 2, 2, 4, 9, 'SI', 130, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(348, '2021-06-05', 1, 146, 8, 2, 2, 4, 9, 'SI', 132, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(349, '2021-06-05', 1, 147, 8, 2, 2, 4, 9, 'SI', 133, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(350, '2021-06-07', 1, 73, 10, 2, 2, 13, 11, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(351, '2021-06-07', 1, 76, 10, 2, 2, 4, 11, 'SI', 67, 4, 16, NULL, 1, '2021-06-29 00:54:42'),
+(352, '2021-06-07', 1, 106, 10, 2, 2, 13, 11, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(353, '2021-06-07', 1, 119, 10, 2, 2, 13, 10, 'SI', 106, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(354, '2021-06-07', 1, 131, 10, 2, 2, 13, 10, 'SI', 116, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(355, '2021-06-07', 1, 138, 10, 2, 2, 4, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(356, '2021-06-07', 1, 139, 10, 2, 2, 4, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(357, '2021-06-07', 1, 140, 10, 2, 2, 2, 10, 'SI', 128, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(358, '2021-06-07', 1, 141, 10, 2, 2, 13, 10, 'SI', 134, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(359, '2021-06-07', 1, 142, 10, 2, 2, 13, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(360, '2021-06-07', 1, 148, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(361, '2021-06-07', 1, 149, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(362, '2021-06-07', 1, 150, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(363, '2021-06-07', 1, 151, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(364, '2021-06-08', 1, 27, 8, 2, 2, 13, 0, 'SI', 29, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(365, '2021-06-08', 1, 28, 4, 3, 2, 14, 1, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(366, '2021-06-08', 1, 42, 4, 3, 2, 14, 1, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(367, '2021-06-08', 1, 43, 4, 3, 2, 14, 1, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(368, '2021-06-08', 1, 55, 4, 3, 2, 5, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(369, '2021-06-08', 1, 119, 8, 2, 2, 4, 10, 'SI', 106, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(370, '2021-06-08', 1, 135, 8, 2, 2, 4, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(371, '2021-06-08', 1, 136, 8, 2, 2, 4, 9, 'SI', 121, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(372, '2021-06-08', 1, 141, 8, 2, 2, 4, 9, 'SI', 134, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(373, '2021-06-08', 1, 143, 8, 2, 2, 4, 9, 'SI', 136, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(374, '2021-06-08', 1, 149, 8, 2, 2, 4, 0, 'SI', 141, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(375, '2021-06-08', 1, 152, 4, 2, 2, 4, 1, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(376, '2021-06-08', 1, 153, 4, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(377, '2021-06-08', 1, 154, 8, 2, 2, 3, 9, 'SI', 137, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(378, '2021-06-08', 1, 155, 8, 2, 2, 4, 9, 'SI', 138, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(379, '2021-06-08', 1, 156, 8, 2, 2, 12, 9, 'SI', 139, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(380, '2021-06-08', 1, 157, 8, 2, 2, 4, 9, 'SI', 140, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(381, '2021-06-08', 1, 158, 8, 2, 2, 4, 9, 'SI', 142, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(382, '2021-06-09', 1, 27, 1, 2, 2, 5, 0, 'SI', 29, 5, 13, NULL, 1, '2021-06-29 00:54:42'),
+(383, '2021-06-09', 1, 58, 1, 2, 2, 5, 0, 'SI', 61, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(384, '2021-06-09', 1, 73, 1, 2, 2, 5, 0, 'SI', 143, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(385, '2021-06-09', 1, 126, 10, 2, 2, 13, 11, 'SI', 123, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(386, '2021-06-09', 1, 131, 1, 2, 2, 5, 0, 'SI', 117, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(387, '2021-06-09', 1, 137, 10, 2, 2, 4, 10, 'SI', 125, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(388, '2021-06-09', 1, 138, 10, 2, 2, 4, 11, 'SI', 126, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(389, '2021-06-09', 1, 139, 10, 2, 2, 4, 11, 'SI', 127, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(390, '2021-06-09', 1, 140, 10, 2, 2, 2, 11, 'SI', 128, 4, 16, NULL, 1, '2021-06-29 00:54:42'),
+(391, '2021-06-09', 1, 142, 1, 2, 2, 5, 0, 'SI', 129, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(392, '2021-06-09', 1, 142, 10, 2, 2, 13, 11, 'SI', 129, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(393, '2021-06-09', 1, 151, 10, 2, 2, 13, 10, 'SI', 144, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(394, '2021-06-09', 1, 157, 1, 2, 2, 5, 0, 'SI', 140, 2, 1, NULL, 1, '2021-06-29 00:54:42'),
+(395, '2021-06-09', 1, 159, 10, 2, 2, 2, 9, 'SI', 145, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(396, '2021-06-09', 1, 160, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(397, '2021-06-10', 1, 19, 8, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(398, '2021-06-10', 1, 19, 8, 2, 2, 13, 10, 'SI', 21, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(399, '2021-06-10', 1, 33, 4, 3, 2, 15, 1, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(400, '2021-06-10', 1, 57, 4, 3, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(401, '2021-06-10', 1, 59, 8, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(402, '2021-06-10', 1, 64, 8, 3, 2, 4, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(403, '2021-06-10', 1, 67, 8, 3, 2, 13, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(404, '2021-06-10', 1, 84, 4, 3, 2, 5, 1, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(405, '2021-06-10', 1, 84, 8, 3, 2, 6, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(406, '2021-06-10', 1, 85, 8, 3, 2, 13, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(407, '2021-06-10', 1, 101, 8, 2, 2, 4, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(408, '2021-06-10', 1, 132, 8, 2, 2, 4, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(409, '2021-06-10', 1, 135, 8, 2, 2, 4, 11, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(410, '2021-06-10', 1, 140, 8, 2, 2, 13, 9, 'SI', 128, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(411, '2021-06-10', 1, 146, 8, 2, 2, 4, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(412, '2021-06-10', 1, 149, 8, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(413, '2021-06-10', 1, 153, 4, 3, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(414, '2021-06-10', 1, 154, 8, 2, 2, 4, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(415, '2021-06-10', 1, 155, 8, 2, 2, 4, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(416, '2021-06-10', 1, 156, 8, 2, 2, 12, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(417, '2021-06-10', 1, 161, 4, 3, 2, 5, 1, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(418, '2021-06-10', 1, 162, 8, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(419, '2021-06-10', 1, 163, 8, 2, 2, 4, 9, 'SI', 146, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(420, '2021-06-11', 1, 31, 1, 2, 2, 5, 0, 'SI', 34, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(421, '2021-06-11', 1, 119, 10, 2, 2, 13, 11, 'SI', 106, 4, 16, NULL, 1, '2021-06-29 00:54:42'),
+(422, '2021-06-11', 1, 126, 1, 2, 2, 5, 0, 'SI', 124, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(423, '2021-06-11', 1, 137, 10, 2, 2, 4, 11, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(424, '2021-06-11', 1, 150, 10, 2, 2, 13, 10, 'SI', 153, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(425, '2021-06-11', 1, 159, 10, 2, 2, 2, 10, 'SI', 145, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(426, '2021-06-11', 1, 160, 10, 2, 2, 13, 10, 'SI', 154, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(427, '2021-06-11', 1, 162, 1, 2, 2, 5, 0, 'SI', 149, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(428, '2021-06-11', 1, 164, 1, 2, 2, 5, 0, 'SI', 147, 2, 13, NULL, 1, '2021-06-29 00:54:42'),
+(429, '2021-06-11', 1, 164, 10, 2, 2, 13, 9, 'SI', 147, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(430, '2021-06-11', 1, 165, 1, 2, 2, 5, 0, 'SI', 148, 12, 13, NULL, 1, '2021-06-29 00:54:42'),
+(431, '2021-06-11', 1, 165, 10, 2, 2, 13, 9, 'SI', 148, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(432, '2021-06-11', 1, 166, 1, 2, 2, 5, 0, 'SI', 150, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(433, '2021-06-11', 1, 166, 10, 2, 2, 4, 9, 'SI', 150, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(434, '2021-06-11', 1, 167, 10, 2, 2, 13, 9, 'SI', 151, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(435, '2021-06-11', 1, 168, 10, 2, 2, 4, 9, 'SI', 152, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(436, '2021-06-11', 1, 169, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(437, '2021-06-12', 1, 22, 4, 3, 2, 9, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(438, '2021-06-12', 1, 29, 4, 3, 2, 15, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(439, '2021-06-12', 1, 30, 4, 3, 2, 6, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(440, '2021-06-12', 1, 31, 8, 2, 2, 4, 11, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(441, '2021-06-12', 1, 61, 4, 3, 2, 15, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(442, '2021-06-12', 1, 68, 8, 2, 2, 8, 0, 'SI', 63, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(443, '2021-06-12', 1, 75, 8, 2, 2, 8, 0, 'SI', 66, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(444, '2021-06-12', 1, 101, 8, 2, 2, 4, 11, 'SI', 88, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(445, '2021-06-12', 1, 123, 8, 1, 2, 8, 0, 'SI', 109, 12, 14, NULL, 1, '2021-06-29 00:54:42'),
+(446, '2021-06-12', 1, 136, 8, 1, 2, 8, 0, 'SI', 135, 12, 9, NULL, 1, '2021-06-29 00:54:42'),
+(447, '2021-06-12', 1, 138, 8, 1, 2, 8, 0, 'SI', 156, 12, 14, NULL, 1, '2021-06-29 00:54:42'),
+(448, '2021-06-12', 1, 143, 8, 2, 2, 4, 10, 'SI', 157, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(449, '2021-06-12', 1, 163, 8, 2, 2, 4, 10, 'SI', 146, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(450, '2021-06-12', 1, 170, 8, 2, 2, 8, 0, 'SI', 155, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(451, '2021-06-12', 1, 171, 4, 3, 2, 15, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(452, '2021-06-12', 1, 172, 8, 2, 2, 4, 9, 'SI', 158, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(453, '2021-06-12', 1, 173, 8, 2, 2, 4, 9, 'SI', 160, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(454, '2021-06-12', 1, 174, 8, 2, 2, 4, 9, 'SI', 161, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(455, '2021-06-12', 1, 175, 8, 2, 2, 12, 9, 'SI', 162, 12, 14, NULL, 1, '2021-06-29 00:54:42'),
+(456, '2021-06-14', 1, 1, 4, 3, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(457, '2021-06-14', 1, 4, 4, 3, 2, 15, 4, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(458, '2021-06-14', 1, 63, 4, 3, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(459, '2021-06-14', 1, 68, 1, 2, 2, 5, 0, 'SI', 63, 2, 1, NULL, 1, '2021-06-29 00:54:42'),
+(460, '2021-06-14', 1, 124, 4, 3, 2, 5, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(461, '2021-06-14', 1, 125, 1, 2, 2, 5, 0, 'SI', 111, 2, 1, NULL, 1, '2021-06-29 00:54:42'),
+(462, '2021-06-14', 1, 143, 10, 2, 2, 4, 9, 'SI', 157, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(463, '2021-06-14', 1, 152, 4, 3, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(464, '2021-06-14', 1, 160, 10, 2, 2, 13, 11, 'SI', 154, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(465, '2021-06-14', 1, 164, 10, 2, 2, 13, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(466, '2021-06-14', 1, 166, 10, 2, 2, 4, 10, 'SI', 150, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(467, '2021-06-14', 1, 167, 1, 2, 2, 5, 0, 'SI', 151, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(468, '2021-06-14', 1, 167, 10, 2, 2, 13, 10, 'SI', 151, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(469, '2021-06-14', 1, 168, 10, 2, 2, 4, 10, 'SI', 152, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(470, '2021-06-14', 1, 169, 10, 2, 2, 13, 10, 'SI', 167, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(471, '2021-06-14', 1, 170, 1, 2, 2, 5, 0, 'SI', 155, 2, 1, NULL, 1, '2021-06-29 00:54:42'),
+(472, '2021-06-14', 1, 172, 1, 2, 2, 5, 0, 'SI', 159, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(473, '2021-06-14', 1, 176, 1, 2, 2, 5, 0, 'SI', 163, 2, 1, NULL, 1, '2021-06-29 00:54:42'),
+(474, '2021-06-14', 1, 177, 1, 2, 2, 5, 0, 'SI', 164, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(475, '2021-06-14', 1, 178, 10, 2, 2, 2, 9, 'SI', 165, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(476, '2021-06-14', 1, 179, 10, 2, 2, 13, 9, 'SI', 166, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(477, '2021-06-14', 1, 180, 4, 3, 2, 15, 1, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(478, '2021-06-15', 1, 26, 8, 3, 2, 13, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(479, '2021-06-15', 1, 59, 8, 2, 2, 4, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(480, '2021-06-15', 1, 59, 8, 2, 2, 4, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(481, '2021-06-15', 1, 131, 8, 3, 2, 13, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(482, '2021-06-15', 1, 134, 8, 3, 2, 13, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(483, '2021-06-15', 1, 146, 8, 2, 2, 4, 0, 'SI', 132, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(484, '2021-06-15', 1, 149, 8, 3, 2, 13, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(485, '2021-06-15', 1, 154, 8, 2, 2, 4, 0, 'SI', 137, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(486, '2021-06-15', 1, 155, 8, 2, 2, 4, 0, 'SI', 138, 4, 0, NULL, 1, '2021-06-29 00:54:42'),
+(487, '2021-06-15', 1, 162, 8, 2, 2, 4, 0, 'SI', 149, 13, 0, NULL, 1, '2021-06-29 00:54:42'),
+(488, '2021-06-15', 1, 172, 8, 2, 2, 4, 0, 'SI', 159, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(489, '2021-06-15', 1, 175, 8, 2, 2, 12, 0, 'SI', 162, 12, 0, NULL, 1, '2021-06-29 00:54:42'),
+(490, '2021-06-15', 1, 181, 8, 2, 2, 4, 0, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(491, '2021-06-16', 1, 76, 4, 3, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(492, '2021-06-16', 1, 119, 4, 3, 2, 15, 4, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(493, '2021-06-16', 1, 143, 1, 2, 2, 5, 0, 'SI', 136, 2, 1, NULL, 1, '2021-06-29 00:54:42'),
+(494, '2021-06-16', 1, 154, 4, 3, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(495, '2021-06-16', 1, 159, 10, 2, 2, 13, 11, 'SI', 145, 4, 17, NULL, 1, '2021-06-29 00:54:42'),
+(496, '2021-06-16', 1, 162, 10, 2, 2, 4, 9, 'SI', 149, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(497, '2021-06-16', 1, 164, 10, 2, 2, 13, 11, 'SI', 147, 13, 16, NULL, 1, '2021-06-29 00:54:42'),
+(498, '2021-06-16', 1, 166, 10, 2, 2, 4, 11, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(499, '2021-06-16', 1, 167, 10, 2, 2, 13, 11, 'SI', 151, 4, 16, NULL, 1, '2021-06-29 00:54:42'),
+(500, '2021-06-16', 1, 168, 10, 2, 2, 4, 11, 'SI', 152, 13, 16, NULL, 1, '2021-06-29 00:54:42'),
+(501, '2021-06-16', 1, 169, 1, 2, 2, 5, 0, 'SI', 167, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(502, '2021-06-16', 1, 179, 10, 2, 2, 13, 10, 'SI', 166, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(503, '2021-06-16', 1, 181, 10, 2, 2, 4, 9, 'SI', 172, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(504, '2021-06-16', 1, 182, 1, 2, 2, 5, 0, 'SI', 168, 5, 2, NULL, 1, '2021-06-29 00:54:42'),
+(505, '2021-06-16', 1, 183, 1, 2, 2, 5, 0, 'SI', 169, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(506, '2021-06-16', 1, 183, 10, 2, 2, 13, 9, 'SI', 169, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(507, '2021-06-16', 1, 184, 1, 2, 2, 5, 0, 'SI', 170, 13, 1, NULL, 1, '2021-06-29 00:54:42'),
+(508, '2021-06-16', 1, 184, 10, 2, 2, 13, 9, 'SI', 170, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(509, '2021-06-16', 1, 185, 1, 2, 2, 5, 0, 'SI', 171, 13, 1, NULL, 1, '2021-06-29 00:54:42'),
+(510, '2021-06-17', 1, 27, 8, 3, 2, 13, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(511, '2021-06-17', 1, 58, 8, 3, 2, 13, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(512, '2021-06-17', 1, 94, 8, 3, 2, 13, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(513, '2021-06-17', 1, 116, 8, 2, 2, 4, 9, 'SI', 103, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(514, '2021-06-17', 1, 126, 8, 2, 2, 4, 9, 'SI', 123, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(515, '2021-06-17', 1, 132, 8, 2, 2, 4, 11, 'SI', 131, 4, 16, NULL, 1, '2021-06-29 00:54:42'),
+(516, '2021-06-17', 1, 146, 8, 2, 2, 4, 11, 'SI', 132, 4, 16, NULL, 1, '2021-06-29 00:54:42'),
+(517, '2021-06-17', 1, 160, 8, 2, 2, 13, 9, 'SI', 154, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(518, '2021-06-17', 1, 172, 8, 2, 2, 4, 10, 'SI', 159, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(519, '2021-06-17', 1, 184, 8, 2, 2, 4, 9, 'SI', 170, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(520, '2021-06-17', 1, 186, 8, 3, 2, 6, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(521, '2021-06-17', 1, 187, 8, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(522, '2021-06-18', 1, 13, 4, 3, 2, 15, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(523, '2021-06-18', 1, 39, 4, 3, 2, 15, 1, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(524, '2021-06-18', 1, 106, 4, 3, 2, 5, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(525, '2021-06-18', 1, 142, 4, 3, 2, 15, 5, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(526, '2021-06-18', 1, 160, 1, 2, 2, 5, 0, 'SI', 154, 2, 1, NULL, 1, '2021-06-29 00:54:42'),
+(527, '2021-06-18', 1, 164, 1, 2, 2, 5, 0, 'SI', 147, 2, 1, NULL, 1, '2021-06-29 00:54:42'),
+(528, '2021-06-18', 1, 167, 4, 3, 2, 9, 1, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(529, '2021-06-18', 1, 169, 10, 2, 2, 13, 11, 'SI', 167, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(530, '2021-06-18', 1, 175, 1, 2, 2, 5, 0, 'SI', 162, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(531, '2021-06-18', 1, 178, 10, 2, 2, 2, 10, 'SI', 165, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(532, '2021-06-18', 1, 179, 10, 2, 2, 13, 11, 'SI', 166, 13, 16, NULL, 1, '2021-06-29 00:54:42'),
+(533, '2021-06-18', 1, 183, 10, 2, 2, 13, 10, 'SI', 169, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(534, '2021-06-18', 1, 184, 10, 2, 2, 13, 10, 'SI', 170, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(535, '2021-06-18', 1, 184, 1, 2, 2, 5, 0, 'SI', 175, 2, 0, NULL, 1, '2021-06-29 00:54:42'),
+(536, '2021-06-18', 1, 187, 10, 2, 2, 4, 9, 'SI', 173, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(537, '2021-06-18', 1, 187, 1, 2, 2, 5, 0, 'SI', 173, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(538, '2021-06-18', 1, 188, 10, 2, 2, 13, 9, 'SI', 174, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(539, '2021-06-18', 1, 188, 1, 2, 2, 5, 0, 'SI', 174, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(540, '2021-06-18', 1, 189, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(541, '2021-06-18', 1, 190, 10, 2, 2, 13, 9, 'SI', 176, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(542, '2021-06-18', 1, 191, 10, 2, 2, 4, 9, 'SI', 177, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(543, '2021-06-19', 1, 132, 8, 2, 2, 4, 9, 'SI', 131, 4, 16, NULL, 1, '2021-06-29 00:54:42'),
+(544, '2021-06-19', 1, 146, 8, 2, 2, 4, 9, 'SI', 179, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(545, '2021-06-19', 1, 162, 8, 2, 2, 4, 9, 'SI', 149, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(546, '2021-06-19', 1, 166, 8, 2, 2, 13, 9, 'SI', 150, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(547, '2021-06-19', 1, 169, 8, 2, 2, 4, 9, 'SI', 167, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(548, '2021-06-19', 1, 178, 8, 2, 2, 2, 9, 'SI', 165, 13, 14, NULL, 1, '2021-06-29 00:54:42');
+INSERT INTO `acpsy_seguimiento` (`idSeguimiento`, `fRegistrSeg`, `idUsuario`, `idAtencionPac`, `idProfesional`, `idTipoSeguimiento`, `idMotSeguimiento`, `idDiag1Seg`, `idDiag2Seg`, `comunFamSeg`, `idFamAtSeg`, `idDiag1SegFam`, `idDiag2SegFam`, `obsSeg`, `idStatusSeg`, `registroSistema`) VALUES
+(549, '2021-06-19', 1, 181, 8, 2, 2, 4, 9, 'SI', 172, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(550, '2021-06-19', 1, 183, 8, 2, 2, 4, 9, 'SI', 178, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(551, '2021-06-19', 1, 187, 8, 2, 2, 4, 10, 'SI', 173, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(552, '2021-06-19', 1, 188, 8, 2, 2, 13, 9, 'SI', 174, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(553, '2021-06-19', 1, 189, 8, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(554, '2021-06-19', 1, 192, 8, 2, 2, 8, 0, 'SI', 180, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(555, '2021-06-21', 1, 75, 1, 2, 2, 5, 0, 'SI', 66, 13, 1, NULL, 1, '2021-06-29 00:54:42'),
+(556, '2021-06-21', 1, 126, 1, 2, 2, 5, 0, 'SI', 124, 2, 1, NULL, 1, '2021-06-29 00:54:42'),
+(557, '2021-06-21', 1, 146, 1, 2, 2, 5, 0, 'SI', 132, 2, 1, NULL, 1, '2021-06-29 00:54:42'),
+(558, '2021-06-21', 1, 168, 1, 2, 2, 5, 0, 'SI', 152, 2, 1, NULL, 1, '2021-06-29 00:54:42'),
+(559, '2021-06-21', 1, 178, 10, 2, 2, 2, 11, 'SI', 165, 13, 16, NULL, 1, '2021-06-29 00:54:42'),
+(560, '2021-06-21', 1, 183, 10, 2, 2, 13, 11, 'SI', 169, 13, 16, NULL, 1, '2021-06-29 00:54:42'),
+(561, '2021-06-21', 1, 184, 10, 2, 2, 13, 11, 'SI', 170, 4, 16, NULL, 1, '2021-06-29 00:54:42'),
+(562, '2021-06-21', 1, 188, 10, 2, 2, 13, 10, 'SI', 174, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(563, '2021-06-21', 1, 189, 10, 2, 2, 4, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(564, '2021-06-21', 1, 190, 1, 2, 2, 5, 0, 'SI', 176, 2, 1, NULL, 1, '2021-06-29 00:54:42'),
+(565, '2021-06-21', 1, 191, 10, 2, 2, 4, 10, 'SI', 177, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(566, '2021-06-21', 1, 193, 1, 2, 2, 5, 0, 'SI', 181, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(567, '2021-06-21', 1, 194, 1, 2, 2, 2, 0, 'SI', 182, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(568, '2021-06-21', 1, 195, 10, 2, 2, 13, 9, 'SI', 183, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(569, '2021-06-21', 1, 196, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(570, '2021-06-22', 1, 59, 8, 2, 2, 4, 11, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(571, '2021-06-22', 1, 126, 8, 2, 2, 4, 10, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(572, '2021-06-22', 1, 143, 4, 3, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(573, '2021-06-22', 1, 155, 4, 3, 2, 5, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(574, '2021-06-22', 1, 159, 8, 2, 2, 4, 9, 'SI', 145, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(575, '2021-06-22', 1, 172, 4, 3, 2, 6, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(576, '2021-06-22', 1, 175, 4, 3, 2, 5, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(577, '2021-06-22', 1, 179, 8, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(578, '2021-06-22', 1, 187, 8, 2, 2, 4, 9, 'SI', 173, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(579, '2021-06-22', 1, 195, 8, 2, 2, 4, 9, 'SI', 183, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(580, '2021-06-22', 1, 196, 8, 2, 2, 4, 14, 'SI', 185, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(581, '2021-06-22', 1, 197, 8, 2, 2, 13, 9, 'SI', 184, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(582, '2021-06-22', 1, 198, 8, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(583, '2021-06-23', 1, 132, 1, 2, 2, 5, 0, 'SI', 131, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(584, '2021-06-23', 1, 132, 1, 2, 2, 5, 0, 'SI', 131, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(585, '2021-06-23', 1, 132, 1, 2, 2, 5, 0, 'SI', 131, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(586, '2021-06-23', 1, 159, 1, 2, 2, 5, 0, 'SI', 145, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(587, '2021-06-23', 1, 187, 10, 2, 2, 4, 10, 'SI', 173, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(588, '2021-06-23', 1, 188, 10, 2, 2, 13, 11, 'SI', 174, 13, 16, NULL, 1, '2021-06-29 00:54:42'),
+(589, '2021-06-23', 1, 189, 1, 2, 2, 5, 0, 'SI', 186, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(590, '2021-06-23', 1, 191, 10, 2, 2, 4, 11, 'SI', 177, 4, 16, NULL, 1, '2021-06-29 00:54:42'),
+(591, '2021-06-23', 1, 195, 1, 2, 2, 5, 0, 'SI', 183, 2, 5, NULL, 1, '2021-06-29 00:54:42'),
+(592, '2021-06-23', 1, 195, 10, 2, 2, 4, 10, 'SI', 183, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(593, '2021-06-23', 1, 196, 1, 2, 2, 5, 0, 'SI', 185, 2, 1, NULL, 1, '2021-06-29 00:54:42'),
+(594, '2021-06-23', 1, 197, 10, 2, 2, 13, 9, 'SI', 184, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(595, '2021-06-23', 1, 198, 1, 2, 2, 5, 0, 'SI', 187, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(596, '2021-06-23', 1, 198, 10, 2, 2, 13, 9, 'SI', 187, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(597, '2021-06-23', 1, 199, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(598, '2021-06-24', 1, 59, 8, 2, 2, 4, 11, 'SI', 56, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(599, '2021-06-24', 1, 132, 8, 2, 2, 4, 9, 'SI', 131, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(600, '2021-06-24', 1, 157, 8, 1, 2, 8, 0, 'SI', 140, 12, 0, NULL, 1, '2021-06-29 00:54:42'),
+(601, '2021-06-24', 1, 159, 8, 2, 2, 4, 9, 'SI', 145, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(602, '2021-06-24', 1, 164, 4, 3, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(603, '2021-06-24', 1, 164, 8, 2, 2, 13, 10, 'SI', 189, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(604, '2021-06-24', 1, 168, 4, 1, 2, 12, 15, 'SI', 152, 6, 9, NULL, 1, '2021-06-29 00:54:42'),
+(605, '2021-06-24', 1, 183, 4, 1, 2, 12, 15, 'SI', 169, 7, 9, NULL, 1, '2021-06-29 00:54:42'),
+(606, '2021-06-24', 1, 185, 4, 1, 2, 12, 15, 'SI', 171, 14, 7, NULL, 1, '2021-06-29 00:54:42'),
+(607, '2021-06-24', 1, 187, 8, 2, 2, 4, 9, 'SI', 173, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(608, '2021-06-24', 1, 190, 4, 3, 2, 4, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(609, '2021-06-24', 1, 191, 8, 2, 2, 4, 9, 'SI', 177, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(610, '2021-06-24', 1, 195, 8, 2, 2, 4, 9, 'SI', 183, 13, 15, NULL, 1, '2021-06-29 00:54:42'),
+(611, '2021-06-25', 1, 68, 1, 2, 2, 5, 0, 'SI', 63, 2, 1, NULL, 1, '2021-06-29 00:54:42'),
+(612, '2021-06-25', 1, 75, 1, 2, 2, 5, 0, 'SI', 66, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(613, '2021-06-25', 1, 99, 10, 3, 2, 13, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(614, '2021-06-25', 1, 120, 10, 3, 2, 13, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(615, '2021-06-25', 1, 125, 1, 2, 2, 5, 0, 'SI', 111, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(616, '2021-06-25', 1, 151, 10, 3, 2, 4, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(617, '2021-06-25', 1, 170, 1, 2, 2, 5, 0, 'SI', 155, 5, 1, NULL, 1, '2021-06-29 00:54:42'),
+(618, '2021-06-25', 1, 176, 1, 2, 2, 5, 0, 'SI', 163, 2, 1, NULL, 1, '2021-06-29 00:54:42'),
+(619, '2021-06-25', 1, 195, 10, 2, 2, 4, 11, 'SI', 183, 13, 16, NULL, 1, '2021-06-29 00:54:42'),
+(620, '2021-06-25', 1, 198, 10, 2, 2, 13, 10, 'SI', 187, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(621, '2021-06-25', 1, 199, 10, 2, 2, 4, 10, 'SI', 190, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(622, '2021-06-25', 1, 200, 10, 2, 2, 4, 9, 'SI', 191, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(623, '2021-06-25', 1, 201, 1, 2, 2, 5, 0, 'SI', 192, 2, 1, NULL, 1, '2021-06-29 00:54:42'),
+(624, '2021-06-25', 1, 201, 1, 2, 2, 5, 0, 'SI', 192, 2, 1, NULL, 1, '2021-06-29 00:54:42'),
+(625, '2021-06-25', 1, 202, 10, 2, 2, 4, 9, 'SI', 193, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(626, '2021-06-26', 1, 27, 8, 3, 2, 13, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(627, '2021-06-26', 1, 59, 8, 2, 2, 4, 9, 'SI', 196, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(628, '2021-06-26', 1, 76, 8, 3, 2, 4, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(629, '2021-06-26', 1, 77, 8, 3, 2, 13, 14, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(630, '2021-06-26', 1, 126, 8, 2, 2, 4, 11, 'SI', 123, 13, 16, NULL, 1, '2021-06-29 00:54:42'),
+(631, '2021-06-26', 1, 132, 8, 2, 2, 4, 11, 'SI', 131, 4, 15, NULL, 1, '2021-06-29 00:54:42'),
+(632, '2021-06-26', 1, 160, 4, 3, 2, 1, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(633, '2021-06-26', 1, 162, 4, 3, 2, 6, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(634, '2021-06-26', 1, 177, 4, 1, 2, 8, 0, 'SI', 194, 5, 9, NULL, 1, '2021-06-29 00:54:42'),
+(635, '2021-06-26', 1, 184, 4, 1, 2, 8, 0, 'SI', 170, 6, 9, NULL, 1, '2021-06-29 00:54:42'),
+(636, '2021-06-26', 1, 191, 4, 3, 2, 13, 9, 'NO', 0, 0, 0, '', 1, '2021-06-29 00:54:42'),
+(637, '2021-06-26', 1, 200, 8, 2, 2, 4, 9, 'SI', 191, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(638, '2021-06-26', 1, 202, 8, 2, 2, 4, 9, 'SI', 193, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
+(639, '2021-06-26', 1, 203, 4, 3, 2, 6, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
+(640, '2021-06-26', 1, 204, 8, 1, 2, 8, 0, 'SI', 195, 12, 14, NULL, 1, '2021-06-29 00:54:42'),
+(641, '2021-06-26', 1, 205, 8, 2, 2, 4, 9, 'SI', 197, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
+(642, '2021-06-28', 1, 206, 10, 2, 2, 13, 9, 'SI', 198, 4, 14, '', 1, '2021-06-29 09:42:19'),
+(643, '2021-06-28', 1, 207, 10, 2, 2, 13, 9, 'SI', 199, 13, 14, '', 1, '2021-06-29 09:43:16'),
+(644, '2021-06-28', 1, 201, 10, 2, 2, 4, 9, 'SI', 200, 13, 14, '', 1, '2021-06-29 09:46:46'),
+(645, '2021-06-28', 1, 200, 10, 2, 2, 4, 10, 'SI', 191, 13, 14, '', 1, '2021-06-29 09:56:36'),
+(646, '2021-06-28', 1, 208, 10, 2, 2, 4, 9, 'SI', 201, 13, 14, '', 1, '2021-06-29 09:57:46'),
+(647, '2021-06-28', 1, 209, 1, 2, 2, 5, 0, 'SI', 202, 5, 1, '', 1, '2021-06-29 10:02:03'),
+(648, '2021-06-28', 1, 199, 1, 2, 2, 5, 0, 'SI', 190, 5, 1, '', 1, '2021-06-29 10:02:59'),
+(649, '2021-06-28', 1, 188, 1, 2, 2, 5, 0, 'SI', 174, 13, 1, '', 1, '2021-06-29 10:03:46'),
+(650, '2021-06-28', 1, 207, 1, 2, 2, 5, 0, 'SI', 199, 2, 1, '', 1, '2021-06-29 10:07:26'),
+(651, '2021-06-28', 1, 179, 1, 2, 2, 5, 0, 'SI', 166, 13, 1, '', 1, '2021-06-29 10:09:03'),
+(652, '2021-06-28', 1, 59, 1, 2, 2, 5, 0, 'SI', 56, 5, 1, '', 1, '2021-06-29 10:12:26'),
+(653, '2021-06-28', 1, 209, 10, 2, 2, 8, 0, 'SI', 202, 4, 14, '', 1, '2021-06-29 10:13:16'),
+(654, '2021-06-28', 1, 205, 10, 2, 2, 4, 9, 'SI', 197, 4, 14, '', 1, '2021-06-29 10:14:48'),
+(655, '2021-06-28', 1, 210, 10, 2, 2, 4, 9, 'SI', 203, 4, 14, '', 1, '2021-06-29 10:17:16'),
+(656, '2021-06-30', 1, 210, 10, 2, 2, 4, 9, 'SI', 203, 4, 14, '', 1, '2021-06-29 10:18:16');
 
 -- --------------------------------------------------------
 
@@ -1398,7 +2257,7 @@ CREATE TABLE `acpsy_usuarios` (
 --
 
 INSERT INTO `acpsy_usuarios` (`idUsuario`, `idPerfil`, `idEstado`, `dniUsuario`, `apellidosUsuario`, `nombresUsuario`, `cuentaUsuario`, `correoUsuario`, `claveUsuario`, `intentosUsuario`, `fechaAlta`, `profileUsuario`) VALUES
-(1, 1, 1, '77478995', 'CASTRO PALACIOS', 'OLGER IVAN', 'ocastrop', 'ocastrop@hnseb.gob.pe', '$2a$07$usesomesillystringforeVF6hLwtgsUBAmUN4cGEd8tYF74gSHRW', 0, '2021-06-01 15:34:46', ''),
+(1, 1, 1, '77478995', 'CASTRO PALACIOS', 'OLGER IVAN', 'ocastrop', 'ocastrop@hnseb.gob.pe', '$2a$07$usesomesillystringforeVF6hLwtgsUBAmUN4cGEd8tYF74gSHRW', 2, '2021-06-01 15:34:46', ''),
 (2, 1, 1, '40195996', 'ROSAS SANCHEZ', 'MONICA NOHEMI', 'rosasmn', 'rosasmn@hnseb.gob.pe', '$2a$07$usesomesillystringforeoRNSqF5ebwOJ.HFIcVhNJ65bww3hpNi', 0, '2021-06-01 17:24:22', NULL),
 (3, 3, 1, '06958470', 'CORDOVA CACHAY', 'MATILDE', 'mcordovac', 'dpsicologia@hnseb.gob.pe', '$2a$07$usesomesillystringforehgypeI5DRix.IHkznBBhY252VmxlIWG', 0, '2021-06-01 17:24:53', NULL),
 (4, 3, 1, '09851044', 'FLORES CASTILLO', 'IRMA', 'ifloresc', 'dpsicologia@hnseb.gob.pe', '$2a$07$usesomesillystringforeBMhRE0LIoruOmyFsWj3UQXjUsLK9jbW', 0, '2021-06-01 17:25:46', NULL),
@@ -1461,7 +2320,17 @@ INSERT INTO `zacpsy_aud_atenciones` (`idAuditAte`, `idAtencion`, `fechaRegAudi`,
 (25, 160, '2021-06-26', 1, 'MODIFICACIÓN', '1903862', '454788', '1903862', '1909903'),
 (26, 27, '2021-06-26', 1, 'MODIFICACIÓN', '1899297', '450226', '1899297', '1905338'),
 (27, 77, '2021-06-26', 1, 'MODIFICACIÓN', '1896907', '448439', '1896907', '1902948'),
-(28, 76, '2021-06-26', 1, 'MODIFICACIÓN', '1897928', '448433', '1897928', '1903969');
+(28, 76, '2021-06-26', 1, 'MODIFICACIÓN', '1897928', '448433', '1897928', '1903969'),
+(29, 97, '2021-06-28', 1, 'MODIFICACIÓN', '1901040', '451735', '1901040', '1907081'),
+(30, 141, '2021-06-28', 1, 'MODIFICACIÓN', '1902920', '453751', '1902920', '1908961'),
+(31, 136, '2021-06-28', 1, 'MODIFICACIÓN', '1902678', '453519', '1902678', '1908719'),
+(32, 76, '2021-06-28', 1, 'MODIFICACIÓN', '1897928', '1903969', '1897928', '1903969'),
+(33, 45, '2021-06-28', 1, 'MODIFICACIÓN', '1898538', '1904579', '1898538', '1904579'),
+(34, 206, '2021-06-28', 1, 'ANULACION', '1852299', '1858340', NULL, NULL),
+(35, 205, '2021-06-28', 1, 'MODIFICACIÓN', '1907723', '1913764', '1907723', '1913764'),
+(36, 84, '2021-06-28', 1, 'MODIFICACIÓN', '1900524', '451148', '1900524', '1906565'),
+(37, 50, '2021-06-28', 1, 'MODIFICACIÓN', '1892871', '443658', '1892871', '1898912'),
+(38, 200, '2021-06-28', 1, 'MODIFICACIÓN', '1907471', '1913512', '1907471', '1913512');
 
 -- --------------------------------------------------------
 
@@ -1488,7 +2357,8 @@ CREATE TABLE `zacpsy_aud_familiares` (
 INSERT INTO `zacpsy_aud_familiares` (`idAudiFam`, `idFamiliar`, `fecRegAudi`, `idUsuario`, `AccRealizada`, `idAtencionAnt`, `ndocAnt`, `idAtencionNueva`, `ndocNuevo`) VALUES
 (1, 170, '2021-06-21', 1, 'ACTUALIZACIÓN', 183, '70272442', 183, '111111111111'),
 (2, 170, '2021-06-21', 1, 'ELIMINACIÓN', 183, '111111111111', NULL, NULL),
-(3, 188, '2021-06-27', 1, 'ELIMINACIÓN', 197, '42140283', NULL, NULL);
+(3, 188, '2021-06-27', 1, 'ELIMINACIÓN', 197, '42140283', NULL, NULL),
+(4, 41, '2021-06-27', 1, 'ACTUALIZACIÓN', 39, '40879094', 39, '40879074');
 
 --
 -- Índices para tablas volcadas
@@ -1545,12 +2415,6 @@ ALTER TABLE `acpsy_estatusseguimiento`
   ADD PRIMARY KEY (`idStatusSeg`);
 
 --
--- Indices de la tabla `acpsy_etapaseguimiento`
---
-ALTER TABLE `acpsy_etapaseguimiento`
-  ADD PRIMARY KEY (`idEtapSegui`);
-
---
 -- Indices de la tabla `acpsy_famatencion`
 --
 ALTER TABLE `acpsy_famatencion`
@@ -1589,14 +2453,7 @@ ALTER TABLE `acpsy_profesionales`
 -- Indices de la tabla `acpsy_seguimiento`
 --
 ALTER TABLE `acpsy_seguimiento`
-  ADD PRIMARY KEY (`idSeguimiento`),
-  ADD KEY `fk_atencionpac` (`idAtencionPac`),
-  ADD KEY `fk_motivo` (`idMotSeguimiento`),
-  ADD KEY `fk_etapa` (`idEtapSegui`),
-  ADD KEY `fk_profesional` (`idProfesional`),
-  ADD KEY `fk_estatus` (`idStatusSeg`),
-  ADD KEY `fk_usuarioReg` (`idUsuario`),
-  ADD KEY `fk_tipoSeg` (`idTipoSeguimiento`);
+  ADD PRIMARY KEY (`idSeguimiento`);
 
 --
 -- Indices de la tabla `acpsy_tiposeguimiento`
@@ -1638,7 +2495,7 @@ ALTER TABLE `zacpsy_aud_familiares`
 -- AUTO_INCREMENT de la tabla `acpsy_atencion`
 --
 ALTER TABLE `acpsy_atencion`
-  MODIFY `idAtencion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=206;
+  MODIFY `idAtencion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
 
 --
 -- AUTO_INCREMENT de la tabla `acpsy_condicionprof`
@@ -1683,16 +2540,10 @@ ALTER TABLE `acpsy_estatusseguimiento`
   MODIFY `idStatusSeg` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT de la tabla `acpsy_etapaseguimiento`
---
-ALTER TABLE `acpsy_etapaseguimiento`
-  MODIFY `idEtapSegui` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
 -- AUTO_INCREMENT de la tabla `acpsy_famatencion`
 --
 ALTER TABLE `acpsy_famatencion`
-  MODIFY `idFamiliar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=198;
+  MODIFY `idFamiliar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=204;
 
 --
 -- AUTO_INCREMENT de la tabla `acpsy_motivoseguimiento`
@@ -1716,13 +2567,13 @@ ALTER TABLE `acpsy_perfiles`
 -- AUTO_INCREMENT de la tabla `acpsy_profesionales`
 --
 ALTER TABLE `acpsy_profesionales`
-  MODIFY `idProfesional` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idProfesional` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `acpsy_seguimiento`
 --
 ALTER TABLE `acpsy_seguimiento`
-  MODIFY `idSeguimiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idSeguimiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=657;
 
 --
 -- AUTO_INCREMENT de la tabla `acpsy_tiposeguimiento`
@@ -1746,13 +2597,13 @@ ALTER TABLE `acpsy_usuarios`
 -- AUTO_INCREMENT de la tabla `zacpsy_aud_atenciones`
 --
 ALTER TABLE `zacpsy_aud_atenciones`
-  MODIFY `idAuditAte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `idAuditAte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT de la tabla `zacpsy_aud_familiares`
 --
 ALTER TABLE `zacpsy_aud_familiares`
-  MODIFY `idAudiFam` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idAudiFam` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas
@@ -1779,18 +2630,6 @@ ALTER TABLE `acpsy_famatencion`
 ALTER TABLE `acpsy_profesionales`
   ADD CONSTRAINT `fk_condicion` FOREIGN KEY (`idCondicion`) REFERENCES `acpsy_condicionprof` (`idCondicion`),
   ADD CONSTRAINT `fk_estadoProf` FOREIGN KEY (`idEstado`) REFERENCES `acpsy_estadoprof` (`idEstadoProf`);
-
---
--- Filtros para la tabla `acpsy_seguimiento`
---
-ALTER TABLE `acpsy_seguimiento`
-  ADD CONSTRAINT `fk_atencionpac` FOREIGN KEY (`idAtencionPac`) REFERENCES `acpsy_atencion` (`idAtencion`),
-  ADD CONSTRAINT `fk_estatus` FOREIGN KEY (`idStatusSeg`) REFERENCES `acpsy_estatusseguimiento` (`idStatusSeg`),
-  ADD CONSTRAINT `fk_etapa` FOREIGN KEY (`idEtapSegui`) REFERENCES `acpsy_etapaseguimiento` (`idEtapSegui`),
-  ADD CONSTRAINT `fk_motivo` FOREIGN KEY (`idMotSeguimiento`) REFERENCES `acpsy_motivoseguimiento` (`idMotSeguimiento`),
-  ADD CONSTRAINT `fk_profesional` FOREIGN KEY (`idProfesional`) REFERENCES `acpsy_profesionales` (`idProfesional`),
-  ADD CONSTRAINT `fk_tipoSeg` FOREIGN KEY (`idTipoSeguimiento`) REFERENCES `acpsy_tiposeguimiento` (`idTipoSeguimiento`),
-  ADD CONSTRAINT `fk_usuarioReg` FOREIGN KEY (`idUsuario`) REFERENCES `acpsy_usuarios` (`idUsuario`);
 
 --
 -- Filtros para la tabla `acpsy_usuarios`

@@ -1,5 +1,93 @@
+$("#deshacer-filtro-Seg").on("click", function () {
+    window.location = "seguimiento";
+});
+$("#rango-seguimiento").daterangepicker({
+    ranges: {
+        Hoy: [moment(), moment()],
+        Ayer: [moment().subtract(1, "days"), moment().subtract(1, "days")],
+        "Últimos 7 días": [moment().subtract(6, "days"), moment()],
+        "Últimos 30 días": [moment().subtract(29, "days"), moment()],
+        "Este mes": [moment().startOf("month"), moment().endOf("month")],
+        "Último mes": [
+            moment().subtract(1, "month").startOf("month"),
+            moment().subtract(1, "month").endOf("month"),
+        ],
+    },
+    startDate: moment(),
+    endDate: moment(),
+    maxSpan: {
+        days: 30,
+    },
+    locale: {
+        format: "DD/MM/YYYY",
+        separator: " - ",
+        applyLabel: "APLICAR",
+        cancelLabel: "CANCELAR",
+        fromLabel: "Desde",
+        toLabel: "Hasta",
+        customRangeLabel: "Personalizar",
+        weekLabel: "W",
+        daysOfWeek: ["Do", "Lu", "Ma", "Mie", "Ju", "Vi", "Sa"],
+        monthNames: [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Setiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre",
+        ],
+        firstDay: 1,
+    },
+},
+    function (start, end) {
+        $("#daterange-btn span").html(
+            start.format("MMMM D, YYYY") + "-" + end.format("MMMM D, YYYY")
+        );
+        var fechaInicialAct = start.format("YYYY-MM-DD");
+        var fechaFinalAct = end.format("YYYY-MM-DD");
+
+        var capRangoSeg = $("#daterange-btn span").html();
+        localStorage.setItem("capRangoSeg", capRangoSeg);
+        window.location =
+            "index.php?ruta=seguimiento&fechaInicialSeg=" +
+            fechaInicialAct +
+            "&fechaFinalSeg=" +
+            fechaFinalAct;
+        let timerInterval;
+        Swal.fire({
+            title: "Se está cargando la información",
+            html: "Espere por favor...",
+            timer: 7000,
+            timerProgressBar: true,
+            onBeforeOpen: () => {
+                Swal.showLoading();
+                timerInterval = setInterval(() => {
+                    const content = Swal.getContent();
+                    if (content) {
+                        const b = content.querySelector("b");
+                        if (b) {
+                            b.textContent = Swal.getTimerLeft();
+                        }
+                    }
+                }, 100);
+            },
+            onClose: () => {
+                clearInterval(timerInterval);
+            },
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+            }
+        });
+    }
+);
 $(".datatableSeguimiento").DataTable({
-    ajax: "public/views/util/datatable-Seguimientos.php",
+    // ajax: "public/views/util/datatable-Seguimientos.php",
     deferRender: true,
     retrieve: true,
     processing: true,
@@ -93,6 +181,11 @@ $("#edtSegPac").select2(
                 $("#seleccionActual21").remove();
                 $("#seleccionActual3").remove();
                 $("#seleccionActual31").remove();
+                $("#idFamAnt").val("0");
+                $("#edtSegDf11").val("0");
+                $("#edtSegDf11").html("Seleccione Diagnóstico");
+                $("#edtSegDf21").val("0");
+                $("#edtSegDf21").html("Seleccione Actividad (Opcional)");
                 return {
                     results: response,
                 };
@@ -143,6 +236,7 @@ $("#edtSegTip").on("change", function () {
     if (comboTipSeg > 0) {
         if (comboTipSeg == 1 || comboTipSeg == 2) {
             $("#bloqueComFam1").removeClass("d-none");
+            $("#block11").removeClass("d-none");
             $("#comSi1").prop("checked", true);
             $("#comFami1").val("SI");
         }
@@ -198,6 +292,10 @@ $("#comNo1").click(function () {
     if ($("#comNo1").is(":checked")) {
         $("#comFami1").val("NO");
         $("#block11").addClass("d-none");
+        $("#edtSegDf11").val("0");
+        $("#edtSegDf11").html("Seleccione Diagnóstico");
+        $("#edtSegDf21").val("0");
+        $("#edtSegDf21").html("Seleccione Actividad (Opcional)");
         $("#edtSegFam")[0].selectedIndex = 0;
         $("#edtSegDf1")[0].selectedIndex = 0;
         $("#edtSegDf2")[0].selectedIndex = 0;
@@ -540,144 +638,170 @@ $("#btnRegSeg").on("click", function () {
 // Editar Seguimiento
 $(".datatableSeguimiento tbody").on("click", ".btnEditarSeguimiento", function () {
     var idSeguimiento = $(this).attr("idSeguimiento");
-    var datos = new FormData();
-    datos.append("idSeguimiento", idSeguimiento);
-    $.ajax({
-        url: "public/views/src/ajaxSeguimientos.php",
-        method: "POST",
-        data: datos,
-        cache: false,
-        contentType: false,
-        processData: false,
-        dataType: "json",
-        success: function (respuesta) {
-            $("#idSeguimiento").val(respuesta["idSeguimiento"]);
-            $("#edtSegObs").val(respuesta["obsSeg"]);
-            $("#edtSegFec").val(respuesta["fRegistrSeg"]);
-            $("#edtSegProf").val(respuesta["idProfesional"]);
-            $("#s2").val(respuesta["nombresProfesional"] + " " + respuesta["apellidosProfesional"]);
-            $("#edtSegTip1").val(respuesta["idTipoSeguimiento"]);
-            $("#edtSegTip1").html(respuesta["detaTipSeguimiento"]);
-            $("#edtSegMot1").val(respuesta["idMotSeguimiento"]);
-            $("#edtSegMot1").html(respuesta["detaMotivoSef"]);
-            $("#seleccionActual21").html(respuesta["cuentaAtencion"] + " || " + respuesta["tipdocAtencion"] + "-" + respuesta["nrodocAtencion"] + " - " + respuesta["nombAtencion"] + " " + respuesta["apPaternoAtencion"] + " " + respuesta["apMaternoAtencion"]);
-            $("#edtSegPac1").val(respuesta["idAtencionPac"]);
-            $("#edtSegPac1").html(respuesta["cuentaAtencion"] + " || " + respuesta["tipdocAtencion"] + "-" + respuesta["nrodocAtencion"] + " - " + respuesta["nombAtencion"] + " " + respuesta["apPaternoAtencion"] + " " + respuesta["apMaternoAtencion"]);
-            // Condicionales en caso del tipo de tipSeguimiento
-            var tipSeguimiento = respuesta["idTipoSeguimiento"];
-            if (tipSeguimiento == 1 || tipSeguimiento == 2) {
-                $("#bloqueComFam1").removeClass("d-none");
-            }
-            else {
-                $("#bloqueComFam1").addClass("d-none");
-            }
-            if (respuesta["comunFamSeg"] == "SI") {
-                $("#block11").removeClass("d-none");
-                $("#comSi1").prop("checked", true);
-                $("#comFami1").val("SI");
-            }
-            else {
-                $("#block11").addClass("d-none");
-                $("#comNo1").prop("checked", true);
-                $("#comFami1").val("NO");
-            }
-            // Condicionales en caso del tipo de tipSeguimiento
-            // Condiciones para diagnosticos
-            if (respuesta["idDiag1Seg"] != 0) {
-                $("#edtSegDp11").val(respuesta["idDiag1Seg"]);
-                $("#edtSegDp11").html(respuesta["cieP1"] + " - " + respuesta["detaD1"]);
-            }
-            if (respuesta["idDiag2Seg"] != 0) {
-                $("#edtSegDp21").val(respuesta["idDiag2Seg"]);
-                $("#edtSegDp21").html(respuesta["cieP2"] + " - " + respuesta["detD2"]);
-            }
-            else {
-                if (respuesta["idDiag1Seg"] != 0) {
-                    var existe = respuesta["idDiag1Seg"];
-                    $("#edtSegDp2")[0].selectedIndex = 0;
-                    if (existe > 0) {
-                        $.ajax({
-                            url: "public/views/src/ajaxDiagnosticos.php",
-                            method: "POST",
-                            dataType: "html",
-                            data: { existe: existe }
-                        }).done(function (respuesta) {
-                            $("#edtSegDp2").html(respuesta);
-                        }).fail(function () {
-                            console.log("error");
-                        });
-                    }
-                    else {
-                        var errorhtml = "<option value='0'>No hay actividades existentes</option>";
-                        $("#edtSegDp2").html(errorhtml);
-                    }
-                }
-                else {
-                    $("#edtSegDp21").val("0");
-                    $("#edtSegDp21").html("Seleccione Actividad (Opcional)");
-                }
-            }
-
-            if (respuesta["idDiag1SegFam"] != 0) {
-                $("#edtSegDf11").val(respuesta["idDiag1SegFam"]);
-                $("#edtSegDf11").html(respuesta["cieDF1"] + " - " + respuesta["detDF1"]);
-            }
-            else {
-                $("#edtSegDf11").val("0");
-                $("#edtSegDf11").html("Seleccione Diagnóstico");
-            }
-            if (respuesta["idDiag2SegFam"] != 0) {
-                $("#edtSegDf21").val(respuesta["idDiag2SegFam"]);
-                $("#edtSegDf21").html(respuesta["cieDF2"] + " - " + respuesta["detDF2"]);
-            }
-            else {
-                if (respuesta["idDiag1SegFam"] != 0) {
-                    var existe = respuesta["idDiag1SegFam"];
-                    $("#edtSegDf2")[0].selectedIndex = 0;
-                    if (existe > 0) {
-                        $.ajax({
-                            url: "public/views/src/ajaxDiagnosticos.php",
-                            method: "POST",
-                            dataType: "html",
-                            data: { existe: existe }
-                        }).done(function (respuesta) {
-                            $("#edtSegDf2").html(respuesta);
-                        }).fail(function () {
-                            console.log("error");
-                        });
-                    }
-                    else {
-                        var errorhtml = "<option value='0'>No hay actividades existentes</option>";
-                        $("#edtSegDf2").html(errorhtml);
-                    }
-                }
-                else {
-                    $("#edtSegDf21").val("0");
-                    $("#edtSegDf21").html("Seleccione Actividad (Opcional)");
-                }
-            }
-            // Condiciones para diagnosticos
-            $("#idFamAnt").val(respuesta["idFamAtSeg"]);
-            if (respuesta["idFamAtSeg"] != 0) {
-                $("#seleccionActual31").html(respuesta["nombApFamiliar"] + " - " + respuesta["detaParentesco"] + "  " + respuesta["telcelFamiliar"]);
-            }
-            else {
-                $("#seleccionActual31").html("");
-            }
-            var atencion = respuesta["idAtencionPac"];
-            $("#edtSegFam")[0].selectedIndex = 0;
+    var idProfesional = $(this).attr("idProfesional");
+    var idProfesional2 = $("#idProfH").val();
+    if (idProfesional2 != 0) {
+        if (idProfesional == idProfesional2) {
+            var datos = new FormData();
+            datos.append("idSeguimiento", idSeguimiento);
             $.ajax({
-                url: "public/views/src/ajaxFamiliares.php",
+                url: "public/views/src/ajaxSeguimientos.php",
                 method: "POST",
-                dataType: "html",
-                data: { atencion: atencion }
-            }).done(function (respuesta) {
-                $("#edtSegFam").html(respuesta);
-            }).fail(function () {
-                console.log("error");
+                data: datos,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success: function (respuesta) {
+                    $("#idSeguimiento").val(respuesta["idSeguimiento"]);
+                    $("#edtSegObs").val(respuesta["obsSeg"]);
+                    $("#edtSegFec").val(respuesta["fRegistrSeg"]);
+                    $("#edtSegProf").val(respuesta["idProfesional"]);
+                    $("#s2").val(respuesta["nombresProfesional"] + " " + respuesta["apellidosProfesional"]);
+                    $("#edtSegTip1").val(respuesta["idTipoSeguimiento"]);
+                    $("#edtSegTip1").html(respuesta["detaTipSeguimiento"]);
+                    $("#edtSegMot1").val(respuesta["idMotSeguimiento"]);
+                    $("#edtSegMot1").html(respuesta["detaMotivoSef"]);
+                    $("#seleccionActual21").html(respuesta["cuentaAtencion"] + " || " + respuesta["tipdocAtencion"] + "-" + respuesta["nrodocAtencion"] + " - " + respuesta["nombAtencion"] + " " + respuesta["apPaternoAtencion"] + " " + respuesta["apMaternoAtencion"]);
+                    $("#edtSegPac1").val(respuesta["idAtencionPac"]);
+                    $("#edtSegPac1").html(respuesta["cuentaAtencion"] + " || " + respuesta["tipdocAtencion"] + "-" + respuesta["nrodocAtencion"] + " - " + respuesta["nombAtencion"] + " " + respuesta["apPaternoAtencion"] + " " + respuesta["apMaternoAtencion"]);
+                    // Condicionales en caso del tipo de tipSeguimiento
+                    var tipSeguimiento = respuesta["idTipoSeguimiento"];
+                    if (tipSeguimiento == 1 || tipSeguimiento == 2) {
+                        $("#bloqueComFam1").removeClass("d-none");
+                    }
+                    else {
+                        $("#bloqueComFam1").addClass("d-none");
+                    }
+                    if (respuesta["comunFamSeg"] == "SI") {
+                        $("#block11").removeClass("d-none");
+                        $("#comSi1").prop("checked", true);
+                        $("#comFami1").val("SI");
+                    }
+                    else {
+                        $("#block11").addClass("d-none");
+                        $("#comNo1").prop("checked", true);
+                        $("#comFami1").val("NO");
+                    }
+                    // Condicionales en caso del tipo de tipSeguimiento
+                    // Condiciones para diagnosticos
+                    if (respuesta["idDiag1Seg"] != 0) {
+                        $("#edtSegDp11").val(respuesta["idDiag1Seg"]);
+                        $("#edtSegDp11").html(respuesta["cieP1"] + " - " + respuesta["detaD1"]);
+                    }
+                    if (respuesta["idDiag2Seg"] != 0) {
+                        $("#edtSegDp21").val(respuesta["idDiag2Seg"]);
+                        $("#edtSegDp21").html(respuesta["cieP2"] + " - " + respuesta["detD2"]);
+                    }
+                    else {
+                        if (respuesta["idDiag1Seg"] != 0) {
+                            var existe = respuesta["idDiag1Seg"];
+                            $("#edtSegDp2")[0].selectedIndex = 0;
+                            if (existe > 0) {
+                                $.ajax({
+                                    url: "public/views/src/ajaxDiagnosticos.php",
+                                    method: "POST",
+                                    dataType: "html",
+                                    data: { existe: existe }
+                                }).done(function (respuesta) {
+                                    $("#edtSegDp2").html(respuesta);
+                                }).fail(function () {
+                                    console.log("error");
+                                });
+                            }
+                            else {
+                                var errorhtml = "<option value='0'>No hay actividades existentes</option>";
+                                $("#edtSegDp2").html(errorhtml);
+                            }
+                        }
+                        else {
+                            $("#edtSegDp21").val("0");
+                            $("#edtSegDp21").html("Seleccione Actividad (Opcional)");
+                        }
+                    }
+
+                    if (respuesta["idDiag1SegFam"] != 0) {
+                        $("#edtSegDf11").val(respuesta["idDiag1SegFam"]);
+                        $("#edtSegDf11").html(respuesta["cieDF1"] + " - " + respuesta["detDF1"]);
+                    }
+                    else {
+                        $("#edtSegDf11").val("0");
+                        $("#edtSegDf11").html("Seleccione Diagnóstico");
+                    }
+                    if (respuesta["idDiag2SegFam"] != 0) {
+                        $("#edtSegDf21").val(respuesta["idDiag2SegFam"]);
+                        $("#edtSegDf21").html(respuesta["cieDF2"] + " - " + respuesta["detDF2"]);
+                    }
+                    else {
+                        if (respuesta["idDiag1SegFam"] != 0) {
+                            var existe = respuesta["idDiag1SegFam"];
+                            $("#edtSegDf2")[0].selectedIndex = 0;
+                            if (existe > 0) {
+                                $.ajax({
+                                    url: "public/views/src/ajaxDiagnosticos.php",
+                                    method: "POST",
+                                    dataType: "html",
+                                    data: { existe: existe }
+                                }).done(function (respuesta) {
+                                    $("#edtSegDf2").html(respuesta);
+                                }).fail(function () {
+                                    console.log("error");
+                                });
+                            }
+                            else {
+                                var errorhtml = "<option value='0'>No hay actividades existentes</option>";
+                                $("#edtSegDf2").html(errorhtml);
+                            }
+                        }
+                        else {
+                            $("#edtSegDf21").val("0");
+                            $("#edtSegDf21").html("Seleccione Actividad (Opcional)");
+                        }
+                    }
+                    // Condiciones para diagnosticos
+                    $("#idFamAnt").val(respuesta["idFamAtSeg"]);
+                    if (respuesta["idFamAtSeg"] != 0) {
+                        $("#seleccionActual31").html(respuesta["nombApFamiliar"] + " - " + respuesta["detaParentesco"] + "  " + respuesta["telcelFamiliar"]);
+                    }
+                    else {
+                        $("#seleccionActual31").html("");
+                    }
+                    var atencion = respuesta["idAtencionPac"];
+                    $("#edtSegFam")[0].selectedIndex = 0;
+                    $.ajax({
+                        url: "public/views/src/ajaxFamiliares.php",
+                        method: "POST",
+                        dataType: "html",
+                        data: { atencion: atencion }
+                    }).done(function (respuesta) {
+                        $("#edtSegFam").html(respuesta);
+                    }).fail(function () {
+                        console.log("error");
+                    });
+                },
             });
-        },
-    });
+            $("#modal-editar-seguimiento").modal("show");
+        }
+        else {
+            Swal.fire({
+                icon: "error",
+                title: "No tienes permiso para editar el seguimiento seleccionado",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            $("#modal-editar-seguimiento").modal("hide");
+
+        }
+    }
+    else {
+        $("#modal-editar-seguimiento").modal("hide");
+        Swal.fire({
+            icon: "error",
+            title: "No tienes permiso para editar el seguimiento seleccionado",
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
 });
 $("#edtSegPac").on("change", function () {
     var atencion = $(this).val();
@@ -742,260 +866,295 @@ $("#edtSegFam").on("change", function () {
 });
 // Editar Seguimiento
 // Validación de campos
-// $("#btnEdtSeg").on("click", function () {
-//     var tipoS = $("#edtSegTip").val();
+$("#btnEdtSeg").on("click", function () {
+    var tipoS = $("#edtSegTip").val();
+    if (tipoS == 1) {
+        $("#formEdtSeg").validate({
+            rules: {
+                edtSegFec: {
+                    required: true,
+                },
+                edtSegTip: {
+                    valueNotEquals: "0",
+                },
+                edtSegProf: {
+                    valueNotEquals: "0",
+                },
+                edtSegMot: {
+                    valueNotEquals: "0",
+                },
+                edtSegPac: {
+                    valueNotEquals: "0",
+                    required: true,
+                },
+                edtSegDp1: {
+                    valueNotEquals: "0",
+                },
+                edtSegDf1: {
+                    valueNotEquals: "0",
+                },
+            },
+            messages: {
 
-//     if (tipoS == 1) {
-//         $("#formEdtSeg").validate({
-//             rules: {
-//                 edtSegFec: {
-//                     required: true,
-//                 },
-//                 edtSegTip: {
-//                     valueNotEquals: "0",
-//                 },
-//                 edtSegProf: {
-//                     valueNotEquals: "0",
-//                 },
-//                 edtSegMot: {
-//                     valueNotEquals: "0",
-//                 },
-//                 edtSegPac: {
-//                     valueNotEquals: "0",
-//                     required: true,
-//                 },
-//                 edtSegDp1: {
-//                     valueNotEquals: "0",
-//                 },
-//                 edtSegFam: {
-//                     valueNotEquals: "0",
-//                 },
-//                 edtSegDf1: {
-//                     valueNotEquals: "0",
-//                 },
-//             },
-//             messages: {
+                edtSegFec: {
+                    required: "Ingrese Fecha de Seguimiento",
+                },
+                edtSegTip: {
+                    valueNotEquals: "Seleccione Tipo de Seguimiento",
+                },
+                edtSegProf: {
+                    valueNotEquals: "Seleccione Profesional",
+                },
+                edtSegMot: {
+                    valueNotEquals: "Seleccione Motivo",
+                },
+                edtSegPac: {
+                    valueNotEquals: "Seleccione Paciente",
+                    required: "Seleccione Paciente atendido",
+                },
+                edtSegDp1: {
+                    valueNotEquals: "Seleccione al menos un diagnóstico",
+                },
+                edtSegDf1: {
+                    valueNotEquals: "Seleccione al menos un diagnóstico",
+                },
+            },
+            errorElement: "span",
+            errorPlacement: function (error, element) {
+                error.addClass("invalid-feedback");
+                element.closest(".form-group").append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass("is-invalid");
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass("is-invalid");
+            },
+        });
+    }
+    if ($("#comSi1").is(":checked")) {
+        $("#formEdtSeg").validate({
+            rules: {
+                edtSegFec: {
+                    required: true,
+                },
+                edtSegTip: {
+                    valueNotEquals: "0",
+                },
+                edtSegProf: {
+                    valueNotEquals: "0",
+                },
+                edtSegMot: {
+                    valueNotEquals: "0",
+                },
+                edtSegPac: {
+                    valueNotEquals: "0",
+                    required: true,
+                },
+                edtSegDp1: {
+                    valueNotEquals: "0",
+                },
+            },
+            messages: {
+                edtSegFec: {
+                    required: "Ingrese Fecha de Seguimiento",
+                },
+                edtSegTip: {
+                    valueNotEquals: "Seleccione Tipo de Seguimiento",
+                },
+                edtSegProf: {
+                    valueNotEquals: "Seleccione Profesional",
+                },
+                edtSegMot: {
+                    valueNotEquals: "Seleccione Motivo",
+                },
+                rgSegPac: {
+                    valueNotEquals: "Seleccione Paciente",
+                    required: "Seleccione Paciente atendido",
+                },
+                edtSegDp1: {
+                    valueNotEquals: "Seleccione al menos un diagnóstico",
+                },
+            },
+            errorElement: "span",
+            errorPlacement: function (error, element) {
+                error.addClass("invalid-feedback");
+                element.closest(".form-group").append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass("is-invalid");
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass("is-invalid");
+            },
+        });
+    }
+    else if (tipoS == 2) {
+        $("#formEdtSeg").validate({
+            rules: {
+                edtSegFec: {
+                    required: true,
+                },
+                edtSegTip: {
+                    valueNotEquals: "0",
+                },
+                edtSegProf: {
+                    valueNotEquals: "0",
+                },
+                edtSegMot: {
+                    valueNotEquals: "0",
+                },
+                edtSegPac: {
+                    valueNotEquals: "0",
+                    required: true,
+                },
+                edtSegDp1: {
+                    valueNotEquals: "0",
+                },
+                edtSegFam: {
+                    valueNotEquals: "0",
+                },
+                edtSegDf1: {
+                    valueNotEquals: "0",
+                },
+            },
+            messages: {
+                edtSegFec: {
+                    required: "Ingrese Fecha de Seguimiento",
+                },
+                edtSegTip: {
+                    valueNotEquals: "Seleccione Tipo de Seguimiento",
+                },
+                edtSegProf: {
+                    valueNotEquals: "Seleccione Profesional",
+                },
+                edtSegMot: {
+                    valueNotEquals: "Seleccione Motivo",
+                },
+                edtSegPac: {
+                    valueNotEquals: "Seleccione Paciente",
+                    required: "Seleccione Paciente atendido",
+                },
+                edtSegDp1: {
+                    valueNotEquals: "Seleccione al menos un diagnóstico",
+                },
+                edtSegFam: {
+                    valueNotEquals: "Seleccione Familiar",
+                },
+                edtSegDf1: {
+                    valueNotEquals: "Seleccione al menos un diagnóstico",
+                },
+            },
+            errorElement: "span",
+            errorPlacement: function (error, element) {
+                error.addClass("invalid-feedback");
+                element.closest(".form-group").append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass("is-invalid");
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass("is-invalid");
+            },
+        });
+    }
+    else {
+        $("#formEdtSeg").validate({
+            rules: {
+                edtSegFec: {
+                    required: true,
+                },
+                edtSegTip: {
+                    valueNotEquals: "0",
+                },
+                edtSegProf: {
+                    valueNotEquals: "0",
+                },
+                edtSegMot: {
+                    valueNotEquals: "0",
+                },
+                edtSegPac: {
+                    valueNotEquals: "0",
+                    required: true,
+                },
+                edtSegDp1: {
+                    valueNotEquals: "0",
+                },
+            },
+            messages: {
+                edtSegFec: {
+                    required: "Ingrese Fecha de Seguimiento",
+                },
+                edtSegTip: {
+                    valueNotEquals: "Seleccione Tipo de Seguimiento",
+                },
+                edtSegProf: {
+                    valueNotEquals: "Seleccione Profesional",
+                },
+                edtSegMot: {
+                    valueNotEquals: "Seleccione Motivo",
+                },
+                edtSegPac: {
+                    valueNotEquals: "Seleccione Paciente",
+                    required: "Seleccione Paciente atendido",
+                },
+                edtSegDp1: {
+                    valueNotEquals: "Seleccione al menos un diagnóstico",
+                },
+            },
+            errorElement: "span",
+            errorPlacement: function (error, element) {
+                error.addClass("invalid-feedback");
+                element.closest(".form-group").append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass("is-invalid");
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass("is-invalid");
+            },
+        });
+    }
+});
+// Anular Seguimiento
+$(".datatableSeguimiento tbody").on("click", ".btnAnularSeguimiento", function () {
+    var idSeguimiento = $(this).attr("idSeguimiento");
+    var idProfesional = $(this).attr("idProfesional");
+    var idProfesional2 = $("#idProfH").val();
 
-//                 edtSegFec: {
-//                     required: "Ingrese Fecha de Seguimiento",
-//                 },
-//                 edtSegTip: {
-//                     valueNotEquals: "Seleccione Tipo de Seguimiento",
-//                 },
-//                 edtSegProf: {
-//                     valueNotEquals: "Seleccione Profesional",
-//                 },
-//                 edtSegMot: {
-//                     valueNotEquals: "Seleccione Motivo",
-//                 },
-//                 edtSegPac: {
-//                     valueNotEquals: "Seleccione Paciente",
-//                     required: "Seleccione Paciente atendido",
-//                 },
-//                 edtSegDp1: {
-//                     valueNotEquals: "Seleccione al menos un diagnóstico",
-//                 },
-//                 edtSegFam: {
-//                     valueNotEquals: "Seleccione Familiar",
-//                 },
-//                 edtSegDf1: {
-//                     valueNotEquals: "Seleccione al menos un diagnóstico",
-//                 },
-//             },
-//             errorElement: "span",
-//             errorPlacement: function (error, element) {
-//                 error.addClass("invalid-feedback");
-//                 element.closest(".form-group").append(error);
-//             },
-//             highlight: function (element, errorClass, validClass) {
-//                 $(element).addClass("is-invalid");
-//             },
-//             unhighlight: function (element, errorClass, validClass) {
-//                 $(element).removeClass("is-invalid");
-//             },
-//         });
-//     }
-//     if ($("#comSi1").is(":checked")) {
-//         $("#formEdtSeg").validate({
-//             rules: {
-//                 edtSegFec: {
-//                     required: true,
-//                 },
-//                 edtSegTip: {
-//                     valueNotEquals: "0",
-//                 },
-//                 edtSegProf: {
-//                     valueNotEquals: "0",
-//                 },
-//                 edtSegMot: {
-//                     valueNotEquals: "0",
-//                 },
-//                 edtSegPac: {
-//                     valueNotEquals: "0",
-//                     required: true,
-//                 },
-//                 edtSegDp1: {
-//                     valueNotEquals: "0",
-//                 },
-//             },
-//             messages: {
-//                 edtSegFec: {
-//                     required: "Ingrese Fecha de Seguimiento",
-//                 },
-//                 edtSegTip: {
-//                     valueNotEquals: "Seleccione Tipo de Seguimiento",
-//                 },
-//                 edtSegProf: {
-//                     valueNotEquals: "Seleccione Profesional",
-//                 },
-//                 edtSegMot: {
-//                     valueNotEquals: "Seleccione Motivo",
-//                 },
-//                 rgSegPac: {
-//                     valueNotEquals: "Seleccione Paciente",
-//                     required: "Seleccione Paciente atendido",
-//                 },
-//                 edtSegDp1: {
-//                     valueNotEquals: "Seleccione al menos un diagnóstico",
-//                 },
-//             },
-//             errorElement: "span",
-//             errorPlacement: function (error, element) {
-//                 error.addClass("invalid-feedback");
-//                 element.closest(".form-group").append(error);
-//             },
-//             highlight: function (element, errorClass, validClass) {
-//                 $(element).addClass("is-invalid");
-//             },
-//             unhighlight: function (element, errorClass, validClass) {
-//                 $(element).removeClass("is-invalid");
-//             },
-//         });
-//     }
-//     else if (tipoS == 2) {
-//         $("#formEdtSeg").validate({
-//             rules: {
-//                 edtSegFec: {
-//                     required: true,
-//                 },
-//                 edtSegTip: {
-//                     valueNotEquals: "0",
-//                 },
-//                 edtSegProf: {
-//                     valueNotEquals: "0",
-//                 },
-//                 edtSegMot: {
-//                     valueNotEquals: "0",
-//                 },
-//                 edtSegPac: {
-//                     valueNotEquals: "0",
-//                     required: true,
-//                 },
-//                 edtSegDp1: {
-//                     valueNotEquals: "0",
-//                 },
-//                 edtSegFam: {
-//                     valueNotEquals: "0",
-//                 },
-//                 edtSegDf1: {
-//                     valueNotEquals: "0",
-//                 },
-//             },
-//             messages: {
-//                 edtSegFec: {
-//                     required: "Ingrese Fecha de Seguimiento",
-//                 },
-//                 edtSegTip: {
-//                     valueNotEquals: "Seleccione Tipo de Seguimiento",
-//                 },
-//                 edtSegProf: {
-//                     valueNotEquals: "Seleccione Profesional",
-//                 },
-//                 edtSegMot: {
-//                     valueNotEquals: "Seleccione Motivo",
-//                 },
-//                 edtSegPac: {
-//                     valueNotEquals: "Seleccione Paciente",
-//                     required: "Seleccione Paciente atendido",
-//                 },
-//                 edtSegDp1: {
-//                     valueNotEquals: "Seleccione al menos un diagnóstico",
-//                 },
-//                 edtSegFam: {
-//                     valueNotEquals: "Seleccione Familiar",
-//                 },
-//                 edtSegDf1: {
-//                     valueNotEquals: "Seleccione al menos un diagnóstico",
-//                 },
-//             },
-//             errorElement: "span",
-//             errorPlacement: function (error, element) {
-//                 error.addClass("invalid-feedback");
-//                 element.closest(".form-group").append(error);
-//             },
-//             highlight: function (element, errorClass, validClass) {
-//                 $(element).addClass("is-invalid");
-//             },
-//             unhighlight: function (element, errorClass, validClass) {
-//                 $(element).removeClass("is-invalid");
-//             },
-//         });
-//     }
-//     else {
-//         $("#formEdtSeg").validate({
-//             rules: {
-//                 edtSegFec: {
-//                     required: true,
-//                 },
-//                 edtSegTip: {
-//                     valueNotEquals: "0",
-//                 },
-//                 edtSegProf: {
-//                     valueNotEquals: "0",
-//                 },
-//                 edtSegMot: {
-//                     valueNotEquals: "0",
-//                 },
-//                 edtSegPac: {
-//                     valueNotEquals: "0",
-//                     required: true,
-//                 },
-//                 edtSegDp1: {
-//                     valueNotEquals: "0",
-//                 },
-//             },
-//             messages: {
-//                 edtSegFec: {
-//                     required: "Ingrese Fecha de Seguimiento",
-//                 },
-//                 edtSegTip: {
-//                     valueNotEquals: "Seleccione Tipo de Seguimiento",
-//                 },
-//                 edtSegProf: {
-//                     valueNotEquals: "Seleccione Profesional",
-//                 },
-//                 edtSegMot: {
-//                     valueNotEquals: "Seleccione Motivo",
-//                 },
-//                 edtSegPac: {
-//                     valueNotEquals: "Seleccione Paciente",
-//                     required: "Seleccione Paciente atendido",
-//                 },
-//                 edtSegDp1: {
-//                     valueNotEquals: "Seleccione al menos un diagnóstico",
-//                 },
-//             },
-//             errorElement: "span",
-//             errorPlacement: function (error, element) {
-//                 error.addClass("invalid-feedback");
-//                 element.closest(".form-group").append(error);
-//             },
-//             highlight: function (element, errorClass, validClass) {
-//                 $(element).addClass("is-invalid");
-//             },
-//             unhighlight: function (element, errorClass, validClass) {
-//                 $(element).removeClass("is-invalid");
-//             },
-//         });
-//     }
-// });
+    if (idProfesional2 != 0) {
+        if (idProfesional == idProfesional2) {
+            Swal.fire({
+                title: '¿Está seguro(a) de anular el seguimiento?',
+                text: "¡Si no lo está, puede cancelar la acción!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#343a40',
+                cancelButtonText: 'Cancelar',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '¡Sí, anular seguimiento!'
+            }).then(function (result) {
+                if (result.value) {
+                    window.location = "index.php?ruta=seguimiento&idSeguimiento=" + idSeguimiento;
+                }
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "error",
+                title: "No tienes permiso para anular el seguimiento seleccionado",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    }
+    else {
+        Swal.fire({
+            icon: "error",
+            title: "No tienes permiso para anular el seguimiento seleccionado",
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
+});
+// Anular Seguimiento

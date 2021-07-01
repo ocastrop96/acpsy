@@ -20,7 +20,29 @@
         <h3 class="card-title">Módulo Seguimiento de Atenciones &nbsp;<i class="fas fa-diagnoses"></i></h3>
       </div>
       <div class="card-body">
-        <button type="btn" class="btn btn-secondary" data-toggle="modal" data-target="#modal-registrar-seguimiento"><i class="fas fa-diagnoses"></i> Registrar seguimiento
+        <input type="hidden" id="idProfH" value="<?php if ($_SESSION["loginIdProf"] == "") {
+                                                    echo "0";
+                                                  } else {
+                                                    echo $_SESSION["loginIdProf"];
+                                                  }  ?>">
+        <button type="btn" class="btn btn-secondary pull-left" data-toggle="modal" data-target="#modal-registrar-seguimiento"><i class="fas fa-diagnoses"></i> Registrar seguimiento
+        </button>
+        <button type="btn" class="ml-2 btn btn-success float-right" id="deshacer-filtro-Seg"><i class="fas fa-undo-alt"></i> Deshacer filtro
+        </button>
+        <button type="button" class="btn btn-default float-right" id="rango-seguimiento">
+          <span>
+            <i class="fa fa-calendar-day"></i>
+            <?php
+            if (isset($_GET["fechaInicialSeg"])) {
+
+              echo $_GET["fechaInicialSeg"] . " - " . $_GET["fechaFinalSeg"];
+            } else {
+
+              echo 'Seleccione Rango de fecha';
+            }
+            ?>
+          </span>
+          <i class="fas fa-caret-down"></i>
         </button>
       </div>
       <div class="card-body">
@@ -40,6 +62,40 @@
               <th>Acciones</th>
             </tr>
           </thead>
+          <tbody>
+            <?php
+            if (isset($_GET["fechaInicialSeg"])) {
+              $fechaInicialSeg = $_GET["fechaInicialSeg"];
+              $fechaFinalSeg = $_GET["fechaFinalSeg"];
+            } else {
+              $fechaInicialSeg = null;
+              $fechaFinalSeg = null;
+            }
+            $Profesional = $_SESSION["loginIdProf"];
+            $seguimientos = SeguimientosControlador::ctrListarSeguimientosF($fechaInicialSeg, $fechaFinalSeg);
+            foreach ($seguimientos as $key => $value) {
+              if ($value["idStatusSeg"] == 1) {
+                $estadoSeg = '<button type="button" class="btn btn-block btn-success font-weight-bold"><i class="fas fa-clipboard-list"></i> ' . $value["detaStatusSeg"] . '</button>';
+              } else {
+                $estadoSeg = '<button type="button" class="btn btn-block btn-danger font-weight-bold"><i class="fas fa-ban"></i> ' . $value["detaStatusSeg"] . '</button>';
+              }
+              $botones = '<div class="btn-group"><button class="btn btn-warning btnEditarSeguimiento" idSeguimiento="' . $value["idSeguimiento"] . '" idProfesional="' . $value["idProfesional"] . '"><i class="fas fa-edit"></i></button><button class="btn btn-secondary btnAnularSeguimiento" data-toggle="tooltip" data-placement="left" title="Anular Seguimiento" idSeguimiento="' . $value["idSeguimiento"] . '" idProfesional="' . $value["idProfesional"] . '"><i class="fas fa-power-off"></i></button></div>';
+              echo '<tr>
+                                <td>' . ($key + 1) . '</td>
+                                <td>' . $value["fRegistrSeg"] . '</td>
+                                <td>' . $value["cuentaAtencion"] . '</td>
+                                <td>' . $value["tipdocAtencion"] . ' - ' . $value["nrodocAtencion"] . '</td>
+                                <td>' . $value["nombAtencion"] . ' ' . $value["apPaternoAtencion"] . ' ' . $value["apMaternoAtencion"] . '</td>
+                                <td>' . $value["detaTipSeguimiento"] . '</td>
+                                <td>' . $value["nombresProfesional"] . ' ' . $value["apellidosProfesional"] . '</td>
+                                <td>' . $value["comunFamSeg"] . '</td>
+                                <td>' . $value["nombApFamiliar"] . '</td>
+                                <td>' . $estadoSeg . '</td>
+                                <td>' . $botones . '</td>';
+              echo '</tr>';
+            }
+            ?>
+          </tbody>
         </table>
       </div>
     </div>
@@ -74,19 +130,8 @@
                 <label for="rgSegProf">Profesional que atiende: &nbsp;</label>
                 <i class="fas fa-user-md"></i> *
                 <div class="input-group">
-                  <select class="form-control" id="rgSegProf" name="rgSegProf">
-                    <option value="0">Seleccione Profesional</option>
-                    <?php
-                    $item = null;
-                    $valor = null;
-                    $prof = ProfesionalesControlador::ctrListarProfesionales($item, $valor);
-                    foreach ($prof as $key => $value) {
-                      echo '<option value="' . $value["idProfesional"] . '">' . $value["nombresProfesional"] . ' ' . $value["apellidosProfesional"] . '</option>';
-                    }
-                    ?>
-                  </select>
-                  <!-- <input type="hidden" name="rgSegProf" value="<?php echo $_SESSION["loginIdProf"]; ?>">
-                  <input type="text" name="s1" id="s1" class="form-control" value="<?php echo $_SESSION["loginNombProf"]; ?>" readonly> -->
+                  <input type="hidden" name="rgSegProf" value="<?php echo $_SESSION["loginIdProf"]; ?>">
+                  <input type="text" name="s1" id="s1" class="form-control" value="<?php echo $_SESSION["loginNombProf"]; ?>" readonly>
                 </div>
               </div>
             </div>
@@ -310,7 +355,7 @@
                 <label for="edtSegProf">Profesional que atiende: &nbsp;</label>
                 <i class="fas fa-user-md"></i> *
                 <div class="input-group">
-                  <input type="hidden" name="edtSegProf">
+                  <input type="hidden" name="edtSegProf" id="edtSegProf">
                   <input type="text" name="s2" id="s2" class="form-control" readonly>
                 </div>
               </div>
@@ -437,7 +482,7 @@
                   <div class="form-group">
                     <label for="edtSegFam">Familiar del Paciente: <span class="text-danger">&nbsp;*</span></label>
                     <i class="fas fa-chalkboard-teacher"></i>
-                    <input type="hidden" name="idFamAnt">
+                    <input type="hidden" name="idFamAnt" id="idFamAnt">
                     <span class="font-weight-bolder text-danger" id="seleccionActual3">ACTUAL : </span>
                     <span class="font-weight-bolder" id="seleccionActual31"></span>
                     <div class="input-group">
@@ -509,3 +554,9 @@
   </div>
 </div>
 <!-- Editar Seguimiento -->
+<!-- Anular seguimiento -->
+<?php
+$anuSeguimiento = new SeguimientosControlador();
+$anuSeguimiento->ctrAnularSeguimiento();
+?>
+<!-- Anular seguimiento -->

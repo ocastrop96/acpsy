@@ -21,7 +21,7 @@ class DatatableSeguimientos
             // Estado de Seguimiento
 
             // Botones de Opciones
-            $botones = "<div class='btn-group'><button class='btn btn-warning btnEditarSeguimiento' idSeguimiento='" . $seguimientos[$i]["idSeguimiento"] . "' idProfesional='" . $seguimientos[$i]["idProfesional"] . "' data-toggle='modal' data-target='#modal-editar-seguimiento'><i class='fas fa-edit'></i></button><button class='btn btn-secondary btnAnularSeguimiento' data-toggle='tooltip' data-placement='left' title='Anular Seguimiento' idSeguimiento='" . $seguimientos[$i]["idSeguimiento"] . "' idProfesional='" . $seguimientos[$i]["idProfesional"] . "'><i class='fas fa-power-off'></i></button></div>";
+            $botones = "<div class='btn-group'><button class='btn btn-warning btnEditarSeguimiento' idSeguimiento='" . $seguimientos[$i]["idSeguimiento"] . "' idProfesional='" . $seguimientos[$i]["idProfesional"] . "'><i class='fas fa-edit'></i></button><button class='btn btn-secondary btnAnularSeguimiento' data-toggle='tooltip' data-placement='left' title='Anular Seguimiento' idSeguimiento='" . $seguimientos[$i]["idSeguimiento"] . "' idProfesional='" . $seguimientos[$i]["idProfesional"] . "'><i class='fas fa-power-off'></i></button></div>";
             // Botones de Opciones
             $datos_json .= '[
                     "' . ($i + 1) . '",

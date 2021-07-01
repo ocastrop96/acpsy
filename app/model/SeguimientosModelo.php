@@ -103,6 +103,44 @@ class SeguimientosModelo
         $stmt->close();
         $stmt = null;
     }
+    static public function mdlListarSeguimientosF($fechaInicialSeg, $fechaFinalSeg)
+    {
+        if ($fechaInicialSeg == null) {
+            $stmt = Conexion::conectar()->prepare("CALL LISTAR_SEGUIMIENTOS_F()");
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } else if ($fechaInicialSeg == $fechaFinalSeg) {
+
+            $stmt = Conexion::conectar()->prepare("CALL LISTAR_SEGUIMIENTOS_FECHAS(:fechaFinalSeg,:fechaFinalSeg);");
+            $stmt->bindParam(":fechaFinalSeg", $fechaFinalSeg, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } else {
+            $fechaActual = new DateTime();
+            $fechaActual->add(new DateInterval("P1D"));
+            $fechaActualMasUno = $fechaActual->format("Y-m-d");
+
+            $fechaFinalSeg2 = new DateTime($fechaFinalSeg);
+            $fechaFinalSeg2->add(new DateInterval("P1D"));
+            $fechaFinalSegMasUno = $fechaFinalSeg2->format("Y-m-d");
+
+            if ($fechaFinalSegMasUno == $fechaActualMasUno) {
+                $stmt = Conexion::conectar()->prepare("CALL LISTAR_SEGUIMIENTOS_FECHAS(:fechaInicialSeg,:fechaFinalSegMasUno)");
+                $stmt->bindParam(":fechaInicialSeg", $fechaInicialSeg, PDO::PARAM_STR);
+                $stmt->bindParam(":fechaFinalSegMasUno", $fechaFinalSegMasUno, PDO::PARAM_STR);
+            } else {
+                $stmt = Conexion::conectar()->prepare("CALL LISTAR_SEGUIMIENTOS_FECHAS(:fechaInicialSeg,:fechaFinalSeg)");
+                $stmt->bindParam(":fechaInicialSeg", $fechaInicialSeg, PDO::PARAM_STR);
+                $stmt->bindParam(":fechaFinalSeg", $fechaFinalSeg, PDO::PARAM_STR);
+            }
+            $stmt->execute();
+            return $stmt->fetchAll();
+        }
+
+        //Cerramos la conexion por seguridad
+        $stmt->close();
+        $stmt = null;
+    }
     static public function mdlListarTiposSeguimiento()
     {
         $stmt = Conexion::conectar()->prepare("CALL LISTAR_TIPO_SEGUIMIENTO()");
@@ -171,6 +209,18 @@ class SeguimientosModelo
         $stmt->bindParam(":comunFamSeg", $datos["comunFamSeg"], PDO::PARAM_STR);
         $stmt->bindParam(":obsSeg", $datos["obsSeg"], PDO::PARAM_STR);
 
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
+    }
+    static public function mdlAnularSeguimiento($datos)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL ANULAR_SEGUIMIENTO(:idSeguimiento)");
+        $stmt->bindParam(":idSeguimiento", $datos, PDO::PARAM_INT);
         if ($stmt->execute()) {
             return "ok";
         } else {
