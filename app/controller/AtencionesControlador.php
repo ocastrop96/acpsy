@@ -11,6 +11,11 @@ class AtencionesControlador
         $repuesta = AtencionesModelo::mdlCargarDatosCuenta($IdCuentaAtencion);
         return $repuesta;
     }
+    static public function ctrListarAtencionesF($fechaInicialAte, $fechaFinalAte)
+    {
+        $rptListAtenF = AtencionesModelo::mdlListarAtencionesF($fechaInicialAte, $fechaFinalAte);
+        return $rptListAtenF;
+    }
     static public function ctrListarAtenciones($item, $valor)
     {
         $rptListAten = AtencionesModelo::mdlListarAtenciones($item, $valor);

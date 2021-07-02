@@ -51,6 +51,44 @@ class FamiliaresModelo
         $stmt->close();
         $stmt = null;
     }
+    static public function mdlListarFamiliaresF($fechaInicialFam, $fechaFinalFam)
+    {
+        if ($fechaInicialFam == null) {
+            $stmt = Conexion::conectar()->prepare("CALL LISTAR_FAMILIARES_F()");
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } else if ($fechaInicialFam == $fechaFinalFam) {
+
+            $stmt = Conexion::conectar()->prepare("CALL LISTAR_FAMILIARES_FECHAS(:fechaFinalFam,:fechaFinalFam);");
+            $stmt->bindParam(":fechaFinalFam", $fechaFinalFam, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } else {
+            $fechaActual = new DateTime();
+            $fechaActual->add(new DateInterval("P1D"));
+            $fechaActualMasUno = $fechaActual->format("Y-m-d");
+
+            $fechaFinalFam2 = new DateTime($fechaFinalFam);
+            $fechaFinalFam2->add(new DateInterval("P1D"));
+            $fechaFinalFamMasUno = $fechaFinalFam2->format("Y-m-d");
+
+            if ($fechaFinalFamMasUno == $fechaActualMasUno) {
+                $stmt = Conexion::conectar()->prepare("CALL LISTAR_FAMILIARES_FECHAS(:fechaInicialFam,:fechaFinalFamMasUno)");
+                $stmt->bindParam(":fechaInicialFam", $fechaInicialFam, PDO::PARAM_STR);
+                $stmt->bindParam(":fechaFinalFamMasUno", $fechaFinalFamMasUno, PDO::PARAM_STR);
+            } else {
+                $stmt = Conexion::conectar()->prepare("CALL LISTAR_FAMILIARES_FECHAS(:fechaInicialFam,:fechaFinalFam)");
+                $stmt->bindParam(":fechaInicialFam", $fechaInicialFam, PDO::PARAM_STR);
+                $stmt->bindParam(":fechaFinalFam", $fechaFinalFam, PDO::PARAM_STR);
+            }
+            $stmt->execute();
+            return $stmt->fetchAll();
+        }
+
+        //Cerramos la conexion por seguridad
+        $stmt->close();
+        $stmt = null;
+    }
     static public function mdlListarPaciente($dato)
     {
         $stmt = Conexion::conectar()->prepare("CALL BUSCAR_PACIENTE(:dato)");

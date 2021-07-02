@@ -15,6 +15,7 @@ $("#rango-seguimiento").daterangepicker({
     },
     startDate: moment(),
     endDate: moment(),
+    opens: "right",
     maxSpan: {
         days: 30,
     },
@@ -49,16 +50,16 @@ $("#rango-seguimiento").daterangepicker({
         $("#daterange-btn span").html(
             start.format("MMMM D, YYYY") + "-" + end.format("MMMM D, YYYY")
         );
-        var fechaInicialAct = start.format("YYYY-MM-DD");
-        var fechaFinalAct = end.format("YYYY-MM-DD");
+        var fechaInicialSeg = start.format("YYYY-MM-DD");
+        var fechaFinalSeg = end.format("YYYY-MM-DD");
 
         var capRangoSeg = $("#daterange-btn span").html();
         localStorage.setItem("capRangoSeg", capRangoSeg);
         window.location =
             "index.php?ruta=seguimiento&fechaInicialSeg=" +
-            fechaInicialAct +
+            fechaInicialSeg +
             "&fechaFinalSeg=" +
-            fechaFinalAct;
+            fechaFinalSeg;
         let timerInterval;
         Swal.fire({
             title: "Se está cargando la información",
@@ -86,8 +87,93 @@ $("#rango-seguimiento").daterangepicker({
         });
     }
 );
+$(".daterangepicker.opensright .drp-buttons .cancelBtn").on(
+    "click",
+    function () {
+        localStorage.removeItem("capRangoSeg");
+        localStorage.clear();
+        window.location = "seguimiento";
+        let timerInterval;
+        Swal.fire({
+            title: "Se está cargando la información",
+            html: "Espere por favor...",
+            timer: 7000,
+            timerProgressBar: true,
+            onBeforeOpen: () => {
+                Swal.showLoading();
+                timerInterval = setInterval(() => {
+                    const content = Swal.getContent();
+                    if (content) {
+                        const b = content.querySelector("b");
+                        if (b) {
+                            b.textContent = Swal.getTimerLeft();
+                        }
+                    }
+                }, 100);
+            },
+            onClose: () => {
+                clearInterval(timerInterval);
+            },
+        }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+                console.log("I was closed by the timer");
+            }
+        });
+    }
+);
+$(".daterangepicker.opensright .ranges li").on("click", function () {
+    var textoHoy = $(this).attr("data-range-key");
+
+    if (textoHoy == "Hoy") {
+        var d = new Date();
+
+        var dia = d.getDate();
+        var mes = d.getMonth() + 1;
+        var año = d.getFullYear();
+        dia = ("0" + dia).slice(-2);
+        mes = ("0" + mes).slice(-2);
+
+        var fechaInicialSeg = año + "-" + mes + "-" + dia;
+        var fechaFinalSeg = año + "-" + mes + "-" + dia;
+
+        localStorage.setItem("capRangoSeg", "Hoy");
+
+        window.location =
+            "index.php?ruta=seguimiento&fechaInicialSeg=" +
+            fechaInicialSeg +
+            "&fechaFinalSeg=" +
+            fechaFinalSeg;
+        let timerInterval;
+        Swal.fire({
+            title: "Se está cargando la información",
+            html: "Espere por favor...",
+            timer: 7000,
+            timerProgressBar: true,
+            onBeforeOpen: () => {
+                Swal.showLoading();
+                timerInterval = setInterval(() => {
+                    const content = Swal.getContent();
+                    if (content) {
+                        const b = content.querySelector("b");
+                        if (b) {
+                            b.textContent = Swal.getTimerLeft();
+                        }
+                    }
+                }, 100);
+            },
+            onClose: () => {
+                clearInterval(timerInterval);
+            },
+        }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+                console.log("I was closed by the timer");
+            }
+        });
+    }
+});
 $(".datatableSeguimiento").DataTable({
-    // ajax: "public/views/util/datatable-Seguimientos.php",
     deferRender: true,
     retrieve: true,
     processing: true,
@@ -100,6 +186,16 @@ $(".datatableSeguimiento").DataTable({
     language: {
         url: "public/views/resources/js/dataTables.spanish.lang",
     },
+});
+$("#rgSegObs").keyup(function () {
+    var st4 = $(this).val();
+    var mayust4 = st4.toUpperCase();
+    $("#rgSegObs").val(mayust4);
+});
+$("#edtSegObs").keyup(function () {
+    var st4 = $(this).val();
+    var mayust4 = st4.toUpperCase();
+    $("#edtSegObs").val(mayust4);
 });
 $("#rgSegPac").select2(
     {

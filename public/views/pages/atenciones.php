@@ -20,9 +20,26 @@
         <h3 class="card-title">Módulo Atenciones &nbsp;<i class="fas fa-archive"></i></h3>
       </div>
       <div class="card-body">
+        <input type="hidden" value="<?php echo $_SESSION["loginId"]; ?>" id="idAtencionUsuario">
         <button type="btn" class="btn btn-secondary" data-toggle="modal" data-target="#modal-registrar-atencion"><i class="fas fa-archive"></i> Registrar Atención
         </button>
-        <input type="hidden" value="<?php echo $_SESSION["loginId"]; ?>" id="idAtencionUsuario">
+        <button type="btn" class="ml-2 btn btn-success float-right" id="deshacer-filtro-Ate"><i class="fas fa-undo-alt"></i> Deshacer filtro
+        </button>
+        <button type="button" class="btn btn-default float-right" id="rango-atencion">
+          <span>
+            <i class="fa fa-calendar-plus"></i>
+            <?php
+            if (isset($_GET["fechaInicialAte"])) {
+
+              echo $_GET["fechaInicialAte"] . " - " . $_GET["fechaFinalAte"];
+            } else {
+
+              echo 'Seleccione Rango de fecha';
+            }
+            ?>
+          </span>
+          <i class="fas fa-caret-down"></i>
+        </button>
       </div>
       <div class="card-body">
         <table id="datatableAtenciones" class="table table-bordered table-hover dt-responsive datatableAtenciones">
@@ -42,6 +59,60 @@
               <th>Acciones</th>
             </tr>
           </thead>
+          <tbody>
+            <?php
+            if (isset($_GET["fechaInicialAte"])) {
+              $fechaInicialAte = $_GET["fechaInicialAte"];
+              $fechaFinalAte = $_GET["fechaFinalAte"];
+            } else {
+              $fechaInicialAte = null;
+              $fechaFinalAte = null;
+            }
+
+            $atenciones = AtencionesControlador::ctrListarAtencionesF($fechaInicialAte, $fechaFinalAte);
+            foreach ($atenciones as $key => $value) {
+              // Estado de Paciente
+              if ($value["idEstadoPacAtencion"] == 1) {
+                $estadoPaciente = "<button type='button' class='btn btn-block btn-warning font-weight-bold' data-toggle='tooltip' data-placement='left' title='" . $value["detaEstadoPacAtencion"] . "'><i class='fas fa-procedures'></i></button>";
+              } elseif ($value["idEstadoPacAtencion"] == 2) {
+                $estadoPaciente = "<button type='button' class='btn btn-block btn-success font-weight-bold' data-toggle='tooltip' data-placement='left' title='" . $value["detaEstadoPacAtencion"] . "'><i class='fas fa-walking'></i></button>";
+              } else {
+                $estadoPaciente = "<button type='button' class='btn btn-block btn-danger font-weight-bold' data-toggle='tooltip' data-placement='left' title='" . $value["detaEstadoPacAtencion"] . "'><i class='fas fa-clinic-medical'></i></button>";
+              }
+              // Estado de Paciente
+
+              // Estado de Atención
+              if ($value["idEstadoAte"] == 1) {
+                $estadoAtencion = "<button type='button' class='btn btn-block btn-success font-weight-bold'><i class='fas fa-clipboard-list'></i> " . $value["detaEstadoAte"] . "</button>";
+
+                $botones = "<div class='btn-group'><button class='btn btn-warning btnEditarAtencion' idAtencion='" . $value["idAtencion"] . "' data-toggle='modal' data-target='#modal-editar-atencion'><i class='fas fa-edit'></i></button><button class='btn btn-info btnVerAtencion' data-toggle='tooltip' data-placement='left' title='Ver Ficha de  Atención' idAtencion='" . $value["idAtencion"] . "'><i class='fas fa-file-medical-alt'></i></button><button class='btn btn-secondary btnAnularAtencion' data-toggle='tooltip' data-placement='left' title='Anular Atención' idAtencion='" . $value["idAtencion"] . "' idCuenta='" . $value["cuentaAtencion"] . "' idEpisodio = '" . $value["idEpisodio"] . "'><i class='fas fa-power-off'></i></button></div>";
+              } elseif ($value["idEstadoAte"] == 2) {
+                $estadoAtencion = "<button type='button' class='btn btn-block btn-danger font-weight-bold'><i class='fa fa-ban'></i> " . $value["detaEstadoAte"] . "</button>";
+
+                $botones = "<div class='btn-group'><button class='btn btn-warning disabled'><i class='fas fa-edit'></i></button><button class='btn btn-info disabled'><i class='fas fa-file-medical-alt'></i></button><button class='btn btn-secondary disabled'><i class='fas fa-power-off'></i></button></div>";
+              } else {
+                $estadoAtencion = "<button type='button' class='btn btn-block btn-info font-weight-bold'><i class='fa fa-check'></i> " . $value["detaEstadoAte"] . "</button>";
+
+                $botones = "<div class='btn-group'><button class='btn btn-warning disabled'><i class='fas fa-edit'></i></button><button class='btn btn-info btnVerAtencion' data-toggle='tooltip' data-placement='left' title='Ver Ficha de  Atención' idAtencion='" . $value["idAtencion"] . "'><i class='fas fa-file-medical-alt'></i></button><button class='btn btn-secondary disabled'><i class='fas fa-power-off'></i></button></div>";
+              }
+
+              echo '<tr>
+                                <td>' . ($key + 1) . '</td>
+                                <td>' . $value["correlativo_Atencion"] . '</td>
+                                <td>' . $value["fRegistroAtencion"] . '</td>
+                                <td>' . $value["cuentaAtencion"] . '</td>
+                                <td>' . $value["historiaAtencion"] . '</td>
+                                <td>' . $value["tipdocAtencion"] . ' - ' . $value["nrodocAtencion"] . '</td>
+                                <td>' . $value["fIngresoAtencion"] . '</td>
+                                <td>' . $estadoPaciente . '</td>
+                                <td>' . $value["apPaternoAtencion"] . ' ' . $value["apMaternoAtencion"] . ' ' . $value["nombAtencion"] . '</td>
+                                <td>' . $value["financiaAtencion"] . '</td>
+                                <td>' . $estadoAtencion . '</td>
+                                <td>' . $botones . '</td>';
+              echo '</tr>';
+            }
+            ?>
+          </tbody>
         </table>
       </div>
     </div>

@@ -27,6 +27,11 @@ class FamiliaresControlador
         $rptListDiagSe = FamiliaresModelo::mdlListarFamiliarPac($existe);
         return $rptListDiagSe;
     }
+    static public function ctrListarFamiliaresF($fechaInicialFam, $fechaFinalFam)
+    {
+        $rptListFamF = FamiliaresModelo::mdlListarFamiliaresF($fechaInicialFam, $fechaFinalFam);
+        return $rptListFamF;
+    }
     static public function ctrRegistrarFamiliar()
     {
         if (isset($_POST["rgfAtencion"]) && isset($_POST["rgfNdoc"])) {

@@ -72,7 +72,7 @@
               $fechaFinalSeg = null;
             }
             $Profesional = $_SESSION["loginIdProf"];
-            $seguimientos = SeguimientosControlador::ctrListarSeguimientosF($fechaInicialSeg, $fechaFinalSeg);
+            $seguimientos = SeguimientosControlador::ctrListarSeguimientosF($fechaInicialSeg, $fechaFinalSeg, $Profesional);
             foreach ($seguimientos as $key => $value) {
               if ($value["idStatusSeg"] == 1) {
                 $estadoSeg = '<button type="button" class="btn btn-block btn-success font-weight-bold"><i class="fas fa-clipboard-list"></i> ' . $value["detaStatusSeg"] . '</button>';

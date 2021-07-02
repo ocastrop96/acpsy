@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 01-07-2021 a las 19:56:50
+-- Tiempo de generación: 02-07-2021 a las 19:44:40
 -- Versión del servidor: 5.7.24
 -- Versión de PHP: 7.4.15
 
@@ -173,6 +173,118 @@ FROM
 		acpsy_atencion.tipSexoAtencion = acpsy_tipsexo.idTipSexo
 	ORDER BY acpsy_atencion.correlativo_Atencion DESC$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_ATENCIONES_F` ()  SELECT
+acpsy_atencion.idAtencion,
+acpsy_atencion.correlativo_Atencion,
+date_format( acpsy_atencion.fRegistroAtencion, '%d/%m/%Y' ) AS fRegistroAtencion,
+acpsy_atencion.idEpisodio,
+acpsy_atencion.cuentaAtencion,
+acpsy_atencion.historiaAtencion,
+acpsy_atencion.idEstadoPacAtencion,
+acpsy_estadopaciente.detaEstadoPacAtencion,
+date_format( acpsy_atencion.fechaPacNacimiento, '%d/%m/%Y' ) AS fechaPacNacimiento,
+acpsy_atencion.tipdocAtencion,
+acpsy_atencion.nrodocAtencion,
+acpsy_atencion.apPaternoAtencion,
+acpsy_atencion.apMaternoAtencion,
+acpsy_atencion.nombAtencion,
+date_format( acpsy_atencion.fIngresoAtencion, '%d/%m/%Y' ) AS fIngresoAtencion,
+acpsy_atencion.servAtencion,
+acpsy_atencion.camaAtencion,
+acpsy_atencion.distritoAtencion,
+acpsy_atencion.edadAtencion,
+acpsy_atencion.tipSexoAtencion,
+acpsy_tipsexo.detaTipSexo,
+acpsy_atencion.financiaAtencion,
+acpsy_atencion.idEstadoAte,
+acpsy_estadoatencion.detaEstadoAte 
+FROM
+	acpsy_atencion
+	INNER JOIN acpsy_estadoatencion ON acpsy_atencion.idEstadoAte = acpsy_estadoatencion.idEstadoAte
+	INNER JOIN acpsy_estadopaciente ON acpsy_atencion.idEstadoPacAtencion = acpsy_estadopaciente.idEstadoPacAtencion
+	INNER JOIN acpsy_tipsexo ON acpsy_atencion.tipSexoAtencion = acpsy_tipsexo.idTipSexo 
+WHERE
+	MONTH ( acpsy_atencion.fRegistroAtencion ) = MONTH (
+	CURDATE()) 
+	AND YEAR ( acpsy_atencion.fRegistroAtencion ) = YEAR (
+	CURDATE()) 
+ORDER BY
+	acpsy_atencion.correlativo_Atencion DESC$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_ATENCIONES_FECHAS` (IN `_fechaInicialAte` DATE, IN `_fechaFinalAte` DATE)  IF
+	( _fechaInicialAte = _fechaFinalAte ) THEN
+	SELECT
+		acpsy_atencion.idAtencion,
+		acpsy_atencion.correlativo_Atencion,
+		date_format( acpsy_atencion.fRegistroAtencion, '%d/%m/%Y' ) AS fRegistroAtencion,
+		acpsy_atencion.idEpisodio,
+		acpsy_atencion.cuentaAtencion,
+		acpsy_atencion.historiaAtencion,
+		acpsy_atencion.idEstadoPacAtencion,
+		acpsy_estadopaciente.detaEstadoPacAtencion,
+		date_format( acpsy_atencion.fechaPacNacimiento, '%d/%m/%Y' ) AS fechaPacNacimiento,
+		acpsy_atencion.tipdocAtencion,
+		acpsy_atencion.nrodocAtencion,
+		acpsy_atencion.apPaternoAtencion,
+		acpsy_atencion.apMaternoAtencion,
+		acpsy_atencion.nombAtencion,
+		date_format( acpsy_atencion.fIngresoAtencion, '%d/%m/%Y' ) AS fIngresoAtencion,
+		acpsy_atencion.servAtencion,
+		acpsy_atencion.camaAtencion,
+		acpsy_atencion.distritoAtencion,
+		acpsy_atencion.edadAtencion,
+		acpsy_atencion.tipSexoAtencion,
+		acpsy_tipsexo.detaTipSexo,
+		acpsy_atencion.financiaAtencion,
+		acpsy_atencion.idEstadoAte,
+		acpsy_estadoatencion.detaEstadoAte 
+	FROM
+		acpsy_atencion
+		INNER JOIN acpsy_estadoatencion ON acpsy_atencion.idEstadoAte = acpsy_estadoatencion.idEstadoAte
+		INNER JOIN acpsy_estadopaciente ON acpsy_atencion.idEstadoPacAtencion = acpsy_estadopaciente.idEstadoPacAtencion
+		INNER JOIN acpsy_tipsexo ON acpsy_atencion.tipSexoAtencion = acpsy_tipsexo.idTipSexo 
+	WHERE
+		acpsy_atencion.fRegistroAtencion = _fechaFinalAte 
+	ORDER BY
+		acpsy_atencion.correlativo_Atencion DESC;
+	ELSE SELECT
+		acpsy_atencion.idAtencion,
+		acpsy_atencion.correlativo_Atencion,
+		date_format( acpsy_atencion.fRegistroAtencion, '%d/%m/%Y' ) AS fRegistroAtencion,
+		acpsy_atencion.idEpisodio,
+		acpsy_atencion.cuentaAtencion,
+		acpsy_atencion.historiaAtencion,
+		acpsy_atencion.idEstadoPacAtencion,
+		acpsy_estadopaciente.detaEstadoPacAtencion,
+		date_format( acpsy_atencion.fechaPacNacimiento, '%d/%m/%Y' ) AS fechaPacNacimiento,
+		acpsy_atencion.tipdocAtencion,
+		acpsy_atencion.nrodocAtencion,
+		acpsy_atencion.apPaternoAtencion,
+		acpsy_atencion.apMaternoAtencion,
+		acpsy_atencion.nombAtencion,
+		date_format( acpsy_atencion.fIngresoAtencion, '%d/%m/%Y' ) AS fIngresoAtencion,
+		acpsy_atencion.servAtencion,
+		acpsy_atencion.camaAtencion,
+		acpsy_atencion.distritoAtencion,
+		acpsy_atencion.edadAtencion,
+		acpsy_atencion.tipSexoAtencion,
+		acpsy_tipsexo.detaTipSexo,
+		acpsy_atencion.financiaAtencion,
+		acpsy_atencion.idEstadoAte,
+		acpsy_estadoatencion.detaEstadoAte 
+	FROM
+		acpsy_atencion
+		INNER JOIN acpsy_estadoatencion ON acpsy_atencion.idEstadoAte = acpsy_estadoatencion.idEstadoAte
+		INNER JOIN acpsy_estadopaciente ON acpsy_atencion.idEstadoPacAtencion = acpsy_estadopaciente.idEstadoPacAtencion
+		INNER JOIN acpsy_tipsexo ON acpsy_atencion.tipSexoAtencion = acpsy_tipsexo.idTipSexo 
+	WHERE
+	acpsy_atencion.fRegistroAtencion BETWEEN _fechaInicialAte 
+	AND _fechaFinalAte
+	ORDER BY
+		acpsy_atencion.correlativo_Atencion DESC;
+
+END IF$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_CONDICIONES_PROF` ()  SELECT idCondicion,detaCondicion FROM acpsy_condicionprof$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_DIAGNOSTICOS` ()  SELECT
@@ -237,6 +349,97 @@ FROM
 	ON 
 		acpsy_famatencion.idTipSexo = acpsy_tipsexo.idTipSexo
 	ORDER BY acpsy_famatencion.fechaRegistro DESC, acpsy_famatencion.idFamiliar DESC$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_FAMILIARES_F` ()  SELECT
+acpsy_famatencion.idFamiliar,
+date_format( acpsy_famatencion.fechaRegistro, '%d/%m/%Y' ) AS fechaRegistro,
+acpsy_famatencion.idAtencion,
+acpsy_atencion.cuentaAtencion,
+acpsy_atencion.historiaAtencion,
+acpsy_atencion.apPaternoAtencion,
+acpsy_atencion.apMaternoAtencion,
+acpsy_atencion.nombAtencion,
+acpsy_famatencion.tipdocFamiliar,
+acpsy_famatencion.ndocFamiliar,
+acpsy_famatencion.nombApFamiliar,
+acpsy_famatencion.idParentesco,
+acpsy_parentescofam.detaParentesco,
+acpsy_famatencion.idTipSexo,
+acpsy_tipsexo.detaTipSexo,
+acpsy_famatencion.edadFamiliar,
+acpsy_famatencion.telcelFamiliar 
+FROM
+	acpsy_famatencion
+	INNER JOIN acpsy_atencion ON acpsy_famatencion.idAtencion = acpsy_atencion.idAtencion
+	INNER JOIN acpsy_parentescofam ON acpsy_famatencion.idParentesco = acpsy_parentescofam.idParentesco
+	INNER JOIN acpsy_tipsexo ON acpsy_famatencion.idTipSexo = acpsy_tipsexo.idTipSexo 
+WHERE
+	MONTH ( acpsy_famatencion.fechaRegistro ) = MONTH (
+	CURDATE()) AND YEAR( acpsy_famatencion.fechaRegistro ) = YEAR(CURDATE())
+ORDER BY
+	acpsy_famatencion.fechaRegistro DESC,
+	acpsy_famatencion.idFamiliar DESC$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_FAMILIARES_FECHAS` (IN `_fechaInicialFam` DATE, IN `_fechaFinalFam` DATE)  IF
+	( _fechaInicialFam = _fechaFinalFam ) THEN
+	SELECT
+		acpsy_famatencion.idFamiliar,
+		date_format( acpsy_famatencion.fechaRegistro, '%d/%m/%Y' ) AS fechaRegistro,
+		acpsy_famatencion.idAtencion,
+		acpsy_atencion.cuentaAtencion,
+		acpsy_atencion.historiaAtencion,
+		acpsy_atencion.apPaternoAtencion,
+		acpsy_atencion.apMaternoAtencion,
+		acpsy_atencion.nombAtencion,
+		acpsy_famatencion.tipdocFamiliar,
+		acpsy_famatencion.ndocFamiliar,
+		acpsy_famatencion.nombApFamiliar,
+		acpsy_famatencion.idParentesco,
+		acpsy_parentescofam.detaParentesco,
+		acpsy_famatencion.idTipSexo,
+		acpsy_tipsexo.detaTipSexo,
+		acpsy_famatencion.edadFamiliar,
+		acpsy_famatencion.telcelFamiliar 
+	FROM
+		acpsy_famatencion
+		INNER JOIN acpsy_atencion ON acpsy_famatencion.idAtencion = acpsy_atencion.idAtencion
+		INNER JOIN acpsy_parentescofam ON acpsy_famatencion.idParentesco = acpsy_parentescofam.idParentesco
+		INNER JOIN acpsy_tipsexo ON acpsy_famatencion.idTipSexo = acpsy_tipsexo.idTipSexo 
+	WHERE
+		acpsy_famatencion.fechaRegistro = _fechaFinalFam 
+	ORDER BY
+		acpsy_famatencion.fechaRegistro DESC,
+		acpsy_famatencion.idFamiliar DESC;
+	ELSE SELECT
+		acpsy_famatencion.idFamiliar,
+		date_format( acpsy_famatencion.fechaRegistro, '%d/%m/%Y' ) AS fechaRegistro,
+		acpsy_famatencion.idAtencion,
+		acpsy_atencion.cuentaAtencion,
+		acpsy_atencion.historiaAtencion,
+		acpsy_atencion.apPaternoAtencion,
+		acpsy_atencion.apMaternoAtencion,
+		acpsy_atencion.nombAtencion,
+		acpsy_famatencion.tipdocFamiliar,
+		acpsy_famatencion.ndocFamiliar,
+		acpsy_famatencion.nombApFamiliar,
+		acpsy_famatencion.idParentesco,
+		acpsy_parentescofam.detaParentesco,
+		acpsy_famatencion.idTipSexo,
+		acpsy_tipsexo.detaTipSexo,
+		acpsy_famatencion.edadFamiliar,
+		acpsy_famatencion.telcelFamiliar 
+	FROM
+		acpsy_famatencion
+		INNER JOIN acpsy_atencion ON acpsy_famatencion.idAtencion = acpsy_atencion.idAtencion
+		INNER JOIN acpsy_parentescofam ON acpsy_famatencion.idParentesco = acpsy_parentescofam.idParentesco
+		INNER JOIN acpsy_tipsexo ON acpsy_famatencion.idTipSexo = acpsy_tipsexo.idTipSexo 
+	WHERE
+		acpsy_famatencion.fechaRegistro BETWEEN _fechaInicialFam 
+		AND _fechaFinalFam 
+	ORDER BY
+		acpsy_famatencion.fechaRegistro DESC,
+		acpsy_famatencion.idFamiliar DESC; 
+	END IF$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_FAMILIAR_PACIENTE` (IN `_idAtencion` INT(11))  SELECT
 	acpsy_famatencion.idFamiliar,
@@ -370,7 +573,7 @@ FROM
 	WHERE acpsy_seguimiento.idStatusSeg != 2
 ORDER BY acpsy_seguimiento.fRegistrSeg desc, acpsy_seguimiento.idSeguimiento desc$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_SEGUIMIENTOS_F` ()  SELECT
+CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_SEGUIMIENTOS_F` (IN `_idProfesional` INT(11))  SELECT
 acpsy_seguimiento.idSeguimiento,
 date_format( acpsy_seguimiento.fRegistrSeg, '%d/%m/%Y' ) AS fRegistrSeg,
 acpsy_seguimiento.idAtencionPac,
@@ -423,13 +626,13 @@ FROM
 	LEFT JOIN acpsy_parentescofam ON acpsy_famatencion.idParentesco = acpsy_parentescofam.idParentesco 
 WHERE
 	MONTH ( acpsy_seguimiento.fRegistrSeg ) = MONTH (
-	CURDATE()) 
-	AND acpsy_seguimiento.idStatusSeg != 2 
+	CURDATE()) AND YEAR( acpsy_seguimiento.fRegistrSeg ) = YEAR(CURDATE())
+	AND acpsy_seguimiento.idStatusSeg != 2  AND acpsy_seguimiento.idProfesional = _idProfesional
 ORDER BY
 	acpsy_seguimiento.fRegistrSeg DESC,
 	acpsy_seguimiento.idSeguimiento DESC$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_SEGUIMIENTOS_FECHAS` (IN `_fechaInicialSeg` DATE, IN `_fechaFinalSeg` DATE)  IF
+CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_SEGUIMIENTOS_FECHAS` (IN `_fechaInicialSeg` DATE, IN `_fechaFinalSeg` DATE, IN `_idProfesional` INT(11))  IF
 	( _fechaInicialSeg = _fechaFinalSeg ) THEN
 	SELECT
 		acpsy_seguimiento.idSeguimiento,
@@ -484,7 +687,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_SEGUIMIENTOS_FECHAS` (IN `_f
 		LEFT JOIN acpsy_parentescofam ON acpsy_famatencion.idParentesco = acpsy_parentescofam.idParentesco 
 	WHERE
 		acpsy_seguimiento.idStatusSeg != 2 
-		AND acpsy_seguimiento.fRegistrSeg = _fechaFinalSeg 
+		AND acpsy_seguimiento.fRegistrSeg = _fechaFinalSeg  AND acpsy.acpsy_seguimiento.idProfesional = _idProfesional
 	ORDER BY
 		acpsy_seguimiento.fRegistrSeg DESC,
 		acpsy_seguimiento.idSeguimiento DESC;
@@ -542,7 +745,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_SEGUIMIENTOS_FECHAS` (IN `_f
 	WHERE
 		acpsy_seguimiento.idStatusSeg != 2 
 		AND 
-		acpsy_seguimiento.fRegistrSeg BETWEEN _fechaInicialSeg AND _fechaFinalSeg
+		acpsy_seguimiento.fRegistrSeg BETWEEN _fechaInicialSeg AND _fechaFinalSeg AND acpsy.acpsy_seguimiento.idProfesional = _idProfesional
 	ORDER BY
 		acpsy_seguimiento.fRegistrSeg DESC,
 	acpsy_seguimiento.idSeguimiento DESC ;
@@ -1501,7 +1704,8 @@ INSERT INTO `acpsy_profesionales` (`idProfesional`, `idEstado`, `idCondicion`, `
 (7, 1, 1, '06123251', '10097', 'SANCHEZ AQUINO', 'NORMA NELIDA'),
 (8, 1, 2, '10288615', '25775', 'TRUJILLO CASTILLO', 'MIRIAM ROCIO'),
 (9, 1, 1, '07178930', '34522', 'VELASQUEZ REYES', 'MARIA ANGELA'),
-(10, 1, 2, '46624029', '21470', 'ZAVALETA LOPEZ', 'DARNELLY JAHAIRA');
+(10, 1, 2, '46624029', '21470', 'ZAVALETA LOPEZ', 'DARNELLY JAHAIRA'),
+(11, 1, 2, '77478995', '123456', 'CASTRO PALACIOS', 'OLGER IVAN');
 
 -- --------------------------------------------------------
 
@@ -2169,7 +2373,7 @@ INSERT INTO `acpsy_seguimiento` (`idSeguimiento`, `fRegistrSeg`, `idUsuario`, `i
 (633, '2021-06-26', 1, 162, 4, 3, 2, 6, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
 (634, '2021-06-26', 1, 177, 4, 1, 2, 8, 0, 'SI', 194, 5, 9, NULL, 1, '2021-06-29 00:54:42'),
 (635, '2021-06-26', 1, 184, 4, 1, 2, 8, 0, 'SI', 170, 6, 9, NULL, 1, '2021-06-29 00:54:42'),
-(636, '2021-06-26', 1, 191, 4, 3, 2, 13, 9, 'NO', 0, 0, 0, '', 1, '2021-06-29 00:54:42'),
+(636, '2021-06-26', 1, 191, 4, 3, 2, 13, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
 (637, '2021-06-26', 1, 200, 8, 2, 2, 4, 9, 'SI', 191, 13, 14, NULL, 1, '2021-06-29 00:54:42'),
 (638, '2021-06-26', 1, 202, 8, 2, 2, 4, 9, 'SI', 193, 4, 14, NULL, 1, '2021-06-29 00:54:42'),
 (639, '2021-06-26', 1, 203, 4, 3, 2, 6, 9, 'NO', 0, 0, 0, NULL, 1, '2021-06-29 00:54:42'),
@@ -2189,7 +2393,7 @@ INSERT INTO `acpsy_seguimiento` (`idSeguimiento`, `fRegistrSeg`, `idUsuario`, `i
 (653, '2021-06-28', 1, 209, 10, 2, 2, 8, 0, 'SI', 202, 4, 14, '', 1, '2021-06-29 10:13:16'),
 (654, '2021-06-28', 1, 205, 10, 2, 2, 4, 9, 'SI', 197, 4, 14, '', 1, '2021-06-29 10:14:48'),
 (655, '2021-06-28', 1, 210, 10, 2, 2, 4, 9, 'SI', 203, 4, 14, '', 1, '2021-06-29 10:17:16'),
-(656, '2021-06-30', 1, 210, 10, 2, 2, 4, 9, 'SI', 203, 4, 14, '', 1, '2021-06-29 10:18:16');
+(656, '2021-06-28', 1, 210, 10, 2, 2, 4, 9, 'SI', 203, 4, 14, '', 1, '2021-06-29 10:18:16');
 
 -- --------------------------------------------------------
 
@@ -2330,7 +2534,8 @@ INSERT INTO `zacpsy_aud_atenciones` (`idAuditAte`, `idAtencion`, `fechaRegAudi`,
 (35, 205, '2021-06-28', 1, 'MODIFICACIÓN', '1907723', '1913764', '1907723', '1913764'),
 (36, 84, '2021-06-28', 1, 'MODIFICACIÓN', '1900524', '451148', '1900524', '1906565'),
 (37, 50, '2021-06-28', 1, 'MODIFICACIÓN', '1892871', '443658', '1892871', '1898912'),
-(38, 200, '2021-06-28', 1, 'MODIFICACIÓN', '1907471', '1913512', '1907471', '1913512');
+(38, 200, '2021-06-28', 1, 'MODIFICACIÓN', '1907471', '1913512', '1907471', '1913512'),
+(39, 211, '2021-07-02', 1, 'MODIFICACIÓN', '1852299', '1858340', '1852299', '1858340');
 
 -- --------------------------------------------------------
 
@@ -2453,7 +2658,13 @@ ALTER TABLE `acpsy_profesionales`
 -- Indices de la tabla `acpsy_seguimiento`
 --
 ALTER TABLE `acpsy_seguimiento`
-  ADD PRIMARY KEY (`idSeguimiento`);
+  ADD PRIMARY KEY (`idSeguimiento`),
+  ADD KEY `fk_atencionpac` (`idAtencionPac`),
+  ADD KEY `fk_motivo` (`idMotSeguimiento`),
+  ADD KEY `fk_profesional` (`idProfesional`),
+  ADD KEY `fk_estatus` (`idStatusSeg`),
+  ADD KEY `fk_usuarioReg` (`idUsuario`),
+  ADD KEY `fk_tipoSeg` (`idTipoSeguimiento`);
 
 --
 -- Indices de la tabla `acpsy_tiposeguimiento`
@@ -2567,7 +2778,7 @@ ALTER TABLE `acpsy_perfiles`
 -- AUTO_INCREMENT de la tabla `acpsy_profesionales`
 --
 ALTER TABLE `acpsy_profesionales`
-  MODIFY `idProfesional` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idProfesional` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `acpsy_seguimiento`
@@ -2597,7 +2808,7 @@ ALTER TABLE `acpsy_usuarios`
 -- AUTO_INCREMENT de la tabla `zacpsy_aud_atenciones`
 --
 ALTER TABLE `zacpsy_aud_atenciones`
-  MODIFY `idAuditAte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `idAuditAte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT de la tabla `zacpsy_aud_familiares`

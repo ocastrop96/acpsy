@@ -77,7 +77,7 @@
             </p>
           </a>
         </li>
-        <!-- <li class="nav-header">Reportes</li>
+        <li class="nav-header">Reportes</li>
         <li class="nav-item">
           <a href="reporte-general" class="nav-link">
             <i class="nav-icon fas fa-chart-pie"></i>
@@ -101,7 +101,7 @@
               Profesional
             </p>
           </a>
-        </li> -->
+        </li>
       </ul>
     </nav>
   </div>

@@ -103,16 +103,18 @@ class SeguimientosModelo
         $stmt->close();
         $stmt = null;
     }
-    static public function mdlListarSeguimientosF($fechaInicialSeg, $fechaFinalSeg)
+    static public function mdlListarSeguimientosF($fechaInicialSeg, $fechaFinalSeg, $Profesional)
     {
         if ($fechaInicialSeg == null) {
-            $stmt = Conexion::conectar()->prepare("CALL LISTAR_SEGUIMIENTOS_F()");
+            $stmt = Conexion::conectar()->prepare("CALL LISTAR_SEGUIMIENTOS_F(:idProfesional)");
+            $stmt->bindParam(":idProfesional", $Profesional, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetchAll();
         } else if ($fechaInicialSeg == $fechaFinalSeg) {
 
-            $stmt = Conexion::conectar()->prepare("CALL LISTAR_SEGUIMIENTOS_FECHAS(:fechaFinalSeg,:fechaFinalSeg);");
+            $stmt = Conexion::conectar()->prepare("CALL LISTAR_SEGUIMIENTOS_FECHAS(:fechaFinalSeg,:fechaFinalSeg,:idProfesional);");
             $stmt->bindParam(":fechaFinalSeg", $fechaFinalSeg, PDO::PARAM_STR);
+            $stmt->bindParam(":idProfesional", $Profesional, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetchAll();
         } else {
@@ -125,13 +127,15 @@ class SeguimientosModelo
             $fechaFinalSegMasUno = $fechaFinalSeg2->format("Y-m-d");
 
             if ($fechaFinalSegMasUno == $fechaActualMasUno) {
-                $stmt = Conexion::conectar()->prepare("CALL LISTAR_SEGUIMIENTOS_FECHAS(:fechaInicialSeg,:fechaFinalSegMasUno)");
+                $stmt = Conexion::conectar()->prepare("CALL LISTAR_SEGUIMIENTOS_FECHAS(:fechaInicialSeg,:fechaFinalSegMasUno,:idProfesional)");
                 $stmt->bindParam(":fechaInicialSeg", $fechaInicialSeg, PDO::PARAM_STR);
                 $stmt->bindParam(":fechaFinalSegMasUno", $fechaFinalSegMasUno, PDO::PARAM_STR);
+                $stmt->bindParam(":idProfesional", $Profesional, PDO::PARAM_INT);
             } else {
-                $stmt = Conexion::conectar()->prepare("CALL LISTAR_SEGUIMIENTOS_FECHAS(:fechaInicialSeg,:fechaFinalSeg)");
+                $stmt = Conexion::conectar()->prepare("CALL LISTAR_SEGUIMIENTOS_FECHAS(:fechaInicialSeg,:fechaFinalSeg,:idProfesional)");
                 $stmt->bindParam(":fechaInicialSeg", $fechaInicialSeg, PDO::PARAM_STR);
                 $stmt->bindParam(":fechaFinalSeg", $fechaFinalSeg, PDO::PARAM_STR);
+                $stmt->bindParam(":idProfesional", $Profesional, PDO::PARAM_INT);
             }
             $stmt->execute();
             return $stmt->fetchAll();

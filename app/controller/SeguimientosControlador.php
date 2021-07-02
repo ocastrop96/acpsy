@@ -6,9 +6,9 @@ class SeguimientosControlador
         $rptListSeg = SeguimientosModelo::mdlListarSeguimientos($item, $valor);
         return $rptListSeg;
     }
-    static public function ctrListarSeguimientosF($fechaInicialSeg, $fechaFinalSeg)
+    static public function ctrListarSeguimientosF($fechaInicialSeg, $fechaFinalSeg,$Profesional)
     {
-        $rptListSegF = SeguimientosModelo::mdlListarSeguimientosF($fechaInicialSeg, $fechaFinalSeg);
+        $rptListSegF = SeguimientosModelo::mdlListarSeguimientosF($fechaInicialSeg, $fechaFinalSeg,$Profesional);
         return $rptListSegF;
     }
     static public function ctrListarTipoSeguimiento()

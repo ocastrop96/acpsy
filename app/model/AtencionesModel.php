@@ -129,6 +129,44 @@ class AtencionesModelo
         $stmt->close();
         $stmt = null;
     }
+    static public function mdlListarAtencionesF($fechaInicialAte, $fechaFinalAte)
+    {
+        if ($fechaInicialAte == null) {
+            $stmt = Conexion::conectar()->prepare("CALL LISTAR_ATENCIONES_F()");
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } else if ($fechaInicialAte == $fechaFinalAte) {
+
+            $stmt = Conexion::conectar()->prepare("CALL LISTAR_ATENCIONES_FECHAS(:fechaFinalAte,:fechaFinalAte);");
+            $stmt->bindParam(":fechaFinalAte", $fechaFinalAte, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } else {
+            $fechaActual = new DateTime();
+            $fechaActual->add(new DateInterval("P1D"));
+            $fechaActualMasUno = $fechaActual->format("Y-m-d");
+
+            $fechaFinalAte2 = new DateTime($fechaFinalAte);
+            $fechaFinalAte2->add(new DateInterval("P1D"));
+            $fechaFinalAteMasUno = $fechaFinalAte2->format("Y-m-d");
+
+            if ($fechaFinalAteMasUno == $fechaActualMasUno) {
+                $stmt = Conexion::conectar()->prepare("CALL LISTAR_ATENCIONES_FECHAS(:fechaInicialAte,:fechaFinalAteMasUno)");
+                $stmt->bindParam(":fechaInicialAte", $fechaInicialAte, PDO::PARAM_STR);
+                $stmt->bindParam(":fechaFinalAteMasUno", $fechaFinalAteMasUno, PDO::PARAM_STR);
+            } else {
+                $stmt = Conexion::conectar()->prepare("CALL LISTAR_ATENCIONES_FECHAS(:fechaInicialAte,:fechaFinalAte)");
+                $stmt->bindParam(":fechaInicialAte", $fechaInicialAte, PDO::PARAM_STR);
+                $stmt->bindParam(":fechaFinalAte", $fechaFinalAte, PDO::PARAM_STR);
+            }
+            $stmt->execute();
+            return $stmt->fetchAll();
+        }
+
+        //Cerramos la conexion por seguridad
+        $stmt->close();
+        $stmt = null;
+    }
     static public function mdlListarSexo()
     {
         $stmt = Conexion::conectar()->prepare("CALL LISTAR_SEXO()");
