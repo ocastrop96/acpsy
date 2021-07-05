@@ -49,6 +49,8 @@ session_start();
   <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
   <!-- Bootstrap 4 -->
   <script src="public/views/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- ChartJS -->
+  <script src="public/views/plugins/chart.js/Chart.min.js"></script>
   <!-- Datatables -->
   <script src="public/views/plugins/datatables/jquery.dataTables.js"></script>
   <script src="public/views/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
@@ -117,6 +119,7 @@ session_start();
   ?>
   <!-- Scripts JS Propios -->
   <script type="text/javascript" src="public/js/main.js"></script>
+  <script type="text/javascript" src="public/js/dashboard.js"></script>
   <script type="text/javascript" src="public/js/login.js"></script>
   <script type="text/javascript" src="public/js/usuarios.js"></script>
   <script type="text/javascript" src="public/js/profesionales.js"></script>
