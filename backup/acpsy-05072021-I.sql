@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 02-07-2021 a las 19:44:40
+-- Tiempo de generación: 05-07-2021 a las 16:21:38
 -- Versión del servidor: 5.7.24
 -- Versión de PHP: 7.4.15
 
@@ -1205,7 +1205,17 @@ INSERT INTO `acpsy_atencion` (`idAtencion`, `correlativo_Atencion`, `fRegistroAt
 (207, 'ACP-2021-000206', '2021-06-28', '1913912', '1907871', '1254301', 1, '1980-01-10', 'DNI', '40688338', 'TREBEJO', 'AGAMA', 'WILMAN ALFREDO', '2021-06-26', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'CHACCHO', '41', 1, 'PARTICULAR', 1, 1),
 (208, 'ACP-2021-000207', '2021-06-28', '1914161', '1908120', '796304', 1, '1991-01-16', 'DNI', '47878500', 'RIVERA', 'VARA', 'ANA MARIA', '2021-06-27', 'CORONAVIRUS - EMERGENCIA', '', 'COMAS', '30', 2, 'PARTICULAR', 1, 1),
 (209, 'ACP-2021-000208', '2021-06-28', '1913803', '1907762', '256170', 1, '1984-11-18', 'DNI', '42805046', 'RIVERA', 'VARA', 'JULIO CESAR', '2021-06-26', 'COVID UCI - HOSPITALIZACIÓN ', '', 'CARABAYLLO', '37', 1, 'PARTICULAR', 1, 1),
-(210, 'ACP-2021-000209', '2021-06-28', '1913938', '1907897', '986000', 1, '1973-10-15', 'DNI', '06785135', 'YNOÑAN', 'VENTURA', 'RUBEN ', '2021-06-26', 'CORONAVIRUS - EMERGENCIA', '', 'COMAS', '48', 1, 'PARTICULAR', 1, 1);
+(210, 'ACP-2021-000209', '2021-06-28', '1913938', '1907897', '986000', 1, '1973-10-15', 'DNI', '06785135', 'YNOÑAN', 'VENTURA', 'RUBEN ', '2021-06-26', 'CORONAVIRUS - EMERGENCIA', '', 'COMAS', '48', 1, 'PARTICULAR', 1, 1),
+(211, 'ACP-2021-000210', '2021-07-02', '1914372', '1908331', '1296233', 1, '1992-01-04', 'DIE', '003124272', 'ARANGUREN', 'PEREZ', 'ANGELO ANTONIO', '2021-06-28', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'CARABAYLLO', '29', 1, 'CONVENIOS PÚBLICOS', 12, 1),
+(212, 'ACP-2021-000211', '2021-07-03', '1914579', '1908538', '343380', 1, '1964-12-09', 'DNI', '21467237', 'QUISPE', 'ENCISO', 'NORA MARIA', '2021-06-30', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'CARABAYLLO', '57', 2, 'PARTICULAR', 3, 1),
+(213, 'ACP-2021-000212', '2021-07-03', '1914390', '1908349', '1064726', 1, '1978-11-24', 'DNI', '40063727', 'SANCHEZ', 'FERNANDINI', 'LUIS ANTONIO', '2021-07-01', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '43', 1, 'PARTICULAR', 3, 1),
+(214, 'ACP-2021-000213', '2021-07-03', '1914913', '1908872', '269904', 1, '1966-06-24', 'DNI', '06923155', 'RUIZ', 'TAVARA', 'VICTOR EDUARDO', '2021-07-01', 'CORONAVIRUS - EMERGENCIA', '', 'COMAS', '55', 1, 'PARTICULAR', 6, 1);
+INSERT INTO `acpsy_atencion` (`idAtencion`, `correlativo_Atencion`, `fRegistroAtencion`, `idEpisodio`, `cuentaAtencion`, `historiaAtencion`, `idEstadoPacAtencion`, `fechaPacNacimiento`, `tipdocAtencion`, `nrodocAtencion`, `apPaternoAtencion`, `apMaternoAtencion`, `nombAtencion`, `fIngresoAtencion`, `servAtencion`, `camaAtencion`, `distritoAtencion`, `edadAtencion`, `tipSexoAtencion`, `financiaAtencion`, `idURegAtencion`, `idEstadoAte`) VALUES
+(215, 'ACP-2021-000214', '2021-07-03', '1914946', '1908905', '721643', 1, '1981-08-28', 'DNI', '43333906', 'GUEVARA', 'PEREZ', 'DIOCELINA ', '2021-07-01', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'CARABAYLLO', '40', 2, 'PARTICULAR', 6, 1),
+(216, 'ACP-2021-000215', '2021-07-03', '1914530', '1908489', '308808', 2, '1957-01-07', 'DNI', '06855872', 'VARGAS', 'MONTENEGRO DE CHAVEZ', 'CARMEN GABY', '2021-06-29', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '64', 2, 'CONVENIOS PÚBLICOS', 10, 1),
+(217, 'ACP-2021-000216', '2021-07-05', '1914684', '1908643', '381690', 1, '1974-12-08', 'DNI', '10187733', 'PAZ', 'PALOMINO', 'WALTER AUGUSTO', '2021-06-30', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '47', 1, 'PARTICULAR', 12, 1),
+(218, 'ACP-2021-000217', '2021-07-05', '1915185', '1909144', '1339511', 1, '1963-09-05', 'DNI', '06937116', 'CHIPANA', 'JUAREZ', 'LORENZO ROMULO', '2021-07-02', 'CORONAVIRUS - EMERGENCIA', '', 'COMAS', '58', 1, 'PARTICULAR', 12, 1),
+(219, 'ACP-2021-000218', '2021-07-05', '1915302', '1909261', '1269966', 1, '1983-06-04', 'DNI', '45920688', 'NAVARRO', 'AMASIFUEN', 'ESTELA ', '2021-07-02', 'CORONAVIRUS - EMERGENCIA', '', 'COMAS', '38', 2, 'PARTICULAR', 10, 1);
 
 --
 -- Disparadores `acpsy_atencion`
@@ -1603,7 +1613,16 @@ INSERT INTO `acpsy_famatencion` (`idFamiliar`, `fechaRegistro`, `idUsuario`, `id
 (200, '2021-06-28', 1, 201, 3, 2, 'DNI', '77344331', 'MARJORYE ARACELY SOTIL HERNANDEZ', '25', ''),
 (201, '2021-06-28', 1, 208, 9, 2, 'DNI', '71762385', 'SERGIO ROMULO ALVAREZ MORENO', '22', ''),
 (202, '2021-06-28', 1, 209, 6, 2, 'DNI', '10213019', 'SILVIA VERONICA RIVERA VARA', '47', ''),
-(203, '2021-06-28', 1, 210, 9, 2, 'DNI', '10862530', 'GINA FLOR RIVERA GALLEGOS', '43', '');
+(203, '2021-06-28', 1, 210, 9, 2, 'DNI', '10862530', 'GINA FLOR RIVERA GALLEGOS', '43', ''),
+(204, '2021-07-02', 12, 211, 9, 2, 'CE', '20791523', 'GÉNESIS MARCANO AROCHA', '29', ''),
+(205, '2021-07-03', 3, 212, 3, 2, 'DNI', '46499037', 'ANA MARIA CASTAÑEDA QUISPE', '30', ''),
+(206, '2021-07-03', 3, 213, 10, 2, 'DNI', '48171897', 'BERTHA CECILIA HERNANDEZ GARCIA', '27', ''),
+(207, '2021-07-03', 6, 195, 9, 2, 'DNI', '09020368', 'JESUS INES CRUZ GONZALES DE ROMERO', '77', ''),
+(208, '2021-07-03', 6, 214, 9, 2, 'DNI', '47610442', 'KEYLA CLEMENTINA JIMENEZ CHULLES', '30', ''),
+(209, '2021-07-03', 6, 215, 9, 1, 'DNI', '09401206', 'LEONIDAS ILARIO CRUZ FUENTES', '56', ''),
+(210, '2021-07-03', 10, 216, 3, 2, 'DNI', '46820030', 'ESTHEFANIE EMPERATRIZ CHAVEZ VARGAS', '29', ''),
+(211, '2021-07-05', 10, 218, 6, 1, 'DNI', '06843989', 'RHOY DANDY CHIPANA JUAREZ', '56', ''),
+(212, '2021-07-05', 10, 219, 3, 2, 'DNI', '73307763', 'MIREYA NICOLE BARRIONUEVO NAVARRO', '19', '');
 
 -- --------------------------------------------------------
 
@@ -2393,7 +2412,60 @@ INSERT INTO `acpsy_seguimiento` (`idSeguimiento`, `fRegistrSeg`, `idUsuario`, `i
 (653, '2021-06-28', 1, 209, 10, 2, 2, 8, 0, 'SI', 202, 4, 14, '', 1, '2021-06-29 10:13:16'),
 (654, '2021-06-28', 1, 205, 10, 2, 2, 4, 9, 'SI', 197, 4, 14, '', 1, '2021-06-29 10:14:48'),
 (655, '2021-06-28', 1, 210, 10, 2, 2, 4, 9, 'SI', 203, 4, 14, '', 1, '2021-06-29 10:17:16'),
-(656, '2021-06-28', 1, 210, 10, 2, 2, 4, 9, 'SI', 203, 4, 14, '', 1, '2021-06-29 10:18:16');
+(656, '2021-06-28', 1, 210, 10, 2, 2, 4, 9, 'SI', 203, 4, 14, '', 1, '2021-06-29 10:18:16'),
+(657, '2021-06-30', 12, 201, 10, 2, 2, 4, 9, 'SI', 200, 13, 14, '', 1, '2021-07-02 20:03:07'),
+(658, '2021-06-30', 12, 208, 10, 2, 2, 4, 10, 'SI', 201, 13, 15, '', 1, '2021-07-02 20:04:18'),
+(659, '2021-06-30', 12, 207, 10, 2, 2, 13, 10, 'SI', 199, 13, 15, '', 1, '2021-07-02 20:05:57'),
+(660, '2021-06-30', 12, 207, 10, 2, 2, 13, 10, 'SI', 199, 13, 15, '', 1, '2021-07-02 20:07:37'),
+(661, '2021-06-30', 12, 200, 10, 2, 2, 4, 11, 'SI', 191, 13, 16, '', 1, '2021-07-02 20:08:41'),
+(662, '2021-06-30', 12, 211, 10, 2, 2, 4, 9, 'SI', 204, 13, 14, '', 1, '2021-07-02 20:11:39'),
+(663, '2021-07-02', 12, 201, 10, 2, 2, 4, 11, 'SI', 200, 13, 16, '', 1, '2021-07-03 05:33:20'),
+(664, '2021-07-02', 12, 208, 10, 2, 2, 4, 11, 'SI', 201, 13, 16, '', 1, '2021-07-03 05:34:39'),
+(665, '2021-07-02', 12, 207, 10, 2, 2, 13, 11, 'SI', 199, 13, 16, '', 1, '2021-07-03 05:35:26'),
+(666, '2021-07-02', 12, 205, 10, 2, 2, 4, 10, 'SI', 197, 4, 15, '', 1, '2021-07-03 05:36:21'),
+(667, '2021-06-30', 3, 212, 1, 2, 2, 5, 0, 'SI', 205, 2, 1, '', 1, '2021-07-03 05:41:44'),
+(668, '2021-06-30', 3, 200, 1, 2, 2, 5, 0, 'SI', 191, 13, 1, '', 1, '2021-07-03 05:42:35'),
+(669, '2021-06-30', 3, 208, 1, 2, 2, 5, 0, 'SI', 201, 2, 1, '', 1, '2021-07-03 05:43:46'),
+(670, '2021-06-30', 3, 213, 1, 2, 2, 5, 0, 'SI', 206, 5, 1, '', 1, '2021-07-03 05:46:56'),
+(671, '2021-06-30', 3, 210, 1, 2, 2, 5, 0, 'SI', 203, 2, 1, '', 1, '2021-07-03 05:47:57'),
+(672, '2021-06-30', 3, 211, 1, 2, 2, 5, 0, 'SI', 204, 2, 1, '', 1, '2021-07-03 05:49:07'),
+(673, '2021-07-02', 3, 75, 1, 2, 2, 5, 0, 'SI', 66, 2, 1, '', 1, '2021-07-03 05:49:51'),
+(674, '2021-07-02', 3, 196, 1, 2, 2, 5, 0, 'SI', 185, 2, 1, '', 1, '2021-07-03 05:51:38'),
+(675, '2021-07-02', 3, 125, 1, 2, 2, 5, 0, 'SI', 111, 5, 1, '', 1, '2021-07-03 05:52:51'),
+(676, '2021-07-02', 3, 212, 1, 2, 2, 5, 0, 'SI', 205, 2, 1, '', 1, '2021-07-03 05:53:57'),
+(677, '2021-07-02', 3, 194, 1, 2, 2, 5, 0, 'SI', 182, 5, 1, '', 1, '2021-07-03 05:54:45'),
+(678, '2021-07-02', 3, 209, 1, 2, 2, 5, 0, 'SI', 202, 5, 13, '', 1, '2021-07-03 05:55:29'),
+(679, '2021-06-30', 6, 68, 4, 2, 2, 8, 15, 'SI', 63, 6, 9, '', 1, '2021-07-03 05:59:10'),
+(680, '2021-06-30', 6, 195, 4, 2, 2, 8, 15, 'SI', 207, 4, 9, '', 1, '2021-07-03 06:01:57'),
+(681, '2021-06-30', 6, 202, 4, 2, 2, 8, 15, 'SI', 193, 5, 9, '', 1, '2021-07-03 06:03:54'),
+(682, '2021-06-30', 10, 59, 8, 2, 2, 13, 17, 'SI', 196, 13, 0, '', 1, '2021-07-03 06:12:09'),
+(683, '2021-06-30', 10, 126, 8, 2, 2, 13, 9, 'SI', 123, 13, 16, '', 1, '2021-07-03 06:13:30'),
+(684, '2021-06-30', 10, 210, 8, 2, 2, 4, 9, 'SI', 203, 13, 14, '', 1, '2021-07-03 06:14:25'),
+(685, '2021-06-30', 10, 216, 8, 2, 2, 4, 11, 'SI', 210, 13, 14, '', 1, '2021-07-03 06:17:07'),
+(686, '2021-06-30', 10, 212, 8, 2, 2, 2, 9, 'SI', 205, 13, 14, '', 1, '2021-07-03 06:17:51'),
+(687, '2021-07-01', 10, 201, 8, 2, 2, 4, 9, 'SI', 192, 13, 14, '', 1, '2021-07-03 06:19:35'),
+(688, '2021-07-01', 10, 208, 8, 2, 2, 13, 9, 'SI', 201, 13, 14, '', 1, '2021-07-03 06:20:35'),
+(689, '2021-07-01', 10, 214, 8, 2, 2, 4, 9, 'SI', 208, 13, 14, '', 1, '2021-07-03 06:21:31'),
+(690, '2021-07-01', 10, 215, 8, 2, 2, 13, 9, 'SI', 209, 13, 14, '', 1, '2021-07-03 06:22:20'),
+(691, '2021-07-01', 10, 211, 8, 2, 2, 4, 9, 'SI', 204, 13, 14, '', 1, '2021-07-03 06:23:33'),
+(692, '2021-07-01', 10, 213, 8, 2, 2, 4, 0, 'SI', 206, 13, 14, '', 1, '2021-07-03 06:24:12'),
+(693, '2021-07-01', 10, 212, 8, 2, 2, 2, 10, 'SI', 205, 13, 15, '', 1, '2021-07-03 06:27:59'),
+(694, '2021-07-01', 10, 159, 8, 2, 2, 4, 9, 'SI', 145, 13, 15, '', 1, '2021-07-03 06:29:24'),
+(695, '2021-06-30', 6, 198, 4, 3, 2, 5, 9, 'NO', 0, 0, 0, '', 1, '2021-07-05 15:27:21'),
+(696, '2021-07-02', 12, 213, 10, 2, 2, 4, 9, 'SI', 206, 13, 14, '', 1, '2021-07-05 16:00:01'),
+(697, '2021-07-02', 12, 217, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, '', 1, '2021-07-05 16:01:31'),
+(698, '2021-07-02', 12, 206, 10, 2, 2, 4, 9, 'SI', 198, 4, 15, '', 1, '2021-07-05 16:02:10'),
+(699, '2021-07-02', 12, 218, 10, 2, 2, 13, 9, 'NO', 0, 0, 0, '', 1, '2021-07-05 16:03:34'),
+(700, '2021-07-02', 12, 214, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, '', 1, '2021-07-05 16:04:38'),
+(701, '2021-07-02', 10, 214, 8, 2, 2, 4, 9, 'SI', 208, 13, 15, '', 1, '2021-07-05 16:09:07'),
+(702, '2021-07-03', 10, 218, 8, 2, 2, 13, 9, 'SI', 211, 13, 14, '', 1, '2021-07-05 16:11:11'),
+(703, '2021-07-03', 10, 219, 8, 2, 2, 4, 9, 'SI', 212, 13, 14, '', 1, '2021-07-05 16:13:50'),
+(704, '2021-07-03', 10, 213, 8, 2, 2, 4, 9, 'SI', 206, 13, 15, '', 1, '2021-07-05 16:14:38'),
+(705, '2021-07-03', 10, 126, 8, 2, 2, 4, 9, 'SI', 123, 13, 17, '', 1, '2021-07-05 16:15:14'),
+(706, '2021-07-03', 10, 208, 8, 2, 2, 13, 9, 'SI', 201, 13, 15, '', 1, '2021-07-05 16:18:30'),
+(707, '2021-07-03', 10, 205, 8, 2, 2, 4, 9, 'SI', 197, 4, 14, '', 1, '2021-07-05 16:19:14'),
+(708, '2021-07-03', 10, 211, 8, 2, 2, 4, 9, 'SI', 204, 13, 15, '', 1, '2021-07-05 16:20:12'),
+(709, '2021-07-03', 10, 211, 8, 2, 2, 4, 9, 'SI', 204, 13, 15, '', 1, '2021-07-05 16:20:58');
 
 -- --------------------------------------------------------
 
@@ -2659,12 +2731,11 @@ ALTER TABLE `acpsy_profesionales`
 --
 ALTER TABLE `acpsy_seguimiento`
   ADD PRIMARY KEY (`idSeguimiento`),
-  ADD KEY `fk_atencionpac` (`idAtencionPac`),
-  ADD KEY `fk_motivo` (`idMotSeguimiento`),
-  ADD KEY `fk_profesional` (`idProfesional`),
-  ADD KEY `fk_estatus` (`idStatusSeg`),
-  ADD KEY `fk_usuarioReg` (`idUsuario`),
-  ADD KEY `fk_tipoSeg` (`idTipoSeguimiento`);
+  ADD KEY `fk_mot` (`idMotSeguimiento`),
+  ADD KEY `fk_prof` (`idProfesional`),
+  ADD KEY `fk_tipseg` (`idTipoSeguimiento`),
+  ADD KEY `fk_user` (`idUsuario`),
+  ADD KEY `fk_ate` (`idAtencionPac`);
 
 --
 -- Indices de la tabla `acpsy_tiposeguimiento`
@@ -2706,7 +2777,7 @@ ALTER TABLE `zacpsy_aud_familiares`
 -- AUTO_INCREMENT de la tabla `acpsy_atencion`
 --
 ALTER TABLE `acpsy_atencion`
-  MODIFY `idAtencion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
+  MODIFY `idAtencion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=220;
 
 --
 -- AUTO_INCREMENT de la tabla `acpsy_condicionprof`
@@ -2754,7 +2825,7 @@ ALTER TABLE `acpsy_estatusseguimiento`
 -- AUTO_INCREMENT de la tabla `acpsy_famatencion`
 --
 ALTER TABLE `acpsy_famatencion`
-  MODIFY `idFamiliar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=204;
+  MODIFY `idFamiliar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=213;
 
 --
 -- AUTO_INCREMENT de la tabla `acpsy_motivoseguimiento`
@@ -2784,7 +2855,7 @@ ALTER TABLE `acpsy_profesionales`
 -- AUTO_INCREMENT de la tabla `acpsy_seguimiento`
 --
 ALTER TABLE `acpsy_seguimiento`
-  MODIFY `idSeguimiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=657;
+  MODIFY `idSeguimiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=710;
 
 --
 -- AUTO_INCREMENT de la tabla `acpsy_tiposeguimiento`
@@ -2841,6 +2912,16 @@ ALTER TABLE `acpsy_famatencion`
 ALTER TABLE `acpsy_profesionales`
   ADD CONSTRAINT `fk_condicion` FOREIGN KEY (`idCondicion`) REFERENCES `acpsy_condicionprof` (`idCondicion`),
   ADD CONSTRAINT `fk_estadoProf` FOREIGN KEY (`idEstado`) REFERENCES `acpsy_estadoprof` (`idEstadoProf`);
+
+--
+-- Filtros para la tabla `acpsy_seguimiento`
+--
+ALTER TABLE `acpsy_seguimiento`
+  ADD CONSTRAINT `fk_ate` FOREIGN KEY (`idAtencionPac`) REFERENCES `acpsy_atencion` (`idAtencion`),
+  ADD CONSTRAINT `fk_mot` FOREIGN KEY (`idMotSeguimiento`) REFERENCES `acpsy_motivoseguimiento` (`idMotSeguimiento`),
+  ADD CONSTRAINT `fk_prof` FOREIGN KEY (`idProfesional`) REFERENCES `acpsy_profesionales` (`idProfesional`),
+  ADD CONSTRAINT `fk_tipseg` FOREIGN KEY (`idTipoSeguimiento`) REFERENCES `acpsy_tiposeguimiento` (`idTipoSeguimiento`),
+  ADD CONSTRAINT `fk_user` FOREIGN KEY (`idUsuario`) REFERENCES `acpsy_usuarios` (`idUsuario`);
 
 --
 -- Filtros para la tabla `acpsy_usuarios`
