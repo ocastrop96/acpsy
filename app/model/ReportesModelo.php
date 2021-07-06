@@ -10,4 +10,21 @@ class ReportesModelo
         $stmt->close();
         $stmt = null;
     }
+
+    static public function mdlListar10Diagnosticos()
+    {
+        $stmt = Conexion::conectar()->prepare("CALL GRAFICO_DIAGNOSTICOS()");
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
+    static public function mdlListarSeguimientos()
+    {
+        $stmt = Conexion::conectar()->prepare("CALL GRAFICO_SEGUIMIENTO_MENSUAL()");
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
 }
