@@ -21,8 +21,6 @@ session_start();
   <link rel="stylesheet" href="public/views/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
   <link rel="stylesheet" href="public/views/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="public/views/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
-  <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="public/views/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <!-- Select2 -->
   <link rel="stylesheet" href="public/views/plugins/select2/css/select2.min.css">
   <link rel="stylesheet" href="public/views/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
@@ -37,7 +35,7 @@ session_start();
   <!-- Toastr -->
   <link rel="stylesheet" href="public/views/plugins/toastr/toastr.min.css">
   <link rel="stylesheet" href="public/views/plugins/daterangepicker/daterangepicker.css">
-  <link rel="stylesheet" href="public/views/plugins/summernote/summernote-bs4.min.css">
+
   <!-- Theme style -->
   <link rel="stylesheet" href="public/views/resources/css/adminlte.css">
   <link rel="stylesheet" href="public/views/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
@@ -69,10 +67,6 @@ session_start();
   <script src="public/views/plugins/moment/moment.min.js"></script>
   <script src="public/views/plugins/inputmask/jquery.inputmask.min.js"></script>
   <script src="public/views/plugins/daterangepicker/daterangepicker.js"></script>
-  <!-- Tempusdominus Bootstrap 4 -->
-  <script src="public/views/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-  <!-- Summernote -->
-  <script src="public/views/plugins/summernote/summernote-bs4.min.js"></script>
   <!-- overlayScrollbars -->
   <!-- jquery-validation -->
   <script src="public/views/plugins/jquery-validation/jquery.validate.min.js"></script>
