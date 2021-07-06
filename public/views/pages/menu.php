@@ -25,7 +25,12 @@
             </p>
           </a>
         </li>
-        <li class="nav-header">Administración</li>
+
+
+        <?php
+        if ($_SESSION["loginPerfil"] == 1) {
+          echo '
+          <li class="nav-header">Administración</li>
         <li class="nav-item">
           <a href="usuarios" class="nav-link">
             <i class="nav-icon fas fa-users"></i>
@@ -35,6 +40,63 @@
           </a>
         </li>
         <li class="nav-header">Complementos</li>
+        <li class="nav-item">
+          <a href="profesionales" class="nav-link">
+            <i class="nav-icon fas fa-id-card-alt"></i>
+            <p>
+              Profesionales
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="diagnosticos" class="nav-link">
+            <i class="nav-icon fas fa-stethoscope"></i>
+            <p>
+              Diagnósticos
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-header">Acompañamiento</li>
+        <li class="nav-item">
+          <a href="atenciones" class="nav-link">
+            <i class="nav-icon fas fa-archive"></i>
+            <p>
+              Atenciones
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="familiares" class="nav-link">
+            <i class="nav-icon fas fa-chalkboard-teacher"></i>
+            <p>
+              Familiares
+            </p>
+          </a>
+        </li>
+        <li class="nav-header">Reportes</li>
+        <li class="nav-item">
+          <a href="reporte-general" class="nav-link">
+            <i class="nav-icon fas fa-chart-pie"></i>
+            <p>
+              General
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="reporte-jefatura" class="nav-link">
+            <i class="nav-icon fas fa-chart-line"></i>
+            <p>
+              Jefatura
+            </p>
+          </a>
+        </li>
+          ';
+        } elseif ($_SESSION["loginPerfil"] == 1) {
+          echo '';
+        } else {
+          echo '
+          <li class="nav-header">Complementos</li>
         <li class="nav-item">
           <a href="profesionales" class="nav-link">
             <i class="nav-icon fas fa-id-card-alt"></i>
@@ -94,14 +156,8 @@
             </p>
           </a>
         </li>
-        <li class="nav-item">
-          <a href="reporte-profesional" class="nav-link">
-            <i class="nav-icon fas fa-chart-bar"></i>
-            <p>
-              Profesional
-            </p>
-          </a>
-        </li>
+          ';
+        } ?>
       </ul>
     </nav>
   </div>

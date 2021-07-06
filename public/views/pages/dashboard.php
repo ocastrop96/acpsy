@@ -63,50 +63,11 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-lg-4 col-12">
-          <!-- small box -->
-          <div class="small-box bg-info">
-            <div class="inner">
-              <h3 class="one4"></h3>
-
-              <p class="font-weight-bold">Usuarios del Sistema</p>
-            </div>
-            <div class="icon">
-              <i class="fas fa-users"></i>
-            </div>
-            <a href="usuarios" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-4 col-12">
-          <!-- small box -->
-          <div class="small-box bg-success">
-            <div class="inner">
-              <h3 class="one5"></h3>
-              <p class="font-weight-bold">Profesionales</p>
-            </div>
-            <div class="icon">
-              <i class="fas fa-id-card-alt"></i>
-            </div>
-            <a href="profesionales" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-4 col-12">
-          <!-- small box -->
-          <div class="small-box bg-danger">
-            <div class="inner">
-              <h3 class="one6"></h3>
-              <p class="font-weight-bold">Diagnósticos</p>
-            </div>
-            <div class="icon">
-              <i class="fas fa-stethoscope"></i>
-            </div>
-            <a href="diagnosticos" class="small-box-footer">Más info <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-      </div>
+      <?php
+      if ($_SESSION["loginPerfil"] == 1 || $_SESSION["loginPerfil"] == 2) {
+        include "widgets/adminboss.php";
+      }
+      ?>
       <div class="row">
         <div class="col-md-6">
           <div class="card card-gray">
@@ -115,7 +76,7 @@
             </div>
             <div class="card-body">
               <div class="chart">
-                <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                <canvas id="barChart" width="400" height="400"></canvas>
               </div>
             </div>
           </div>
@@ -126,7 +87,7 @@
               <h3 class="card-title font-weight-bold">10 Diagnósticos Frecuentes</h3>
             </div>
             <div class="card-body">
-              <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+              <canvas id="donutChart" width="400" height="400"></canvas>
             </div>
           </div>
         </div>

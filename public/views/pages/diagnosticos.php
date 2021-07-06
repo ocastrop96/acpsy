@@ -1,3 +1,11 @@
+<?php
+if ($_SESSION["loginPerfil"] == 3) {
+  echo '<script>
+    window.location = "dashboard";
+  </script>';
+  return;
+}
+?>
 <div class="content-wrapper">
   <section class="content-header">
     <div class="container-fluid">

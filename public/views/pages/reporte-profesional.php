@@ -1,3 +1,11 @@
+<?php
+if ($_SESSION["loginPerfil"] == 1) {
+  echo '<script>
+    window.location = "dashboard";
+  </script>';
+  return;
+}
+?>
 <div class="content-wrapper">
   <section class="content-header">
     <div class="container-fluid">
@@ -20,9 +28,6 @@
         <h3 class="card-title">Módulo Reporte Profesional &nbsp;<i class="fas fa-chart-bar"></i></h3>
       </div>
       <div class="card-body">
-      </div>
-      <div class="card-body">
-        tablas
       </div>
     </div>
   </section>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 05-07-2021 a las 16:21:38
+-- Tiempo de generación: 06-07-2021 a las 19:45:17
 -- Versión del servidor: 5.7.24
 -- Versión de PHP: 7.4.15
 
@@ -127,6 +127,36 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ELIMINAR_PROFESIONAL` (IN `_idProfesional` INT(11))  DELETE FROM acpsy_profesionales WHERE idProfesional = _idProfesional$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ELIMINAR_USUARIO` (IN `_idUsuario` INT(11))  DELETE FROM acpsy_usuarios WHERE idUsuario = _idUsuario$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GRAFICO_DIAGNOSTICOS` ()  SELECT
+	acpsy_diagnosticos.idDiagnostico as id, 
+	acpsy_diagnosticos.cieDiagnostico as cie10, 
+	acpsy_diagnosticos.detaDiagnostico as detalle, 
+	COUNT(*) AS frecuencia
+FROM
+	acpsy_seguimiento
+	INNER JOIN
+	acpsy_diagnosticos
+	ON 
+		acpsy_seguimiento.idDiag1Seg = acpsy_diagnosticos.idDiagnostico
+GROUP BY
+	acpsy_seguimiento.idDiag1Seg
+ORDER BY frecuencia DESC
+LIMIT 10$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GRAFICO_SEGUIMIENTO_MENSUAL` ()  SELECT
+MONTH ( acpsy_seguimiento.fRegistrSeg ) AS NMES,
+MES_SPANISH ( acpsy_seguimiento.fRegistrSeg, 'es_ES' ) AS MES,
+COUNT( acpsy_seguimiento.idSeguimiento ) AS CONTEO 
+FROM
+	acpsy_seguimiento 
+WHERE
+	idStatusSeg != 2 
+	AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+	CURDATE()) 
+GROUP BY
+	NMES,MES
+ORDER BY MONTH(acpsy_seguimiento.fRegistrSeg)$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `HABILITAR_PROFESIONAL` (IN `_idProfesional` INT(11), IN `_idEstado` INT(11))  UPDATE acpsy_profesionales SET idEstado = _idEstado WHERE idProfesional = _idProfesional$$
 
@@ -797,6 +827,8 @@ FROM
 		acpsy_usuarios.dniUsuario = acpsy_profesionales.dniProfesional 
 	ORDER BY acpsy_usuarios.idPerfil ASC$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `LISTAR_WIDGETS` ()  SELECT COUNT(*) as nseguimientos, (SELECT COUNT(*) from acpsy_atencion WHERE idEstadoAte != 3) as natenciones, (SELECT COUNT(*) from acpsy_famatencion) as nfamiliares, (SELECT COUNT(*) from acpsy_usuarios) as nusuarios,(SELECT COUNT(*) FROM acpsy_profesionales) as nprofesionales,(SELECT COUNT(*) FROM acpsy_diagnosticos) as ndiagnosticos from acpsy_seguimiento WHERE idStatusSeg != 2$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `LOGIN_USUARIO` (IN `_cuentaUsuario` VARCHAR(50))  SELECT
 	acpsy_usuarios.idUsuario, 
 	acpsy_usuarios.dniUsuario, 
@@ -958,6 +990,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `VALIDA_FAMILIAR` (IN `_idAtencion` 
 FROM
 	acpsy_famatencion
 WHERE idAtencion = _idAtencion AND ndocFamiliar = _ndocFamiliar$$
+
+--
+-- Funciones
+--
+CREATE DEFINER=`root`@`localhost` FUNCTION `MES_SPANISH` (`_d` DATE, `_locale` VARCHAR(5)) RETURNS VARCHAR(22) CHARSET utf8 BEGIN
+     SET @@lc_time_names = _locale;
+     RETURN UPPER(DATE_FORMAT(_d, '%M'));
+ END$$
 
 DELIMITER ;
 
@@ -1215,7 +1255,9 @@ INSERT INTO `acpsy_atencion` (`idAtencion`, `correlativo_Atencion`, `fRegistroAt
 (216, 'ACP-2021-000215', '2021-07-03', '1914530', '1908489', '308808', 2, '1957-01-07', 'DNI', '06855872', 'VARGAS', 'MONTENEGRO DE CHAVEZ', 'CARMEN GABY', '2021-06-29', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '64', 2, 'CONVENIOS PÚBLICOS', 10, 1),
 (217, 'ACP-2021-000216', '2021-07-05', '1914684', '1908643', '381690', 1, '1974-12-08', 'DNI', '10187733', 'PAZ', 'PALOMINO', 'WALTER AUGUSTO', '2021-06-30', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'COMAS', '47', 1, 'PARTICULAR', 12, 1),
 (218, 'ACP-2021-000217', '2021-07-05', '1915185', '1909144', '1339511', 1, '1963-09-05', 'DNI', '06937116', 'CHIPANA', 'JUAREZ', 'LORENZO ROMULO', '2021-07-02', 'CORONAVIRUS - EMERGENCIA', '', 'COMAS', '58', 1, 'PARTICULAR', 12, 1),
-(219, 'ACP-2021-000218', '2021-07-05', '1915302', '1909261', '1269966', 1, '1983-06-04', 'DNI', '45920688', 'NAVARRO', 'AMASIFUEN', 'ESTELA ', '2021-07-02', 'CORONAVIRUS - EMERGENCIA', '', 'COMAS', '38', 2, 'PARTICULAR', 10, 1);
+(219, 'ACP-2021-000218', '2021-07-05', '1915302', '1909261', '1269966', 1, '1983-06-04', 'DNI', '45920688', 'NAVARRO', 'AMASIFUEN', 'ESTELA ', '2021-07-02', 'CORONAVIRUS - EMERGENCIA', '', 'COMAS', '38', 2, 'PARTICULAR', 10, 1),
+(220, 'ACP-2021-000219', '2021-07-06', '1915459', '1909418', '780446', 1, '1998-08-04', 'DNI', '74648501', 'QUISPE', 'JARA', 'EDWIN AQUINO', '2021-07-03', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'CARABAYLLO', '23', 1, 'PARTICULAR', 12, 1),
+(221, 'ACP-2021-000220', '2021-07-06', '1915371', '1909330', '1339566', 3, '1966-01-29', 'DNI', '08957733', 'ZEVALLOS', 'MALPARTIDA', 'FILOMENA ', '2021-07-03', 'COVID LEGADO - HOSPITALIZACIÓN ', '', 'VILLA MARIA DEL TRIUNFO', '55', 2, 'PARTICULAR', 12, 1);
 
 --
 -- Disparadores `acpsy_atencion`
@@ -1622,7 +1664,8 @@ INSERT INTO `acpsy_famatencion` (`idFamiliar`, `fechaRegistro`, `idUsuario`, `id
 (209, '2021-07-03', 6, 215, 9, 1, 'DNI', '09401206', 'LEONIDAS ILARIO CRUZ FUENTES', '56', ''),
 (210, '2021-07-03', 10, 216, 3, 2, 'DNI', '46820030', 'ESTHEFANIE EMPERATRIZ CHAVEZ VARGAS', '29', ''),
 (211, '2021-07-05', 10, 218, 6, 1, 'DNI', '06843989', 'RHOY DANDY CHIPANA JUAREZ', '56', ''),
-(212, '2021-07-05', 10, 219, 3, 2, 'DNI', '73307763', 'MIREYA NICOLE BARRIONUEVO NAVARRO', '19', '');
+(212, '2021-07-05', 10, 219, 3, 2, 'DNI', '73307763', 'MIREYA NICOLE BARRIONUEVO NAVARRO', '19', ''),
+(213, '2021-07-06', 12, 220, 1, 1, 'DNI', '09168430', 'AQUINO QUISPE SALINAS', '61', '');
 
 -- --------------------------------------------------------
 
@@ -1723,8 +1766,7 @@ INSERT INTO `acpsy_profesionales` (`idProfesional`, `idEstado`, `idCondicion`, `
 (7, 1, 1, '06123251', '10097', 'SANCHEZ AQUINO', 'NORMA NELIDA'),
 (8, 1, 2, '10288615', '25775', 'TRUJILLO CASTILLO', 'MIRIAM ROCIO'),
 (9, 1, 1, '07178930', '34522', 'VELASQUEZ REYES', 'MARIA ANGELA'),
-(10, 1, 2, '46624029', '21470', 'ZAVALETA LOPEZ', 'DARNELLY JAHAIRA'),
-(11, 1, 2, '77478995', '123456', 'CASTRO PALACIOS', 'OLGER IVAN');
+(10, 1, 2, '46624029', '21470', 'ZAVALETA LOPEZ', 'DARNELLY JAHAIRA');
 
 -- --------------------------------------------------------
 
@@ -2465,7 +2507,15 @@ INSERT INTO `acpsy_seguimiento` (`idSeguimiento`, `fRegistrSeg`, `idUsuario`, `i
 (706, '2021-07-03', 10, 208, 8, 2, 2, 13, 9, 'SI', 201, 13, 15, '', 1, '2021-07-05 16:18:30'),
 (707, '2021-07-03', 10, 205, 8, 2, 2, 4, 9, 'SI', 197, 4, 14, '', 1, '2021-07-05 16:19:14'),
 (708, '2021-07-03', 10, 211, 8, 2, 2, 4, 9, 'SI', 204, 13, 15, '', 1, '2021-07-05 16:20:12'),
-(709, '2021-07-03', 10, 211, 8, 2, 2, 4, 9, 'SI', 204, 13, 15, '', 1, '2021-07-05 16:20:58');
+(709, '2021-07-03', 10, 211, 8, 2, 2, 4, 9, 'SI', 204, 13, 15, '', 1, '2021-07-05 16:20:58'),
+(710, '2021-07-05', 12, 125, 10, 2, 2, 4, 9, 'SI', 111, 13, 14, '', 1, '2021-07-06 19:10:20'),
+(711, '2021-07-05', 12, 220, 10, 2, 2, 4, 9, 'SI', 213, 4, 14, '', 1, '2021-07-06 19:12:32'),
+(712, '2021-07-05', 12, 209, 10, 2, 2, 8, 0, 'SI', 202, 4, 15, '', 1, '2021-07-06 19:13:10'),
+(713, '2021-07-05', 12, 213, 10, 2, 2, 4, 10, 'SI', 206, 13, 15, '', 1, '2021-07-06 19:14:06'),
+(714, '2021-07-05', 12, 205, 10, 2, 2, 4, 11, 'SI', 197, 4, 16, '', 1, '2021-07-06 19:15:55'),
+(715, '2021-07-05', 12, 211, 10, 2, 2, 4, 0, 'SI', 204, 13, 15, '', 1, '2021-07-06 19:19:23'),
+(716, '2021-07-05', 12, 218, 10, 2, 2, 13, 10, 'NO', 0, 0, 0, '', 1, '2021-07-06 19:19:58'),
+(717, '2021-07-05', 12, 221, 10, 2, 2, 4, 9, 'NO', 0, 0, 0, '', 1, '2021-07-06 19:23:42');
 
 -- --------------------------------------------------------
 
@@ -2544,7 +2594,8 @@ INSERT INTO `acpsy_usuarios` (`idUsuario`, `idPerfil`, `idEstado`, `dniUsuario`,
 (9, 3, 1, '06123251', 'SANCHEZ AQUINO', 'NORMA NELIDA', 'nsancheza', 'dpsicologia@hnseb.gob.pe', '$2a$07$usesomesillystringforeYSJzm0jn4URCyGiJ4fg.5wGT.VCsJVa', 0, '2021-06-01 17:27:36', NULL),
 (10, 3, 1, '10288615', 'TRUJILLO CASTILLO', 'MIRIAM ROCIO', 'mtrujilloc', 'dpsicologia@hnseb.gob.pe', '$2a$07$usesomesillystringforet.nDPdp7Y6XclmteD.MneoaNId0Wvje', 0, '2021-06-01 17:28:01', NULL),
 (11, 3, 1, '07178930', 'VELASQUEZ REYES', 'MARIA ANGELA', 'mvelasquezr', 'dpsicologia@hnseb.gob.pe', '$2a$07$usesomesillystringforedE1OzELbl6PFujI.BSco1Er6IX.Uv6C', 0, '2021-06-01 17:28:22', NULL),
-(12, 3, 1, '46624029', 'ZAVALETA LOPEZ', 'DARNELLY JAHAIRA', 'dzavaletal', 'dpsicologia@hnseb.gob.pe', '$2a$07$usesomesillystringforeBQPDD/GSseqnB6cro9X9nOHtqDKTXLS', 0, '2021-06-01 17:29:00', NULL);
+(12, 3, 1, '46624029', 'ZAVALETA LOPEZ', 'DARNELLY JAHAIRA', 'dzavaletal', 'dpsicologia@hnseb.gob.pe', '$2a$07$usesomesillystringforeBQPDD/GSseqnB6cro9X9nOHtqDKTXLS', 0, '2021-06-01 17:29:00', NULL),
+(13, 1, 1, '09966920', 'SERNAQUE QUINTANA', 'JAVIER OCTAVIO', 'jsernaque', 'jsernaque@hnseb.gob.pe', '$2a$07$usesomesillystringforeAR0AYDLcMUwZJGc02Ta3T98Pn6LH7pi', 0, '2021-07-06 19:35:33', NULL);
 
 -- --------------------------------------------------------
 
@@ -2777,7 +2828,7 @@ ALTER TABLE `zacpsy_aud_familiares`
 -- AUTO_INCREMENT de la tabla `acpsy_atencion`
 --
 ALTER TABLE `acpsy_atencion`
-  MODIFY `idAtencion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=220;
+  MODIFY `idAtencion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=222;
 
 --
 -- AUTO_INCREMENT de la tabla `acpsy_condicionprof`
@@ -2825,7 +2876,7 @@ ALTER TABLE `acpsy_estatusseguimiento`
 -- AUTO_INCREMENT de la tabla `acpsy_famatencion`
 --
 ALTER TABLE `acpsy_famatencion`
-  MODIFY `idFamiliar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=213;
+  MODIFY `idFamiliar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=214;
 
 --
 -- AUTO_INCREMENT de la tabla `acpsy_motivoseguimiento`
@@ -2855,7 +2906,7 @@ ALTER TABLE `acpsy_profesionales`
 -- AUTO_INCREMENT de la tabla `acpsy_seguimiento`
 --
 ALTER TABLE `acpsy_seguimiento`
-  MODIFY `idSeguimiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=710;
+  MODIFY `idSeguimiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=718;
 
 --
 -- AUTO_INCREMENT de la tabla `acpsy_tiposeguimiento`
@@ -2873,7 +2924,7 @@ ALTER TABLE `acpsy_tipsexo`
 -- AUTO_INCREMENT de la tabla `acpsy_usuarios`
 --
 ALTER TABLE `acpsy_usuarios`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `zacpsy_aud_atenciones`

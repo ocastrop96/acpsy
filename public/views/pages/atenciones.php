@@ -85,7 +85,7 @@
               if ($value["idEstadoAte"] == 1) {
                 $estadoAtencion = "<button type='button' class='btn btn-block btn-success font-weight-bold'><i class='fas fa-clipboard-list'></i> " . $value["detaEstadoAte"] . "</button>";
 
-                $botones = "<div class='btn-group'><button class='btn btn-warning btnEditarAtencion' idAtencion='" . $value["idAtencion"] . "' data-toggle='modal' data-target='#modal-editar-atencion'><i class='fas fa-edit'></i></button><button class='btn btn-info btnVerAtencion' data-toggle='tooltip' data-placement='left' title='Ver Ficha de  Atención' idAtencion='" . $value["idAtencion"] . "'><i class='fas fa-file-medical-alt'></i></button><button class='btn btn-secondary btnAnularAtencion' data-toggle='tooltip' data-placement='left' title='Anular Atención' idAtencion='" . $value["idAtencion"] . "' idCuenta='" . $value["cuentaAtencion"] . "' idEpisodio = '" . $value["idEpisodio"] . "'><i class='fas fa-power-off'></i></button></div>";
+                $botones = "<div class='btn-group'><button class='btn btn-warning btnEditarAtencion' idAtencion='" . $value["idAtencion"] . "' data-toggle='modal' data-target='#modal-editar-atencion'><i class='fas fa-edit'></i></button><button class='btn btn-secondary btnAnularAtencion' data-toggle='tooltip' data-placement='left' title='Anular Atención' idAtencion='" . $value["idAtencion"] . "' idCuenta='" . $value["cuentaAtencion"] . "' idEpisodio = '" . $value["idEpisodio"] . "'><i class='fas fa-power-off'></i></button></div>";
               } elseif ($value["idEstadoAte"] == 2) {
                 $estadoAtencion = "<button type='button' class='btn btn-block btn-danger font-weight-bold'><i class='fa fa-ban'></i> " . $value["detaEstadoAte"] . "</button>";
 
@@ -93,7 +93,7 @@
               } else {
                 $estadoAtencion = "<button type='button' class='btn btn-block btn-info font-weight-bold'><i class='fa fa-check'></i> " . $value["detaEstadoAte"] . "</button>";
 
-                $botones = "<div class='btn-group'><button class='btn btn-warning disabled'><i class='fas fa-edit'></i></button><button class='btn btn-info btnVerAtencion' data-toggle='tooltip' data-placement='left' title='Ver Ficha de  Atención' idAtencion='" . $value["idAtencion"] . "'><i class='fas fa-file-medical-alt'></i></button><button class='btn btn-secondary disabled'><i class='fas fa-power-off'></i></button></div>";
+                $botones = "<div class='btn-group'><button class='btn btn-warning disabled'><i class='fas fa-edit'></i></button><button class='btn btn-secondary disabled'><i class='fas fa-power-off'></i></button></div>";
               }
 
               echo '<tr>
