@@ -213,7 +213,7 @@ $("#btnRegAte").on("click", function () {
                 required: true,
             },
             rgaNDoc: {
-                required: true,
+                required: false,
             },
             rgaAPaterno: {
                 required: true,
@@ -326,7 +326,7 @@ $("#btnEdtAte").on("click", function () {
                 required: true,
             },
             edtaNDoc: {
-                required: true,
+                required: false,
             },
             edtaAPaterno: {
                 required: true,

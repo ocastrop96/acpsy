@@ -121,6 +121,10 @@ session_start();
   <script type="text/javascript" src="public/js/atenciones.js"></script>
   <script type="text/javascript" src="public/js/familiares.js"></script>
   <script type="text/javascript" src="public/js/seguimiento.js"></script>
+  <script type="text/javascript" src="public/js/reportes-general.js"></script>
+  <script type="text/javascript" src="public/js/reportes-jefatura.js"></script>
+  <script type="text/javascript" src="public/js/reportes-profesional.js"></script>
+
   <!-- Scripts JS Propios -->
 </body>
 

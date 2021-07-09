@@ -25,8 +25,6 @@
             </p>
           </a>
         </li>
-
-
         <?php
         if ($_SESSION["loginPerfil"] == 1) {
           echo '
@@ -92,11 +90,9 @@
           </a>
         </li>
           ';
-        } elseif ($_SESSION["loginPerfil"] == 1) {
-          echo '';
-        } else {
+        } elseif ($_SESSION["loginPerfil"] == 2) {
           echo '
-          <li class="nav-header">Complementos</li>
+        <li class="nav-header">Complementos</li>
         <li class="nav-item">
           <a href="profesionales" class="nav-link">
             <i class="nav-icon fas fa-id-card-alt"></i>
@@ -153,6 +149,42 @@
             <i class="nav-icon fas fa-chart-line"></i>
             <p>
               Jefatura
+            </p>
+          </a>
+        </li>';
+        } else {
+          echo '
+        <li class="nav-header">Acompañamiento</li>
+        <li class="nav-item">
+          <a href="atenciones" class="nav-link">
+            <i class="nav-icon fas fa-archive"></i>
+            <p>
+              Atenciones
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="familiares" class="nav-link">
+            <i class="nav-icon fas fa-chalkboard-teacher"></i>
+            <p>
+              Familiares
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="seguimiento" class="nav-link">
+            <i class="nav-icon fas fa-diagnoses"></i>
+            <p>
+              Seguimiento
+            </p>
+          </a>
+        </li>
+        <li class="nav-header">Reportes</li>
+        <li class="nav-item">
+          <a href="reporte-profesional" class="nav-link">
+            <i class="nav-icon fas fa-chart-bar"></i>
+            <p>
+              Profesional
             </p>
           </a>
         </li>

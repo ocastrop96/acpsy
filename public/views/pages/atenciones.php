@@ -184,7 +184,7 @@
                 <label for="rgaNDoc">N.Doc &nbsp;</label>
                 <i class="fas fa-id-card"></i> *
                 <div class="input-group">
-                  <input type="text" name="rgaNDoc" id="rgaNDoc" class="form-control" placeholder="Ingrese N° Doc" required autocomplete="off" autofocus="autofocus" readonly>
+                  <input type="text" name="rgaNDoc" id="rgaNDoc" class="form-control" placeholder="Ingrese N° Doc" autocomplete="off" autofocus="autofocus" readonly>
                 </div>
               </div>
             </div>
@@ -455,7 +455,7 @@
                 <label for="edtaNDoc">N.Doc &nbsp;</label>
                 <i class="fas fa-id-card"></i> *
                 <div class="input-group">
-                  <input type="text" name="edtaNDoc" id="edtaNDoc" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
+                  <input type="text" name="edtaNDoc" id="edtaNDoc" class="form-control" autocomplete="off" autofocus="autofocus" readonly>
                 </div>
               </div>
             </div>
