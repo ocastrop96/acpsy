@@ -35,12 +35,6 @@ if ($_SESSION["loginPerfil"] == 3) {
             <button type="btn" class="btn btn-secondary"><i class="fas fa-file-excel"></i> Auditoría Familiares
             </button>
           </a>
-          <!-- <button type="button" class="btn btn-tool" data-card-widget="collapse">
-            <i class="fas fa-minus"></i>
-          </button>
-          <button type="button" class="btn btn-tool" data-card-widget="remove">
-            <i class="fas fa-times"></i>
-          </button> -->
         </div>
       </div>
 
@@ -71,84 +65,47 @@ if ($_SESSION["loginPerfil"] == 3) {
             <h3 class="card-title font-weight-bold">Atenciones Registradas y Anuladas</h3>
           </div>
           <div class="card-body">
-            <div class="position-relative mb-4">
-              <canvas id="sales-chart" height="200"></canvas>
-            </div>
-
-            <div class="d-flex flex-row justify-content-end">
-              <span class="mr-2">
-                <i class="fas fa-clipboard-list text-primary"></i>
-                <i class="fas fa-square text-primary"></i> Registradas
-              </span>
-              <span>
-                <i class="fas fa-ban text-gray"></i>
-                <i class="fas fa-square text-gray"></i> Anuladas
-              </span>
+            <div class="chart">
+              <canvas id="sales-chart" width="350" height="350"></canvas>
             </div>
           </div>
         </div>
       </div>
       <div class="col-md-6">
-        <div class="card card-gray">
-          <div class="card-header">
-            <h3 class="card-title font-weight-bold">Familiares Registradas y Eliminados</h3>
-          </div>
-          <div class="card-body">
-            <!-- <div class="chart">
-              <canvas id="rgg1" width="400" height="400"></canvas>
-            </div> -->
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="card card-gray">
+        <div class="card card-info">
           <div class="card-header">
             <h3 class="card-title font-weight-bold">Seguimientos Registrados y Anulados</h3>
           </div>
           <div class="card-body">
-            <!-- <div class="chart">
-              <canvas id="rgg1" width="400" height="400"></canvas>
-            </div> -->
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="card card-gray">
-          <div class="card-header">
-            <h3 class="card-title font-weight-bold">Tipo de Parentesco</h3>
-          </div>
-          <div class="card-body">
-            <!-- <div class="chart">
-              <canvas id="rgg1" width="400" height="400"></canvas>
-            </div> -->
+            <div class="chart">
+              <canvas id="rggFam" width="350" height="350"></canvas>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-md-6">
-        <div class="card card-gray">
+        <div class="card card-danger">
           <div class="card-header">
-            <h3 class="card-title font-weight-bold">Edad</h3>
+            <h3 class="card-title font-weight-bold">Seguimientos x Tipo de Parentesco Fam.</h3>
           </div>
           <div class="card-body">
-            <!-- <div class="chart">
-              <canvas id="rgg1" width="400" height="400"></canvas>
-            </div> -->
+            <div class="chart">
+              <canvas id="rggTParen" width="350" height="350"></canvas>
+            </div>
           </div>
         </div>
       </div>
       <div class="col-md-6">
-        <div class="card card-gray">
+        <div class="card card-teal">
           <div class="card-header">
-            <h3 class="card-title font-weight-bold">Sexo</h3>
+            <h3 class="card-title font-weight-bold">Seguimientos x Sexo Fam.</h3>
           </div>
           <div class="card-body">
-            <!-- <div class="chart">
-              <canvas id="rgg1" width="400" height="400"></canvas>
-            </div> -->
+            <div class="chart">
+              <canvas id="rggTSexParen" width="350" height="350"></canvas>
+            </div>
           </div>
         </div>
       </div>

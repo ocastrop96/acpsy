@@ -20,8 +20,6 @@ function CargarWidgets() {
             $(".one4").html(respuesta["nusuarios"]);
             $(".one5").html(respuesta["nprofesionales"]);
             $(".one6").html(respuesta["ndiagnosticos"]);
-            //     $("#edtdCie").focus();
-            //     $("#edtdDescripcion").val("");
         },
     });
 }

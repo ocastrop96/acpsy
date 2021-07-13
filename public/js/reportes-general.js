@@ -1,3 +1,7 @@
+cargarAteRegAnu("", "");
+cargarSexoAte("", "");
+cargarTipParen("", "");
+cargarSegRegs("", "");
 // Fechero
 $("#deshacer-filtro-RG").on("click", function () {
     window.location = "reporte-general";
@@ -42,228 +46,226 @@ $("input[name='rango-rg']").daterangepicker({
 
     $(".rg1").attr("href", "public/views/docs/rp-audfamiliares.php?reporte=reporte&inicio=" + inicio + "&fin=" + fin);
     $(".rg2").attr("href", "public/views/docs/rp-audatenciones.php?reporte=reporte&inicio=" + inicio + "&fin=" + fin);
+
+    cargarAteRegAnu(inicio, fin);
+    cargarTipParen(inicio, fin);
+    cargarSexoAte(inicio, fin);
+
+
 });
 
 
-cargarAteRegAnu();
+function cargarAteRegAnu(inicior, finr) {
+    var param4 = 4;
+    var inicio = inicior;
+    var fin = finr;
 
-function cargarAteRegAnu() {
-    var ticksStyle = {
-        fontColor: '#495057',
-        fontStyle: 'bold'
-    }
-    var mode = 'index'
-    var intersect = true
+    var datos = new FormData();
+    datos.append("param4", param4);
+    datos.append("inicio", inicio);
+    datos.append("fin", fin);
+    $.ajax({
+        url: "public/views/src/ajaxGraficos.php",
+        method: "POST",
+        cache: false,
+        data: datos,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        success: function (respuesta) {
+            var mes = [];
+            var conteo = [];
+            var conteo2 = [];
+            for (var i = 0; i < respuesta.length; i++) {
+                mes.push(respuesta[i][1]);
+                conteo.push(respuesta[i][2]);
+                conteo2.push(respuesta[i][3]);
+            }
+            var mode = 'index'
+            var intersect = true
 
-    var $salesChart = $('#sales-chart')
-    // eslint-disable-next-line no-unused-vars
-    var salesChart = new Chart($salesChart, {
-        type: 'bar',
-        data: {
-            labels: ['JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
-            datasets: [
-                {
-                    backgroundColor: '#007bff',
-                    borderColor: '#007bff',
-                    data: [1000, 2000, 3000, 2500, 2700, 2500, 3000]
+            var $salesChart = $('#sales-chart')
+            // eslint-disable-next-line no-unused-vars
+            var salesChart = new Chart($salesChart, {
+                type: 'bar',
+                data: {
+                    labels: mes,
+                    datasets: [
+                        {
+                            label: 'Registradas',
+                            backgroundColor: '#007bff',
+                            borderColor: '#007bff',
+                            data: conteo
+                        },
+                        {
+                            label: 'Anuladas',
+                            backgroundColor: '#ced4da',
+                            borderColor: '#ced4da',
+                            data: conteo2
+                        }
+                    ]
                 },
-                {
-                    backgroundColor: '#ced4da',
-                    borderColor: '#ced4da',
-                    data: [700, 1700, 2700, 2000, 1800, 1500, 2000]
+                options: {
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        mode: mode,
+                        intersect: intersect
+                    },
+                    hover: {
+                        mode: mode,
+                        intersect: intersect
+                    },
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                fontColor: '#3D3838'
+                            },
+                            gridLines: {
+                                display: false,
+                                color: '#F1740C',
+                                drawBorder: false
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                fontColor: '#3D3838'
+                            },
+                            gridLines: {
+                                display: true,
+                                color: '#3D3838',
+                                drawBorder: false
+                            }
+                        }]
+                    }
                 }
-            ]
+            })
         },
-        options: {
-            maintainAspectRatio: false,
-            tooltips: {
-                mode: mode,
-                intersect: intersect
-            },
-            hover: {
-                mode: mode,
-                intersect: intersect
-            },
-            legend: {
-                display: false
-            },
-            scales: {
-                yAxes: [{
-                    // display: false,
-                    gridLines: {
-                        display: true,
-                        lineWidth: '4px',
-                        color: 'rgba(0, 0, 0, .2)',
-                        zeroLineColor: 'transparent'
-                    },
-                    ticks: $.extend({
-                        beginAtZero: true,
-                    }, ticksStyle)
-                }],
-                xAxes: [{
-                    display: true,
-                    gridLines: {
-                        display: false
-                    },
-                    ticks: ticksStyle
-                }]
-            }
-        }
-    })
+    });
+}
 
-    var $visitorsChart = $('#visitors-chart')
-    // eslint-disable-next-line no-unused-vars
-    var visitorsChart = new Chart($visitorsChart, {
-        data: {
-            labels: ['18th', '20th', '22nd', '24th', '26th', '28th', '30th'],
-            datasets: [{
-                type: 'line',
-                data: [100, 120, 170, 167, 180, 177, 160],
-                backgroundColor: 'transparent',
-                borderColor: '#007bff',
-                pointBorderColor: '#007bff',
-                pointBackgroundColor: '#007bff',
-                fill: false,
-                pointHoverBackgroundColor: '#007bff',
-                pointHoverBorderColor: '#007bff'
-            },
-            {
-                type: 'line',
-                data: [60, 80, 70, 67, 80, 77, 100],
-                backgroundColor: 'tansparent',
-                borderColor: '#ced4da',
-                pointBorderColor: '#ced4da',
-                pointBackgroundColor: '#ced4da',
-                fill: false,
-                pointHoverBackgroundColor: '#ced4da',
-                pointHoverBorderColor: '#ced4da'
-            }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            tooltips: {
-                mode: mode,
-                intersect: intersect
-            },
-            hover: {
-                mode: mode,
-                intersect: intersect
-            },
-            legend: {
-                display: false
-            },
-            scales: {
-                yAxes: [{
-                    // display: false,
-                    gridLines: {
-                        display: true,
-                        lineWidth: '4px',
-                        color: 'rgba(0, 0, 0, .2)',
-                        zeroLineColor: 'transparent'
-                    },
-                    ticks: $.extend({
-                        beginAtZero: true,
-                        suggestedMax: 200
-                    }, ticksStyle)
-                }],
-                xAxes: [{
-                    display: true,
-                    gridLines: {
-                        display: false
-                    },
-                    ticks: ticksStyle
-                }]
+function cargarTipParen(inicior, finr) {
+    var param5 = 5;
+    var inicio = inicior;
+    var fin = finr;
+
+    var datos = new FormData();
+    datos.append("param5", param5);
+    datos.append("inicio", inicio);
+    datos.append("fin", fin);
+    $.ajax({
+        url: "public/views/src/ajaxGraficos.php",
+        method: "POST",
+        cache: false,
+        data: datos,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        success: function (respuesta) {
+            if (respuesta.length > 0) {
+                var parentesco = [];
+                var contador = [];
+                var colores = [];
+                for (var i = 0; i < respuesta.length; i++) {
+                    parentesco.push(respuesta[i][1]);
+                    contador.push(respuesta[i][0]);
+                    colores.push(colorRGB());
+                }
+                var donutChartCanvas = $('#rggTParen').get(0).getContext('2d')
+                var donutData = {
+                    labels: parentesco,
+                    datasets: [
+                        {
+                            label: '# de Frecuencia',
+                            data: contador,
+                            backgroundColor: colores,
+                            borderColor: colores
+                        }
+                    ]
+                }
+                var donutOptions = {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    legend: {
+                        position: 'left',
+                    }
+                }
+                new Chart(donutChartCanvas, {
+                    type: 'doughnut',
+                    data: donutData,
+                    options: donutOptions
+                })
             }
-        }
-    })
+        },
+    });
+}
+
+function cargarSexoAte(inicior, finr) {
+    var param6 = 6;
+    var inicio = inicior;
+    var fin = finr;
+
+    var datos = new FormData();
+    datos.append("param6", param6);
+    datos.append("inicio", inicio);
+    datos.append("fin", fin);
+
+    $.ajax({
+        url: "public/views/src/ajaxGraficos.php",
+        method: "POST",
+        cache: false,
+        data: datos,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        success: function (respuesta) {
+            if (respuesta.length > 0) {
+                var sexo = [];
+                var contador = [];
+                var colores = [];
+                for (var i = 0; i < respuesta.length; i++) {
+                    sexo.push(respuesta[i][1]);
+                    contador.push(respuesta[i][0]);
+                    colores.push(colorRGB());
+                }
+
+                var pieChartCanvas = $('#rggTSexParen').get(0).getContext('2d');
+                var donutData = {
+                    labels: sexo,
+                    datasets: [
+                        {
+                            label: '# de Seguimientos',
+                            data: contador,
+                            backgroundColor: colores,
+                        }
+                    ]
+                }
+                var pieData = donutData;
+                var pieOptions = {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                }
+                new Chart(pieChartCanvas, {
+                    type: 'pie',
+                    data: pieData,
+                    options: pieOptions
+                })
+            }
+        },
+    });
+}
+
+function cargarSegRegs() {
+    
 }
 // Evento captura rango
-// Evento captura rango
-// $("#rango-rg").daterangepicker({
+function generarNumero(numero) {
+    return (Math.random() * numero).toFixed(0);
+}
 
-//     ranges: {
-//         Hoy: [moment(), moment()],
-//         Ayer: [moment().subtract(1, "days"), moment().subtract(1, "days")],
-//         "Últimos 7 días": [moment().subtract(6, "days"), moment()],
-//         "Últimos 30 días": [moment().subtract(29, "days"), moment()],
-//         "Este mes": [moment().startOf("month"), moment().endOf("month")],
-//         "Último mes": [
-//             moment().subtract(1, "month").startOf("month"),
-//             moment().subtract(1, "month").endOf("month"),
-//         ],
-//     },
-//     startDate: moment(),
-//     endDate: moment(),
-//     maxSpan: {
-//         days: 30,
-//     },
-//     opens: "left",
-//     locale: {
-//         format: "DD/MM/YYYY",
-//         separator: " - ",
-//         applyLabel: "APLICAR",
-//         cancelLabel: "CANCELAR",
-//         fromLabel: "Desde",
-//         toLabel: "Hasta",
-//         customRangeLabel: "Personalizar",
-//         weekLabel: "W",
-//         daysOfWeek: ["Do", "Lu", "Ma", "Mie", "Ju", "Vi", "Sa"],
-//         monthNames: [
-//             "Enero",
-//             "Febrero",
-//             "Marzo",
-//             "Abril",
-//             "Mayo",
-//             "Junio",
-//             "Julio",
-//             "Agosto",
-//             "Setiembre",
-//             "Octubre",
-//             "Noviembre",
-//             "Diciembre",
-//         ],
-//         firstDay: 1,
-//     },
-// },
-//     function (start, end) {
-//         $("#daterange-btn span").html(
-//             start.format("MMMM D, YYYY") + "-" + end.format("MMMM D, YYYY")
-//         );
-//         // var fechaInicialAte = start.format("YYYY-MM-DD");
-//         // var fechaFinalAte = end.format("YYYY-MM-DD");
-
-//         // var capRangoAte = $("#daterange-btn span").html();
-//         // localStorage.setItem("capRangoAte", capRangoAte);
-//         // window.location =
-//         //     "index.php?ruta=atenciones&fechaInicialAte=" +
-//         //     fechaInicialAte +
-//         //     "&fechaFinalAte=" +
-//         //     fechaFinalAte;
-//         // let timerInterval;
-//         // Swal.fire({
-//         //     title: "Se está cargando la información",
-//         //     html: "Espere por favor...",
-//         //     timer: 7000,
-//         //     timerProgressBar: true,
-//         //     onBeforeOpen: () => {
-//         //         Swal.showLoading();
-//         //         timerInterval = setInterval(() => {
-//         //             const content = Swal.getContent();
-//         //             if (content) {
-//         //                 const b = content.querySelector("b");
-//         //                 if (b) {
-//         //                     b.textContent = Swal.getTimerLeft();
-//         //                 }
-//         //             }
-//         //         }, 100);
-//         //     },
-//         //     onClose: () => {
-//         //         clearInterval(timerInterval);
-//         //     },
-//         // }).then((result) => {
-//         //     if (result.dismiss === Swal.DismissReason.timer) {
-//         //     }
-//         // });
-//     }
-// );
-// Fechero
+function colorRGB() {
+    var coolor = "(" + generarNumero(255) + "," + generarNumero(255) + "," + generarNumero(255) + ")";
+    return "rgb" + coolor;
+}

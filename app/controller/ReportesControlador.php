@@ -17,4 +17,21 @@ class ReportesControlador
         $repuesta = ReportesModelo::mdlListarSeguimientos();
         return $repuesta;
     }
+
+    static public function ctrListarAteRegAnu($inicio, $fin)
+    {
+        $repuesta = ReportesModelo::mdlListarAteRegAnu($inicio, $fin);
+        return $repuesta;
+    }
+
+    static public function ctrListarParentReg($inicio, $fin)
+    {
+        $repuesta = ReportesModelo::mdlListarParentReg($inicio, $fin);
+        return $repuesta;
+    }
+    static public function ctrListarSexReg($inicio, $fin)
+    {
+        $repuesta = ReportesModelo::mdlListarSexReg($inicio, $fin);
+        return $repuesta;
+    }
 }

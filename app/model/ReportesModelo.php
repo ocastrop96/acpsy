@@ -27,4 +27,37 @@ class ReportesModelo
         $stmt->close();
         $stmt = null;
     }
+
+    static public function mdlListarAteRegAnu($inicio, $fin)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL REPORTE_ATEREGANU(:inicio,:fin)");
+        $stmt->bindParam(":inicio", $inicio, PDO::PARAM_STR);
+        $stmt->bindParam(":fin", $fin, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
+
+    static public function mdlListarParentReg($inicio, $fin)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL REPORTE_PARENTESCO(:inicio,:fin)");
+        $stmt->bindParam(":inicio", $inicio, PDO::PARAM_STR);
+        $stmt->bindParam(":fin", $fin, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
+
+    static public function mdlListarSexReg($inicio, $fin)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL REPORTE_SEXO(:inicio,:fin)");
+        $stmt->bindParam(":inicio", $inicio, PDO::PARAM_STR);
+        $stmt->bindParam(":fin", $fin, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
 }
