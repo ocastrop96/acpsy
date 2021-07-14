@@ -275,7 +275,6 @@ function cargarSegRegs(inicior, finr) {
         processData: false,
         dataType: "json",
         success: function (respuesta) {
-            console.log(respuesta);
             if (respuesta.length > 0) {
                 var mes = [];
                 var contador = [];
