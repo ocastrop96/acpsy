@@ -74,11 +74,11 @@ if ($_SESSION["loginPerfil"] == 3) {
       <div class="col-md-6">
         <div class="card card-info">
           <div class="card-header">
-            <h3 class="card-title font-weight-bold">Seguimientos Registrados y Anulados</h3>
+            <h3 class="card-title font-weight-bold">Seguimientos Registrados</h3>
           </div>
           <div class="card-body">
             <div class="chart">
-              <canvas id="rggFam" width="350" height="350"></canvas>
+              <canvas id="rggSegs" width="350" height="350"></canvas>
             </div>
           </div>
         </div>

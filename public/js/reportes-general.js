@@ -50,8 +50,7 @@ $("input[name='rango-rg']").daterangepicker({
     cargarAteRegAnu(inicio, fin);
     cargarTipParen(inicio, fin);
     cargarSexoAte(inicio, fin);
-
-
+    cargarSegRegs(inicio, fin);
 });
 
 
@@ -257,8 +256,97 @@ function cargarSexoAte(inicior, finr) {
     });
 }
 
-function cargarSegRegs() {
-    
+function cargarSegRegs(inicior, finr) {
+    var param7 = 7;
+    var inicio = inicior;
+    var fin = finr;
+
+    var datos = new FormData();
+    datos.append("param7", param7);
+    datos.append("inicio", inicio);
+    datos.append("fin", fin);
+
+    $.ajax({
+        url: "public/views/src/ajaxGraficos.php",
+        method: "POST",
+        cache: false,
+        data: datos,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        success: function (respuesta) {
+            console.log(respuesta);
+            if (respuesta.length > 0) {
+                var mes = [];
+                var contador = [];
+                var colores = [];
+                for (var i = 0; i < respuesta.length; i++) {
+                    mes.push(respuesta[i][1]);
+                    contador.push(respuesta[i][2]);
+                    colores.push(colorRGB());
+                }
+                var salesGraphChartCanvas = $('#rggSegs').get(0).getContext('2d')
+                var salesGraphChartData = {
+                    labels: mes,
+                    datasets: [
+                        {
+                            label: 'Digital Goods',
+                            fill: false,
+                            borderWidth: 2,
+                            lineTension: 0,
+                            spanGaps: true,
+                            borderColor: '#17a2b8',
+                            pointRadius: 3,
+                            pointHoverRadius: 7,
+                            pointColor: '#17a2b8',
+                            pointBackgroundColor: '#17a2b8',
+                            data: contador
+                        }
+                    ]
+                }
+
+                var salesGraphChartOptions = {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                fontColor: '#000'
+                            },
+                            gridLines: {
+                                display: false,
+                                color: '#000',
+                                drawBorder: false
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                stepSize: 100,
+                                fontColor: '#6A6A6A'
+                            },
+                            gridLines: {
+                                display: true,
+                                color: '#AFAFAF',
+                                drawBorder: false
+                            }
+                        }]
+                    },
+                    title: {
+                        display: true,
+                        text: 'Seguimientos realizados'
+                    }
+                }
+                var salesGraphChart = new Chart(salesGraphChartCanvas, {
+                    type: 'line',
+                    data: salesGraphChartData,
+                    options: salesGraphChartOptions
+                });
+            }
+        },
+    });
 }
 // Evento captura rango
 function generarNumero(numero) {

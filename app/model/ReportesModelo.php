@@ -60,4 +60,37 @@ class ReportesModelo
         $stmt->close();
         $stmt = null;
     }
+
+    static public function mdlListarSegReg($inicio, $fin)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL REPORTE_SEGUIMREGS(:inicio,:fin)");
+        $stmt->bindParam(":inicio", $inicio, PDO::PARAM_STR);
+        $stmt->bindParam(":fin", $fin, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
+
+    static public function mdlReporteAudAtenciones($inicio, $fin)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL REPORTE_AUDIATENCIONES(:inicio,:fin)");
+        $stmt->bindParam(":inicio", $inicio, PDO::PARAM_STR);
+        $stmt->bindParam(":fin", $fin, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
+
+    static public function mdlReporteAudFamiliares($inicio, $fin)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL REPORTE_AUDIFAMILIARES(:inicio,:fin)");
+        $stmt->bindParam(":inicio", $inicio, PDO::PARAM_STR);
+        $stmt->bindParam(":fin", $fin, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
 }

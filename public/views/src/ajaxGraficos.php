@@ -50,6 +50,16 @@ class AjaxGraficos
         $respuesta = ReportesControlador::ctrListarSexReg($start, $end);
         echo json_encode($respuesta);
     }
+
+    public $inicio4;
+    public $fin4;
+    public function ajaxSegRegs()
+    {
+        $start = $this->inicio4;
+        $end = $this->fin4;
+        $respuesta = ReportesControlador::ctrListarSegRegs($start, $end);
+        echo json_encode($respuesta);
+    }
 }
 
 if (isset($_POST["param1"])) {
@@ -84,4 +94,11 @@ if (isset($_POST["param6"])) {
     $list6->inicio3 = $_POST["inicio"];
     $list6->fin3 = $_POST["fin"];
     $list6->ajaxSexReg();
+}
+
+if (isset($_POST["param7"])) {
+    $list7 = new AjaxGraficos();
+    $list7->inicio4 = $_POST["inicio"];
+    $list7->fin4 = $_POST["fin"];
+    $list7->ajaxSegRegs();
 }
