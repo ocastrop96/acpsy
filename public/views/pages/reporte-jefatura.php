@@ -35,7 +35,7 @@ if ($_SESSION["loginPerfil"] == 3) {
       </div>
       <div class="card-body">
         <div class="row">
-          <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
             <div class="form-group">
               <label>Selecciona un rango de fecha:</label>
               <div class="input-group">
@@ -46,11 +46,11 @@ if ($_SESSION["loginPerfil"] == 3) {
                 </div>
                 <input type="text" class="form-control float-right" id="rango-rj" name="rango-rj" readonly inicio="<?php date_default_timezone_set('America/Lima');
                                                                                                                     echo date("Y-m-d"); ?>" fin="<?php date_default_timezone_set('America/Lima');
-                                                                                                                    echo date("Y-m-d"); ?>">
+                                                                                                                                                  echo date("Y-m-d"); ?>">
               </div>
             </div>
           </div>
-          <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
             <div class="form-group">
               <label>Seleccione Profesional:</label>
               <div class="input-group">
@@ -69,6 +69,58 @@ if ($_SESSION["loginPerfil"] == 3) {
                 <button type="btn" class="ml-2 btn bg-info pull-right" id="deshacer-filtro-RJ"><i class="fas fa-undo-alt"></i> Deshacer filtro
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card card-danger">
+          <div class="card-header">
+            <h3 class="card-title font-weight-bold">Seguimientos x Profesional</h3>
+          </div>
+          <div class="card-body">
+            <div class="chart">
+              <!-- <canvas id="rggTParen" width="350" height="350"></canvas> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card card-teal">
+          <div class="card-header">
+            <h3 class="card-title font-weight-bold">Seguimientos x Tipo</h3>
+          </div>
+          <div class="card-body">
+            <div class="chart">
+              <!-- <canvas id="rggTSexParen" width="350" height="350"></canvas> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card card-secondary">
+          <div class="card-header">
+            <h3 class="card-title font-weight-bold">Seguimientos x Diagnóstico de Paciente</h3>
+          </div>
+          <div class="card-body">
+            <div class="chart">
+              <!-- <canvas id="rggTParen" width="350" height="350"></canvas> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card card-info">
+          <div class="card-header">
+            <h3 class="card-title font-weight-bold">Seguimientos x Diagnóstico de Familiar</h3>
+          </div>
+          <div class="card-body">
+            <div class="chart">
+              <!-- <canvas id="rggTSexParen" width="350" height="350"></canvas> -->
             </div>
           </div>
         </div>

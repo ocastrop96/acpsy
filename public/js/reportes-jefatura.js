@@ -1,3 +1,4 @@
+seguimientosXProfesional("", "", 0);
 $("#deshacer-filtro-RJ").on("click", function () {
     window.location = "reporte-jefatura";
 });
@@ -42,8 +43,16 @@ $("input[name='rango-rj']").daterangepicker({
     $('#rango-rj').attr('inicio', inicio);
     $('#rango-rj').attr('fin', fin);
     $(".rseg1").attr("href", "public/views/docs/rp-seguimientos-jefatura.php?reporte=reporte&inicio=" + inicio + "&fin=" + fin + "&profesional=" + profesional);
+    seguimientosXProfesional(inicio, fin, profesional);
 });
 
 $("#rjProfesional").on("change", function () {
-
+    let profesional = $(this).val();
+    let inicio = $("#rango-rj").attr("inicio");
+    let fin = $("#rango-rj").attr("fin");
+    alert(profesional + " " + inicio + " " + fin);
 });
+
+function seguimientosXProfesional(inicior, finr, profesionalr) {
+    alert("F.Inicio" + inicior + "F.Fin " + finr + "Profesional" + profesionalr)
+}
