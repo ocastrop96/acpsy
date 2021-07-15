@@ -275,6 +275,7 @@ function cargarSegRegs(inicior, finr) {
         processData: false,
         dataType: "json",
         success: function (respuesta) {
+            console.log(respuesta);
             if (respuesta.length > 0) {
                 var mes = [];
                 var contador = [];
@@ -289,7 +290,7 @@ function cargarSegRegs(inicior, finr) {
                     labels: mes,
                     datasets: [
                         {
-                            label: 'Digital Goods',
+                            // label: 'Digital Goods',
                             fill: false,
                             borderWidth: 2,
                             lineTension: 0,

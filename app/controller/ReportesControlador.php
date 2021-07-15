@@ -41,6 +41,17 @@ class ReportesControlador
         return $repuesta;
     }
 
+
+    static public function ctrListarSeguixProfesional($inicio, $fin, $profesional)
+    {
+        $repuesta = ReportesModelo::mdlListarSeguixProfesional($inicio, $fin, $profesional);
+        return $repuesta;
+    }
+    static public function ctrListarSeguixTipo($inicio, $fin, $profesional)
+    {
+        $repuesta = ReportesModelo::mdlListarSeguixTipo($inicio, $fin, $profesional);
+        return $repuesta;
+    }
     // Reportes Excel
     static public function ctrReporteAudiAtenciones()
     {

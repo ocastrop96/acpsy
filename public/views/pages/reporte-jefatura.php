@@ -81,8 +81,8 @@ if ($_SESSION["loginPerfil"] == 3) {
             <h3 class="card-title font-weight-bold">Seguimientos x Profesional</h3>
           </div>
           <div class="card-body">
-            <div class="chart">
-              <!-- <canvas id="rggTParen" width="350" height="350"></canvas> -->
+            <div class="chart rj1">
+              <canvas id="rjSegxPro" width="350" height="350"></canvas>
             </div>
           </div>
         </div>
@@ -93,8 +93,8 @@ if ($_SESSION["loginPerfil"] == 3) {
             <h3 class="card-title font-weight-bold">Seguimientos x Tipo</h3>
           </div>
           <div class="card-body">
-            <div class="chart">
-              <!-- <canvas id="rggTSexParen" width="350" height="350"></canvas> -->
+            <div class="chart rj2">
+              <canvas id="rjSegxTipo" width="350" height="350"></canvas>
             </div>
           </div>
         </div>
@@ -108,7 +108,7 @@ if ($_SESSION["loginPerfil"] == 3) {
           </div>
           <div class="card-body">
             <div class="chart">
-              <!-- <canvas id="rggTParen" width="350" height="350"></canvas> -->
+              <canvas id="rjSegxDiagPac" width="350" height="350"></canvas>
             </div>
           </div>
         </div>
@@ -120,7 +120,7 @@ if ($_SESSION["loginPerfil"] == 3) {
           </div>
           <div class="card-body">
             <div class="chart">
-              <!-- <canvas id="rggTSexParen" width="350" height="350"></canvas> -->
+            <canvas id="rjSegxDiagFam" width="350" height="350"></canvas>
             </div>
           </div>
         </div>

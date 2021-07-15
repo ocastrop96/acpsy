@@ -60,6 +60,32 @@ class AjaxGraficos
         $respuesta = ReportesControlador::ctrListarSegRegs($start, $end);
         echo json_encode($respuesta);
     }
+
+    public $inicio5;
+    public $fin5;
+    public $profesional;
+
+    public function ajaxSeguixProfesional()
+    {
+        $start = $this->inicio5;
+        $end = $this->fin5;
+        $profesional = $this->profesional;
+        $respuesta = ReportesControlador::ctrListarSeguixProfesional($start, $end, $profesional);
+        echo json_encode($respuesta);
+    }
+
+    public $inicio6;
+    public $fin6;
+    public $profesional1;
+
+    public function ajaxSeguixTipo()
+    {
+        $start = $this->inicio6;
+        $end = $this->fin6;
+        $profesional = $this->profesional1;
+        $respuesta = ReportesControlador::ctrListarSeguixTipo($start, $end, $profesional);
+        echo json_encode($respuesta);
+    }
 }
 
 if (isset($_POST["param1"])) {
@@ -101,4 +127,19 @@ if (isset($_POST["param7"])) {
     $list7->inicio4 = $_POST["inicio"];
     $list7->fin4 = $_POST["fin"];
     $list7->ajaxSegRegs();
+}
+
+if (isset($_POST["param8"])) {
+    $list8 = new AjaxGraficos();
+    $list8->inicio5 = $_POST["inicio"];
+    $list8->fin5 = $_POST["fin"];
+    $list8->profesional = $_POST["profesional"];
+    $list8->ajaxSeguixProfesional();
+}
+if (isset($_POST["param9"])) {
+    $list9 = new AjaxGraficos();
+    $list9->inicio6 = $_POST["inicio"];
+    $list9->fin6 = $_POST["fin"];
+    $list9->profesional1 = $_POST["profesional"];
+    $list9->ajaxSeguixTipo();
 }

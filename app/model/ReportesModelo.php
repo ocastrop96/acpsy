@@ -72,6 +72,31 @@ class ReportesModelo
         $stmt = null;
     }
 
+    static public function mdlListarSeguixProfesional($inicio, $fin, $profesional)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL REPORTE_SEGUIMIENTOXPROFESIONAL(:inicio,:fin,:profesional)");
+        $stmt->bindParam(":profesional", $profesional, PDO::PARAM_INT);
+        $stmt->bindParam(":inicio", $inicio, PDO::PARAM_STR);
+        $stmt->bindParam(":fin", $fin, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
+
+    static public function mdlListarSeguixTipo($inicio, $fin, $profesional)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL REPORTE_SEGUIMIENTOXTIPO(:inicio,:fin,:profesional)");
+        $stmt->bindParam(":profesional", $profesional, PDO::PARAM_INT);
+        $stmt->bindParam(":inicio", $inicio, PDO::PARAM_STR);
+        $stmt->bindParam(":fin", $fin, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
+
+    // Reportes excel
     static public function mdlReporteAudAtenciones($inicio, $fin)
     {
         $stmt = Conexion::conectar()->prepare("CALL REPORTE_AUDIATENCIONES(:inicio,:fin)");
@@ -93,4 +118,5 @@ class ReportesModelo
         $stmt->close();
         $stmt = null;
     }
+    // Reportes excel
 }
