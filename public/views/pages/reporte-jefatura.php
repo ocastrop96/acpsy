@@ -107,7 +107,7 @@ if ($_SESSION["loginPerfil"] == 3) {
             <h3 class="card-title font-weight-bold">Seguimientos x Diagnóstico de Paciente</h3>
           </div>
           <div class="card-body">
-            <div class="chart">
+            <div class="chart rj3">
               <canvas id="rjSegxDiagPac" width="350" height="350"></canvas>
             </div>
           </div>
@@ -119,8 +119,8 @@ if ($_SESSION["loginPerfil"] == 3) {
             <h3 class="card-title font-weight-bold">Seguimientos x Diagnóstico de Familiar</h3>
           </div>
           <div class="card-body">
-            <div class="chart">
-            <canvas id="rjSegxDiagFam" width="350" height="350"></canvas>
+            <div class="chart rj4">
+              <canvas id="rjSegxDiagFam" width="350" height="350"></canvas>
             </div>
           </div>
         </div>
