@@ -119,6 +119,30 @@ class ReportesModelo
         $stmt->close();
         $stmt = null;
     }
+
+    static public function mdlSeguiMensxPro($inicio, $fin, $profesional)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL REPORTE_SEGMENSXPROFESIONAL(:inicio,:fin,:profesional)");
+        $stmt->bindParam(":profesional", $profesional, PDO::PARAM_INT);
+        $stmt->bindParam(":inicio", $inicio, PDO::PARAM_STR);
+        $stmt->bindParam(":fin", $fin, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
+
+    static public function mdlSeguiTipxPro($inicio, $fin, $profesional)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL REPORTE_SEGTIPOXPROFESIONAL(:inicio,:fin,:profesional)");
+        $stmt->bindParam(":profesional", $profesional, PDO::PARAM_INT);
+        $stmt->bindParam(":inicio", $inicio, PDO::PARAM_STR);
+        $stmt->bindParam(":fin", $fin, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
     // Reportes excel
     static public function mdlReporteAudAtenciones($inicio, $fin)
     {
@@ -134,6 +158,30 @@ class ReportesModelo
     static public function mdlReporteAudFamiliares($inicio, $fin)
     {
         $stmt = Conexion::conectar()->prepare("CALL REPORTE_AUDIFAMILIARES(:inicio,:fin)");
+        $stmt->bindParam(":inicio", $inicio, PDO::PARAM_STR);
+        $stmt->bindParam(":fin", $fin, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
+
+    static public function mdlReporteSeguimientoJefatura($inicio, $fin, $profesional)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL REPORTE_SEGUIMIENTO_JEFATURA(:inicio,:fin,:profesional)");
+        $stmt->bindParam(":profesional", $profesional, PDO::PARAM_INT);
+        $stmt->bindParam(":inicio", $inicio, PDO::PARAM_STR);
+        $stmt->bindParam(":fin", $fin, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
+
+    static public function mdlReporteSeguimientoProfesional($inicio, $fin, $profesional)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL REPORTE_SEGUIMIENTO_PROFESIONAL(:inicio,:fin,:profesional)");
+        $stmt->bindParam(":profesional", $profesional, PDO::PARAM_INT);
         $stmt->bindParam(":inicio", $inicio, PDO::PARAM_STR);
         $stmt->bindParam(":fin", $fin, PDO::PARAM_STR);
         $stmt->execute();

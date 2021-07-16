@@ -575,7 +575,6 @@ function seguimientosxDiagFam(inicior, finr, profesionalr) {
             }
         },
     });
-
 }
 function generarNumero(numero) {
     return (Math.random() * numero).toFixed(0);

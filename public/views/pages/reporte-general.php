@@ -65,8 +65,8 @@ if ($_SESSION["loginPerfil"] == 3) {
             <h3 class="card-title font-weight-bold">Atenciones Registradas y Anuladas</h3>
           </div>
           <div class="card-body">
-            <div class="chart">
-              <canvas id="sales-chart" width="350" height="350"></canvas>
+            <div class="chart rgen1">
+              <canvas id="rgAtenAnuReg" width="350" height="350"></canvas>
             </div>
           </div>
         </div>
@@ -77,7 +77,7 @@ if ($_SESSION["loginPerfil"] == 3) {
             <h3 class="card-title font-weight-bold">Seguimientos Registrados</h3>
           </div>
           <div class="card-body">
-            <div class="chart">
+            <div class="chart rgen2">
               <canvas id="rggSegs" width="350" height="350"></canvas>
             </div>
           </div>
@@ -91,7 +91,7 @@ if ($_SESSION["loginPerfil"] == 3) {
             <h3 class="card-title font-weight-bold">Seguimientos x Tipo de Parentesco Fam.</h3>
           </div>
           <div class="card-body">
-            <div class="chart">
+            <div class="chart rgen3">
               <canvas id="rggTParen" width="350" height="350"></canvas>
             </div>
           </div>
@@ -103,7 +103,7 @@ if ($_SESSION["loginPerfil"] == 3) {
             <h3 class="card-title font-weight-bold">Seguimientos x Sexo Fam.</h3>
           </div>
           <div class="card-body">
-            <div class="chart">
+            <div class="chart rgen4">
               <canvas id="rggTSexParen" width="350" height="350"></canvas>
             </div>
           </div>

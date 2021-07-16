@@ -112,6 +112,33 @@ class AjaxGraficos
         $respuesta = ReportesControlador::ctrListarSeguixDiagFam($start, $end, $profesional);
         echo json_encode($respuesta);
     }
+
+    public $inicio9;
+    public $fin9;
+    public $profesional4;
+
+    public function ajaxSeguiMensxPro()
+    {
+        $start = $this->inicio9;
+        $end = $this->fin9;
+        $profesional = $this->profesional4;
+        $respuesta = ReportesControlador::ctrListarSeguiMensxPro($start, $end, $profesional);
+        echo json_encode($respuesta);
+    }
+
+    // ajaxSeguiTipoxPro
+    public $inicio10;
+    public $fin10;
+    public $profesional5;
+
+    public function ajaxSeguiTipoxPro()
+    {
+        $start = $this->inicio10;
+        $end = $this->fin10;
+        $profesional = $this->profesional5;
+        $respuesta = ReportesControlador::ctrListarSeguiTipxPro($start, $end, $profesional);
+        echo json_encode($respuesta);
+    }
 }
 
 if (isset($_POST["param1"])) {
@@ -185,4 +212,19 @@ if (isset($_POST["param11"])) {
     $list11->fin8 = $_POST["fin"];
     $list11->profesional3 = $_POST["profesional"];
     $list11->ajaxSeguixDiagFam1();
+}
+if (isset($_POST["param12"])) {
+    $list12 = new AjaxGraficos();
+    $list12->inicio9 = $_POST["inicio"];
+    $list12->fin9 = $_POST["fin"];
+    $list12->profesional4 = $_POST["profesional"];
+    $list12->ajaxSeguiMensxPro();
+}
+
+if (isset($_POST["param13"])) {
+    $list13 = new AjaxGraficos();
+    $list13->inicio10 = $_POST["inicio"];
+    $list13->fin10 = $_POST["fin"];
+    $list13->profesional5 = $_POST["profesional"];
+    $list13->ajaxSeguiTipoxPro();
 }

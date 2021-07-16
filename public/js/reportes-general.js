@@ -72,75 +72,147 @@ function cargarAteRegAnu(inicior, finr) {
         processData: false,
         dataType: "json",
         success: function (respuesta) {
-            var mes = [];
-            var conteo = [];
-            var conteo2 = [];
-            for (var i = 0; i < respuesta.length; i++) {
-                mes.push(respuesta[i][1]);
-                conteo.push(respuesta[i][2]);
-                conteo2.push(respuesta[i][3]);
-            }
-            var mode = 'index'
-            var intersect = true
-
-            var $salesChart = $('#sales-chart')
-            // eslint-disable-next-line no-unused-vars
-            var salesChart = new Chart($salesChart, {
-                type: 'bar',
-                data: {
-                    labels: mes,
-                    datasets: [
-                        {
-                            label: 'Registradas',
-                            backgroundColor: '#007bff',
-                            borderColor: '#007bff',
-                            data: conteo
-                        },
-                        {
-                            label: 'Anuladas',
-                            backgroundColor: '#ced4da',
-                            borderColor: '#ced4da',
-                            data: conteo2
-                        }
-                    ]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    tooltips: {
-                        mode: mode,
-                        intersect: intersect
-                    },
-                    hover: {
-                        mode: mode,
-                        intersect: intersect
-                    },
-                    legend: {
-                        display: false
-                    },
-                    scales: {
-                        xAxes: [{
-                            ticks: {
-                                fontColor: '#3D3838'
-                            },
-                            gridLines: {
-                                display: false,
-                                color: '#F1740C',
-                                drawBorder: false
-                            }
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                fontColor: '#3D3838'
-                            },
-                            gridLines: {
-                                display: true,
-                                color: '#3D3838',
-                                drawBorder: false
-                            }
-                        }]
-                    }
+            if (respuesta.length > 0) {
+                var mes = [];
+                var conteo = [];
+                var conteo2 = [];
+                for (var i = 0; i < respuesta.length; i++) {
+                    mes.push(respuesta[i][1]);
+                    conteo.push(respuesta[i][2]);
+                    conteo2.push(respuesta[i][3]);
                 }
-            })
+                var mode = 'index'
+                var intersect = true
+                $("canvas#rgAtenAnuReg").remove();
+                $("div.rgen1").append('<canvas id="rgAtenAnuReg" width="350" height="350"></canvas>');
+                var ctx = document.getElementById("rgAtenAnuReg").getContext("2d");
+                var salesChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: mes,
+                        datasets: [
+                            {
+                                label: 'Registradas',
+                                backgroundColor: '#007bff',
+                                borderColor: '#007bff',
+                                data: conteo
+                            },
+                            {
+                                label: 'Anuladas',
+                                backgroundColor: '#ced4da',
+                                borderColor: '#ced4da',
+                                data: conteo2
+                            }
+                        ]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        tooltips: {
+                            mode: mode,
+                            intersect: intersect
+                        },
+                        hover: {
+                            mode: mode,
+                            intersect: intersect
+                        },
+                        title: {
+                            display: true,
+                            text: 'Atenciones Registradas y Anuladas'
+                        },
+                        legend: {
+                            display: false
+                        },
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    fontColor: '#3D3838'
+                                },
+                                gridLines: {
+                                    display: false,
+                                    color: '#F1740C',
+                                    drawBorder: false
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    fontColor: '#3D3838',
+                                    stepSize: 20
+                                },
+                                gridLines: {
+                                    display: true,
+                                    color: '#3D3838',
+                                    drawBorder: false
+                                }
+                            }]
+                        }
+                    }
+                })
+            } else {
+                $("canvas#rgAtenAnuReg").remove();
+                $("div.rgen1").append('<canvas id="rgAtenAnuReg" width="350" height="350"></canvas>');
+                var ctx = document.getElementById("rgAtenAnuReg").getContext("2d");
+                var salesChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['SIN DATOS'],
+                        datasets: [
+                            {
+                                label: 'Registradas',
+                                backgroundColor: '#007bff',
+                                borderColor: '#007bff',
+                                data: [0]
+                            },
+                            {
+                                label: 'Anuladas',
+                                backgroundColor: '#ced4da',
+                                borderColor: '#ced4da',
+                                data: [0]
+                            }
+                        ]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        tooltips: {
+                            mode: mode,
+                            intersect: intersect
+                        },
+                        hover: {
+                            mode: mode,
+                            intersect: intersect
+                        },
+                        title: {
+                            display: true,
+                            text: 'Atenciones Registradas y Anuladas'
+                        },
+                        legend: {
+                            display: false
+                        },
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    fontColor: '#3D3838'
+                                },
+                                gridLines: {
+                                    display: false,
+                                    color: '#F1740C',
+                                    drawBorder: false
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    fontColor: '#3D3838',
+                                    stepSize: 20
+                                },
+                                gridLines: {
+                                    display: true,
+                                    color: '#3D3838',
+                                    drawBorder: false
+                                }
+                            }]
+                        }
+                    }
+                })
+            }
         },
     });
 }
@@ -187,6 +259,10 @@ function cargarTipParen(inicior, finr) {
                 var donutOptions = {
                     maintainAspectRatio: false,
                     responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Seguimientos x Parentesco'
+                    },
                     legend: {
                         position: 'left',
                     }
@@ -245,6 +321,10 @@ function cargarSexoAte(inicior, finr) {
                 var pieOptions = {
                     maintainAspectRatio: false,
                     responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Seguimientos x Sexo de Familiar'
+                    },
                 }
                 new Chart(pieChartCanvas, {
                     type: 'pie',

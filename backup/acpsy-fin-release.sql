@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 14-07-2021 a las 20:04:32
+-- Tiempo de generación: 16-07-2021 a las 20:10:07
 -- Versión del servidor: 5.7.24
 -- Versión de PHP: 7.4.15
 
@@ -151,7 +151,7 @@ COUNT( acpsy_seguimiento.idSeguimiento ) AS CONTEO
 FROM
 	acpsy_seguimiento 
 WHERE
-	idStatusSeg != 2 
+	idStatusSeg = 1 
 	AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
 	CURDATE()) 
 GROUP BY
@@ -1151,6 +1151,742 @@ WHERE
 GROUP BY
 	PARENTESCO
 ORDER BY CONTEO DESC;
+END IF$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `REPORTE_SEGMENSXPROFESIONAL` (IN `_INICIO` VARCHAR(10), IN `_FIN` VARCHAR(10), IN `_PROFESIONAL` INT(11))  IF _INICIO = "" THEN
+	SELECT MONTH
+		( acpsy_seguimiento.fRegistrSeg ) AS NMES,
+		MES_SPANISH ( acpsy_seguimiento.fRegistrSeg, 'es_ES' ) AS MES,
+		COUNT( acpsy_seguimiento.idSeguimiento ) AS CONTADOR 
+	FROM
+		acpsy_seguimiento 
+	WHERE
+		acpsy_seguimiento.idStatusSeg = 1 
+		AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+		CURDATE()) AND acpsy_seguimiento.idProfesional = _PROFESIONAL
+	GROUP BY
+		NMES,
+		MES 
+	ORDER BY
+		MONTH ( acpsy_seguimiento.fRegistrSeg );
+ELSE
+		SELECT MONTH
+		( acpsy_seguimiento.fRegistrSeg ) AS NMES,
+		MES_SPANISH ( acpsy_seguimiento.fRegistrSeg, 'es_ES' ) AS MES,
+		COUNT( acpsy_seguimiento.idSeguimiento ) AS CONTADOR 
+	FROM
+		acpsy_seguimiento 
+	WHERE
+		acpsy_seguimiento.idStatusSeg = 1 
+		AND (acpsy_seguimiento.fRegistrSeg BETWEEN _INICIO AND _FIN)  AND acpsy_seguimiento.idProfesional = _PROFESIONAL
+	GROUP BY
+		NMES,
+		MES 
+	ORDER BY
+		MONTH ( acpsy_seguimiento.fRegistrSeg );
+END IF$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `REPORTE_SEGTIPOXPROFESIONAL` (IN `_INICIO` VARCHAR(10), IN `_FIN` VARCHAR(10), IN `_PROFESIONAL` INT(11))  IF _INICIO = "" THEN
+	SELECT
+		COUNT( acpsy_seguimiento.idSeguimiento ) AS CONTADOR,
+		acpsy_tiposeguimiento.detaTipSeguimiento AS TIPO 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_tiposeguimiento ON acpsy_seguimiento.idTipoSeguimiento = acpsy_tiposeguimiento.idTipoSeguimiento 
+	WHERE
+		idStatusSeg = 1 
+		AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+		CURDATE())  AND acpsy_seguimiento.idProfesional = _PROFESIONAL
+	GROUP BY
+		TIPO 
+	ORDER BY
+		CONTADOR DESC;
+ELSE
+SELECT
+		COUNT( acpsy_seguimiento.idSeguimiento ) AS CONTADOR,
+		acpsy_tiposeguimiento.detaTipSeguimiento AS TIPO 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_tiposeguimiento ON acpsy_seguimiento.idTipoSeguimiento = acpsy_tiposeguimiento.idTipoSeguimiento 
+	WHERE
+		idStatusSeg = 1 AND (acpsy_seguimiento.fRegistrSeg BETWEEN _INICIO AND _FIN)  AND acpsy_seguimiento.idProfesional = _PROFESIONAL
+	GROUP BY
+		TIPO 
+	ORDER BY
+		CONTADOR DESC;
+END IF$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `REPORTE_SEGUIMIENTOXDIAGFAM` (IN `_INICIO` VARCHAR(10), IN `_FIN` VARCHAR(10), IN `_PROFESIONAL` INT(11))  IF
+	( _INICIO = "" AND _PROFESIONAL = 0 ) THEN
+SELECT
+	COUNT(acpsy_seguimiento.idSeguimiento) AS CONTADOR, 
+	acpsy_diagnosticos.cieDiagnostico AS DIAGNOSTICO
+FROM
+	acpsy_seguimiento
+	INNER JOIN
+	acpsy_diagnosticos
+	ON 
+		acpsy_seguimiento.idDiag1SegFam = acpsy_diagnosticos.idDiagnostico
+	WHERE
+		idStatusSeg = 1 
+		AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+		CURDATE()) 
+	GROUP BY
+		DIAGNOSTICO
+	ORDER BY
+		CONTADOR DESC;
+	
+	ELSEIF ( _INICIO != _FIN AND _PROFESIONAL = 0 ) THEN
+SELECT
+	COUNT(acpsy_seguimiento.idSeguimiento) AS CONTADOR, 
+	acpsy_diagnosticos.cieDiagnostico AS DIAGNOSTICO
+FROM
+	acpsy_seguimiento
+	INNER JOIN
+	acpsy_diagnosticos
+	ON 
+		acpsy_seguimiento.idDiag1SegFam = acpsy_diagnosticos.idDiagnostico
+	WHERE
+		idStatusSeg = 1 
+		AND ( acpsy_seguimiento.fRegistrSeg BETWEEN _INICIO AND _FIN ) 
+	GROUP BY
+		DIAGNOSTICO
+	ORDER BY
+		CONTADOR DESC;
+	
+	ELSEIF ( _INICIO = _FIN AND _PROFESIONAL = 0 ) THEN
+SELECT
+	COUNT(acpsy_seguimiento.idSeguimiento) AS CONTADOR, 
+	acpsy_diagnosticos.cieDiagnostico AS DIAGNOSTICO
+FROM
+	acpsy_seguimiento
+	INNER JOIN
+	acpsy_diagnosticos
+	ON 
+		acpsy_seguimiento.idDiag1SegFam = acpsy_diagnosticos.idDiagnostico
+	WHERE
+		idStatusSeg = 1 
+		AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+		CURDATE()) 
+	GROUP BY
+		DIAGNOSTICO
+	ORDER BY
+		CONTADOR DESC;
+	
+	ELSEIF ( _INICIO = _FIN AND _PROFESIONAL != 0 ) THEN
+SELECT
+	COUNT(acpsy_seguimiento.idSeguimiento) AS CONTADOR, 
+	acpsy_diagnosticos.cieDiagnostico AS DIAGNOSTICO
+FROM
+	acpsy_seguimiento
+	INNER JOIN
+	acpsy_diagnosticos
+	ON 
+		acpsy_seguimiento.idDiag1SegFam = acpsy_diagnosticos.idDiagnostico
+	WHERE
+		idStatusSeg = 1 
+		AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+		CURDATE()) 
+		AND acpsy_seguimiento.idProfesional = _PROFESIONAL 
+	GROUP BY
+		DIAGNOSTICO
+	ORDER BY
+		CONTADOR DESC;
+	
+	ELSEIF ( _INICIO != _FIN AND _PROFESIONAL != 0 ) THEN
+SELECT
+	COUNT(acpsy_seguimiento.idSeguimiento) AS CONTADOR, 
+	acpsy_diagnosticos.cieDiagnostico AS DIAGNOSTICO
+FROM
+	acpsy_seguimiento
+	INNER JOIN
+	acpsy_diagnosticos
+	ON 
+		acpsy_seguimiento.idDiag1SegFam = acpsy_diagnosticos.idDiagnostico
+	WHERE
+		idStatusSeg = 1 
+		AND ( acpsy_seguimiento.fRegistrSeg BETWEEN _INICIO AND _FIN ) 
+		AND acpsy_seguimiento.idProfesional = _PROFESIONAL 
+	GROUP BY
+		DIAGNOSTICO
+	ORDER BY
+		CONTADOR DESC;
+	END IF$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `REPORTE_SEGUIMIENTOXDIAGPAC` (IN `_INICIO` VARCHAR(10), IN `_FIN` VARCHAR(10), IN `_PROFESIONAL` INT(11))  IF
+	( _INICIO = "" AND _PROFESIONAL = 0 ) THEN
+SELECT
+	COUNT(acpsy_seguimiento.idSeguimiento) AS CONTADOR, 
+	acpsy_diagnosticos.cieDiagnostico AS DIAGNOSTICO
+FROM
+	acpsy_seguimiento
+	INNER JOIN
+	acpsy_diagnosticos
+	ON 
+		acpsy_seguimiento.idDiag1Seg = acpsy_diagnosticos.idDiagnostico
+	WHERE
+		idStatusSeg = 1 
+		AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+		CURDATE()) 
+	GROUP BY
+		DIAGNOSTICO
+	ORDER BY
+		CONTADOR DESC;
+	
+	ELSEIF ( _INICIO != _FIN AND _PROFESIONAL = 0 ) THEN
+SELECT
+	COUNT(acpsy_seguimiento.idSeguimiento) AS CONTADOR, 
+	acpsy_diagnosticos.cieDiagnostico AS DIAGNOSTICO
+FROM
+	acpsy_seguimiento
+	INNER JOIN
+	acpsy_diagnosticos
+	ON 
+		acpsy_seguimiento.idDiag1Seg = acpsy_diagnosticos.idDiagnostico
+	WHERE
+		idStatusSeg = 1 
+		AND ( acpsy_seguimiento.fRegistrSeg BETWEEN _INICIO AND _FIN ) 
+	GROUP BY
+		DIAGNOSTICO
+	ORDER BY
+		CONTADOR DESC;
+	
+	ELSEIF ( _INICIO = _FIN AND _PROFESIONAL = 0 ) THEN
+SELECT
+	COUNT(acpsy_seguimiento.idSeguimiento) AS CONTADOR, 
+	acpsy_diagnosticos.cieDiagnostico AS DIAGNOSTICO
+FROM
+	acpsy_seguimiento
+	INNER JOIN
+	acpsy_diagnosticos
+	ON 
+		acpsy_seguimiento.idDiag1Seg = acpsy_diagnosticos.idDiagnostico
+	WHERE
+		idStatusSeg = 1 
+		AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+		CURDATE()) 
+	GROUP BY
+		DIAGNOSTICO
+	ORDER BY
+		CONTADOR DESC;
+	
+	ELSEIF ( _INICIO = _FIN AND _PROFESIONAL != 0 ) THEN
+SELECT
+	COUNT(acpsy_seguimiento.idSeguimiento) AS CONTADOR, 
+	acpsy_diagnosticos.cieDiagnostico AS DIAGNOSTICO
+FROM
+	acpsy_seguimiento
+	INNER JOIN
+	acpsy_diagnosticos
+	ON 
+		acpsy_seguimiento.idDiag1Seg = acpsy_diagnosticos.idDiagnostico
+	WHERE
+		idStatusSeg = 1 
+		AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+		CURDATE()) 
+		AND acpsy_seguimiento.idProfesional = _PROFESIONAL 
+	GROUP BY
+		DIAGNOSTICO
+	ORDER BY
+		CONTADOR DESC;
+	
+	ELSEIF ( _INICIO != _FIN AND _PROFESIONAL != 0 ) THEN
+SELECT
+	COUNT(acpsy_seguimiento.idSeguimiento) AS CONTADOR, 
+	acpsy_diagnosticos.cieDiagnostico AS DIAGNOSTICO
+FROM
+	acpsy_seguimiento
+	INNER JOIN
+	acpsy_diagnosticos
+	ON 
+		acpsy_seguimiento.idDiag1Seg = acpsy_diagnosticos.idDiagnostico
+	WHERE
+		idStatusSeg = 1 
+		AND ( acpsy_seguimiento.fRegistrSeg BETWEEN _INICIO AND _FIN ) 
+		AND acpsy_seguimiento.idProfesional = _PROFESIONAL 
+	GROUP BY
+		DIAGNOSTICO
+	ORDER BY
+		CONTADOR DESC;
+	END IF$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `REPORTE_SEGUIMIENTOXPROFESIONAL` (IN `_INICIO` VARCHAR(10), IN `_FIN` VARCHAR(10), IN `_PROFESIONAL` INT(11))  IF
+	( _INICIO = "" AND _PROFESIONAL = 0 ) THEN
+	SELECT
+		CONCAT( acpsy_profesionales.nombresProfesional, " ", acpsy_profesionales.apellidosProfesional ) AS PROFESIONAL,
+		COUNT( acpsy_seguimiento.idSeguimiento ) AS CONTADOR 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_profesionales ON acpsy_seguimiento.idProfesional = acpsy_profesionales.idProfesional 
+	WHERE
+		idStatusSeg = 1 
+		AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+		CURDATE()) 
+	GROUP BY
+		PROFESIONAL 
+	ORDER BY
+		CONTADOR DESC;
+	
+	ELSEIF ( _INICIO != _FIN AND _PROFESIONAL = 0 ) THEN
+	SELECT
+		CONCAT( acpsy_profesionales.nombresProfesional, " ", acpsy_profesionales.apellidosProfesional ) AS PROFESIONAL,
+		COUNT( acpsy_seguimiento.idSeguimiento ) AS CONTADOR 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_profesionales ON acpsy_seguimiento.idProfesional = acpsy_profesionales.idProfesional 
+	WHERE
+		idStatusSeg = 1 
+		AND ( acpsy_seguimiento.fRegistrSeg BETWEEN _INICIO AND _FIN ) 
+	GROUP BY
+		PROFESIONAL 
+	ORDER BY
+		CONTADOR DESC;
+		ELSEIF ( _INICIO = _FIN AND _PROFESIONAL = 0 ) THEN
+	SELECT
+		CONCAT( acpsy_profesionales.nombresProfesional, " ", acpsy_profesionales.apellidosProfesional ) AS PROFESIONAL,
+		COUNT( acpsy_seguimiento.idSeguimiento ) AS CONTADOR 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_profesionales ON acpsy_seguimiento.idProfesional = acpsy_profesionales.idProfesional 
+	WHERE
+		idStatusSeg = 1 
+		AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+		CURDATE()) 
+	GROUP BY
+		PROFESIONAL 
+	ORDER BY
+		CONTADOR DESC;
+	ELSEIF ( _INICIO = _FIN AND _PROFESIONAL != 0 ) THEN
+	SELECT
+		CONCAT( acpsy_profesionales.nombresProfesional, " ", acpsy_profesionales.apellidosProfesional ) AS PROFESIONAL,
+		COUNT( acpsy_seguimiento.idSeguimiento ) AS CONTADOR 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_profesionales ON acpsy_seguimiento.idProfesional = acpsy_profesionales.idProfesional 
+	WHERE
+		idStatusSeg = 1 
+		AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+		CURDATE()) 
+		AND acpsy_seguimiento.idProfesional = _PROFESIONAL 
+	GROUP BY
+		PROFESIONAL 
+	ORDER BY
+		CONTADOR DESC;
+	
+	ELSEIF ( _INICIO != _FIN AND _PROFESIONAL != 0 ) THEN
+	SELECT
+		CONCAT( acpsy_profesionales.nombresProfesional, " ", acpsy_profesionales.apellidosProfesional ) AS PROFESIONAL,
+		COUNT( acpsy_seguimiento.idSeguimiento ) AS CONTADOR 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_profesionales ON acpsy_seguimiento.idProfesional = acpsy_profesionales.idProfesional 
+	WHERE
+		idStatusSeg = 1 
+		AND ( acpsy_seguimiento.fRegistrSeg BETWEEN _INICIO AND _FIN ) 
+		AND acpsy_seguimiento.idProfesional = _PROFESIONAL 
+	GROUP BY
+		PROFESIONAL 
+	ORDER BY
+		CONTADOR DESC;
+END IF$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `REPORTE_SEGUIMIENTOXTIPO` (IN `_INICIO` VARCHAR(10), IN `_FIN` VARCHAR(10), IN `_PROFESIONAL` INT(11))  IF
+	( _INICIO = "" AND _PROFESIONAL = 0 ) THEN
+	SELECT
+		COUNT( acpsy_seguimiento.idSeguimiento ) AS CONTADOR,
+		acpsy_tiposeguimiento.detaTipSeguimiento AS TIPO 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_tiposeguimiento ON acpsy_seguimiento.idTipoSeguimiento = acpsy_tiposeguimiento.idTipoSeguimiento 
+	WHERE
+		idStatusSeg = 1 
+		AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+		CURDATE()) 
+	GROUP BY
+		TIPO 
+	ORDER BY
+		CONTADOR DESC;
+	
+	ELSEIF ( _INICIO != _FIN AND _PROFESIONAL = 0 ) THEN
+	SELECT
+		COUNT( acpsy_seguimiento.idSeguimiento ) AS CONTADOR,
+		acpsy_tiposeguimiento.detaTipSeguimiento AS TIPO 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_tiposeguimiento ON acpsy_seguimiento.idTipoSeguimiento = acpsy_tiposeguimiento.idTipoSeguimiento 
+	WHERE
+		idStatusSeg = 1 
+		AND ( acpsy_seguimiento.fRegistrSeg BETWEEN _INICIO AND _FIN ) 
+	GROUP BY
+		TIPO 
+	ORDER BY
+		CONTADOR DESC;
+	
+	ELSEIF ( _INICIO = _FIN AND _PROFESIONAL = 0 ) THEN
+	SELECT
+		COUNT( acpsy_seguimiento.idSeguimiento ) AS CONTADOR,
+		acpsy_tiposeguimiento.detaTipSeguimiento AS TIPO 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_tiposeguimiento ON acpsy_seguimiento.idTipoSeguimiento = acpsy_tiposeguimiento.idTipoSeguimiento 
+	WHERE
+		idStatusSeg = 1 
+		AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+		CURDATE()) 
+	GROUP BY
+		TIPO 
+	ORDER BY
+		CONTADOR DESC;
+	
+	ELSEIF ( _INICIO = _FIN AND _PROFESIONAL != 0 ) THEN
+	SELECT
+		COUNT( acpsy_seguimiento.idSeguimiento ) AS CONTADOR,
+		acpsy_tiposeguimiento.detaTipSeguimiento AS TIPO 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_tiposeguimiento ON acpsy_seguimiento.idTipoSeguimiento = acpsy_tiposeguimiento.idTipoSeguimiento 
+	WHERE
+		idStatusSeg = 1 
+		AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+		CURDATE()) 
+		AND acpsy_seguimiento.idProfesional = _PROFESIONAL 
+	GROUP BY
+		TIPO 
+	ORDER BY
+		CONTADOR DESC;
+	
+	ELSEIF ( _INICIO != _FIN AND _PROFESIONAL != 0 ) THEN
+	SELECT
+		COUNT( acpsy_seguimiento.idSeguimiento ) AS CONTADOR,
+		acpsy_tiposeguimiento.detaTipSeguimiento AS TIPO 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_tiposeguimiento ON acpsy_seguimiento.idTipoSeguimiento = acpsy_tiposeguimiento.idTipoSeguimiento 
+	WHERE
+		idStatusSeg = 1 
+		AND ( acpsy_seguimiento.fRegistrSeg BETWEEN _INICIO AND _FIN ) 
+		AND acpsy_seguimiento.idProfesional = _PROFESIONAL 
+	GROUP BY
+		TIPO 
+	ORDER BY
+		CONTADOR DESC;
+	END IF$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `REPORTE_SEGUIMIENTO_JEFATURA` (IN `_INICIO` VARCHAR(10), IN `_FIN` VARCHAR(10), IN `_PROFESIONAL` INT(11))  IF
+	( _INICIO = "" AND _PROFESIONAL = 0 ) THEN
+	SELECT
+		acpsy_seguimiento.idSeguimiento,
+		date_format( acpsy_seguimiento.fRegistrSeg, '%d/%m/%Y' ) AS fecha,
+		acpsy_tiposeguimiento.detaTipSeguimiento AS tipo,
+		acpsy_motivoseguimiento.detaMotivoSef AS motivo,
+		CONCAT( acpsy_atencion.tipdocAtencion, '-', acpsy_atencion.nrodocAtencion ) AS docpaciente,
+		acpsy_atencion.historiaAtencion,
+		CONCAT( acpsy_atencion.nombAtencion, " ", acpsy_atencion.apPaternoAtencion, " ", acpsy_atencion.apMaternoAtencion ) AS nombpaciente,
+		acpsy_atencion.edadAtencion AS edadPaciente,
+		acpsy_tipsexo.detaTipSexo AS sexoPac,
+		acpsy_diagnosticos.cieDiagnostico AS diagPac,
+		ACTPAC.cieDiagnostico AS actPac,
+		acpsy_seguimiento.comunFamSeg AS comunicacion,
+		CONCAT( acpsy_famatencion.tipdocFamiliar, "-", acpsy_famatencion.ndocFamiliar ) AS docfamiliar,
+		acpsy_famatencion.nombApFamiliar,
+		acpsy_parentescofam.detaParentesco AS parentesco,
+		acpsy_famatencion.edadFamiliar,
+		sexPaciente.detaTipSexo AS sexoFam,
+		diagFam1.cieDiagnostico AS diagFam,
+		ACTFAM.cieDiagnostico AS actFam,
+		CONCAT( acpsy_profesionales.nombresProfesional, ' ', acpsy_profesionales.apellidosProfesional ) AS profesional 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_atencion ON acpsy_seguimiento.idAtencionPac = acpsy_atencion.idAtencion
+		INNER JOIN acpsy_profesionales ON acpsy_seguimiento.idProfesional = acpsy_profesionales.idProfesional
+		INNER JOIN acpsy_tipsexo ON acpsy_atencion.tipSexoAtencion = acpsy_tipsexo.idTipSexo
+		INNER JOIN acpsy_tiposeguimiento ON acpsy_seguimiento.idTipoSeguimiento = acpsy_tiposeguimiento.idTipoSeguimiento
+		INNER JOIN acpsy_motivoseguimiento ON acpsy_seguimiento.idMotSeguimiento = acpsy_motivoseguimiento.idMotSeguimiento
+		INNER JOIN acpsy_diagnosticos ON acpsy_seguimiento.idDiag1Seg = acpsy_diagnosticos.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS ACTPAC ON acpsy_seguimiento.idDiag2Seg = ACTPAC.idDiagnostico
+		LEFT JOIN acpsy_famatencion ON acpsy_seguimiento.idFamAtSeg = acpsy_famatencion.idFamiliar
+		LEFT JOIN acpsy_parentescofam ON acpsy_famatencion.idParentesco = acpsy_parentescofam.idParentesco
+		LEFT JOIN acpsy_tipsexo AS sexPaciente ON acpsy_famatencion.idTipSexo = sexPaciente.idTipSexo
+		LEFT JOIN acpsy_diagnosticos AS diagFam1 ON acpsy_seguimiento.idDiag1SegFam = diagFam1.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS ACTFAM ON acpsy_seguimiento.idDiag2SegFam = ACTFAM.idDiagnostico 
+	WHERE
+		acpsy_seguimiento.idStatusSeg = 1 
+		AND MONTH ( acpsy_seguimiento.fRegistrSeg ) = MONTH (
+		CURDATE()) 
+		AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+		CURDATE()) 
+	ORDER BY
+		fRegistrSeg DESC, idSeguimiento DESC;
+	ELSEIF ( _INICIO != _FIN AND _PROFESIONAL = 0 ) THEN
+	SELECT
+		acpsy_seguimiento.idSeguimiento,
+		date_format( acpsy_seguimiento.fRegistrSeg, '%d/%m/%Y' ) AS fecha,
+		acpsy_tiposeguimiento.detaTipSeguimiento AS tipo,
+		acpsy_motivoseguimiento.detaMotivoSef AS motivo,
+		CONCAT( acpsy_atencion.tipdocAtencion, '-', acpsy_atencion.nrodocAtencion ) AS docpaciente,
+		acpsy_atencion.historiaAtencion,
+		CONCAT( acpsy_atencion.nombAtencion, " ", acpsy_atencion.apPaternoAtencion, " ", acpsy_atencion.apMaternoAtencion ) AS nombpaciente,
+		acpsy_atencion.edadAtencion AS edadPaciente,
+		acpsy_tipsexo.detaTipSexo AS sexoPac,
+		acpsy_diagnosticos.cieDiagnostico AS diagPac,
+		ACTPAC.cieDiagnostico AS actPac,
+		acpsy_seguimiento.comunFamSeg AS comunicacion,
+		CONCAT( acpsy_famatencion.tipdocFamiliar, "-", acpsy_famatencion.ndocFamiliar ) AS docfamiliar,
+		acpsy_famatencion.nombApFamiliar,
+		acpsy_parentescofam.detaParentesco AS parentesco,
+		acpsy_famatencion.edadFamiliar,
+		sexPaciente.detaTipSexo AS sexoFam,
+		diagFam1.cieDiagnostico AS diagFam,
+		ACTFAM.cieDiagnostico AS actFam,
+		CONCAT( acpsy_profesionales.nombresProfesional, ' ', acpsy_profesionales.apellidosProfesional ) AS profesional 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_atencion ON acpsy_seguimiento.idAtencionPac = acpsy_atencion.idAtencion
+		INNER JOIN acpsy_profesionales ON acpsy_seguimiento.idProfesional = acpsy_profesionales.idProfesional
+		INNER JOIN acpsy_tipsexo ON acpsy_atencion.tipSexoAtencion = acpsy_tipsexo.idTipSexo
+		INNER JOIN acpsy_tiposeguimiento ON acpsy_seguimiento.idTipoSeguimiento = acpsy_tiposeguimiento.idTipoSeguimiento
+		INNER JOIN acpsy_motivoseguimiento ON acpsy_seguimiento.idMotSeguimiento = acpsy_motivoseguimiento.idMotSeguimiento
+		INNER JOIN acpsy_diagnosticos ON acpsy_seguimiento.idDiag1Seg = acpsy_diagnosticos.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS ACTPAC ON acpsy_seguimiento.idDiag2Seg = ACTPAC.idDiagnostico
+		LEFT JOIN acpsy_famatencion ON acpsy_seguimiento.idFamAtSeg = acpsy_famatencion.idFamiliar
+		LEFT JOIN acpsy_parentescofam ON acpsy_famatencion.idParentesco = acpsy_parentescofam.idParentesco
+		LEFT JOIN acpsy_tipsexo AS sexPaciente ON acpsy_famatencion.idTipSexo = sexPaciente.idTipSexo
+		LEFT JOIN acpsy_diagnosticos AS diagFam1 ON acpsy_seguimiento.idDiag1SegFam = diagFam1.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS ACTFAM ON acpsy_seguimiento.idDiag2SegFam = ACTFAM.idDiagnostico 
+	WHERE
+		acpsy_seguimiento.idStatusSeg = 1 
+		AND ( acpsy_seguimiento.fRegistrSeg BETWEEN _INICIO AND _FIN ) 
+	ORDER BY
+		idSeguimiento DESC,
+		fRegistrSeg DESC;
+	
+	ELSEIF ( _INICIO = _FIN AND _PROFESIONAL = 0 ) THEN
+	SELECT
+		acpsy_seguimiento.idSeguimiento,
+		date_format( acpsy_seguimiento.fRegistrSeg, '%d/%m/%Y' ) AS fecha,
+		acpsy_tiposeguimiento.detaTipSeguimiento AS tipo,
+		acpsy_motivoseguimiento.detaMotivoSef AS motivo,
+		CONCAT( acpsy_atencion.tipdocAtencion, '-', acpsy_atencion.nrodocAtencion ) AS docpaciente,
+		acpsy_atencion.historiaAtencion,
+		CONCAT( acpsy_atencion.nombAtencion, " ", acpsy_atencion.apPaternoAtencion, " ", acpsy_atencion.apMaternoAtencion ) AS nombpaciente,
+		acpsy_atencion.edadAtencion AS edadPaciente,
+		acpsy_tipsexo.detaTipSexo AS sexoPac,
+		acpsy_diagnosticos.cieDiagnostico AS diagPac,
+		ACTPAC.cieDiagnostico AS actPac,
+		acpsy_seguimiento.comunFamSeg AS comunicacion,
+		CONCAT( acpsy_famatencion.tipdocFamiliar, "-", acpsy_famatencion.ndocFamiliar ) AS docfamiliar,
+		acpsy_famatencion.nombApFamiliar,
+		acpsy_parentescofam.detaParentesco AS parentesco,
+		acpsy_famatencion.edadFamiliar,
+		sexPaciente.detaTipSexo AS sexoFam,
+		diagFam1.cieDiagnostico AS diagFam,
+		ACTFAM.cieDiagnostico AS actFam,
+		CONCAT( acpsy_profesionales.nombresProfesional, ' ', acpsy_profesionales.apellidosProfesional ) AS profesional 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_atencion ON acpsy_seguimiento.idAtencionPac = acpsy_atencion.idAtencion
+		INNER JOIN acpsy_profesionales ON acpsy_seguimiento.idProfesional = acpsy_profesionales.idProfesional
+		INNER JOIN acpsy_tipsexo ON acpsy_atencion.tipSexoAtencion = acpsy_tipsexo.idTipSexo
+		INNER JOIN acpsy_tiposeguimiento ON acpsy_seguimiento.idTipoSeguimiento = acpsy_tiposeguimiento.idTipoSeguimiento
+		INNER JOIN acpsy_motivoseguimiento ON acpsy_seguimiento.idMotSeguimiento = acpsy_motivoseguimiento.idMotSeguimiento
+		INNER JOIN acpsy_diagnosticos ON acpsy_seguimiento.idDiag1Seg = acpsy_diagnosticos.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS ACTPAC ON acpsy_seguimiento.idDiag2Seg = ACTPAC.idDiagnostico
+		LEFT JOIN acpsy_famatencion ON acpsy_seguimiento.idFamAtSeg = acpsy_famatencion.idFamiliar
+		LEFT JOIN acpsy_parentescofam ON acpsy_famatencion.idParentesco = acpsy_parentescofam.idParentesco
+		LEFT JOIN acpsy_tipsexo AS sexPaciente ON acpsy_famatencion.idTipSexo = sexPaciente.idTipSexo
+		LEFT JOIN acpsy_diagnosticos AS diagFam1 ON acpsy_seguimiento.idDiag1SegFam = diagFam1.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS ACTFAM ON acpsy_seguimiento.idDiag2SegFam = ACTFAM.idDiagnostico 
+	WHERE
+		acpsy_seguimiento.idStatusSeg = 1 
+		AND MONTH ( acpsy_seguimiento.fRegistrSeg ) = MONTH (
+		CURDATE()) 
+		AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+		CURDATE()) 
+	ORDER BY
+		idSeguimiento DESC,
+		fRegistrSeg DESC;
+	
+	ELSEIF ( _INICIO = _FIN AND _PROFESIONAL != 0 ) THEN
+	SELECT
+		acpsy_seguimiento.idSeguimiento,
+		date_format( acpsy_seguimiento.fRegistrSeg, '%d/%m/%Y' ) AS fecha,
+		acpsy_tiposeguimiento.detaTipSeguimiento AS tipo,
+		acpsy_motivoseguimiento.detaMotivoSef AS motivo,
+		CONCAT( acpsy_atencion.tipdocAtencion, '-', acpsy_atencion.nrodocAtencion ) AS docpaciente,
+		acpsy_atencion.historiaAtencion,
+		CONCAT( acpsy_atencion.nombAtencion, " ", acpsy_atencion.apPaternoAtencion, " ", acpsy_atencion.apMaternoAtencion ) AS nombpaciente,
+		acpsy_atencion.edadAtencion AS edadPaciente,
+		acpsy_tipsexo.detaTipSexo AS sexoPac,
+		acpsy_diagnosticos.cieDiagnostico AS diagPac,
+		ACTPAC.cieDiagnostico AS actPac,
+		acpsy_seguimiento.comunFamSeg AS comunicacion,
+		CONCAT( acpsy_famatencion.tipdocFamiliar, "-", acpsy_famatencion.ndocFamiliar ) AS docfamiliar,
+		acpsy_famatencion.nombApFamiliar,
+		acpsy_parentescofam.detaParentesco AS parentesco,
+		acpsy_famatencion.edadFamiliar,
+		sexPaciente.detaTipSexo AS sexoFam,
+		diagFam1.cieDiagnostico AS diagFam,
+		ACTFAM.cieDiagnostico AS actFam,
+		CONCAT( acpsy_profesionales.nombresProfesional, ' ', acpsy_profesionales.apellidosProfesional ) AS profesional 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_atencion ON acpsy_seguimiento.idAtencionPac = acpsy_atencion.idAtencion
+		INNER JOIN acpsy_profesionales ON acpsy_seguimiento.idProfesional = acpsy_profesionales.idProfesional
+		INNER JOIN acpsy_tipsexo ON acpsy_atencion.tipSexoAtencion = acpsy_tipsexo.idTipSexo
+		INNER JOIN acpsy_tiposeguimiento ON acpsy_seguimiento.idTipoSeguimiento = acpsy_tiposeguimiento.idTipoSeguimiento
+		INNER JOIN acpsy_motivoseguimiento ON acpsy_seguimiento.idMotSeguimiento = acpsy_motivoseguimiento.idMotSeguimiento
+		INNER JOIN acpsy_diagnosticos ON acpsy_seguimiento.idDiag1Seg = acpsy_diagnosticos.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS ACTPAC ON acpsy_seguimiento.idDiag2Seg = ACTPAC.idDiagnostico
+		LEFT JOIN acpsy_famatencion ON acpsy_seguimiento.idFamAtSeg = acpsy_famatencion.idFamiliar
+		LEFT JOIN acpsy_parentescofam ON acpsy_famatencion.idParentesco = acpsy_parentescofam.idParentesco
+		LEFT JOIN acpsy_tipsexo AS sexPaciente ON acpsy_famatencion.idTipSexo = sexPaciente.idTipSexo
+		LEFT JOIN acpsy_diagnosticos AS diagFam1 ON acpsy_seguimiento.idDiag1SegFam = diagFam1.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS ACTFAM ON acpsy_seguimiento.idDiag2SegFam = ACTFAM.idDiagnostico 
+	WHERE
+		acpsy_seguimiento.idStatusSeg = 1 
+		AND MONTH ( acpsy_seguimiento.fRegistrSeg ) = MONTH (
+		CURDATE()) 
+		AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+		CURDATE()) 
+		AND acpsy_seguimiento.idProfesional = _PROFESIONAL 
+	ORDER BY
+		idSeguimiento DESC,
+		fRegistrSeg DESC;
+	
+	ELSEIF ( _INICIO != _FIN AND _PROFESIONAL != 0 ) THEN
+	SELECT
+		acpsy_seguimiento.idSeguimiento,
+		date_format( acpsy_seguimiento.fRegistrSeg, '%d/%m/%Y' ) AS fecha,
+		acpsy_tiposeguimiento.detaTipSeguimiento AS tipo,
+		acpsy_motivoseguimiento.detaMotivoSef AS motivo,
+		CONCAT( acpsy_atencion.tipdocAtencion, '-', acpsy_atencion.nrodocAtencion ) AS docpaciente,
+		acpsy_atencion.historiaAtencion,
+		CONCAT( acpsy_atencion.nombAtencion, " ", acpsy_atencion.apPaternoAtencion, " ", acpsy_atencion.apMaternoAtencion ) AS nombpaciente,
+		acpsy_atencion.edadAtencion AS edadPaciente,
+		acpsy_tipsexo.detaTipSexo AS sexoPac,
+		acpsy_diagnosticos.cieDiagnostico AS diagPac,
+		ACTPAC.cieDiagnostico AS actPac,
+		acpsy_seguimiento.comunFamSeg AS comunicacion,
+		CONCAT( acpsy_famatencion.tipdocFamiliar, "-", acpsy_famatencion.ndocFamiliar ) AS docfamiliar,
+		acpsy_famatencion.nombApFamiliar,
+		acpsy_parentescofam.detaParentesco AS parentesco,
+		acpsy_famatencion.edadFamiliar,
+		sexPaciente.detaTipSexo AS sexoFam,
+		diagFam1.cieDiagnostico AS diagFam,
+		ACTFAM.cieDiagnostico AS actFam,
+		CONCAT( acpsy_profesionales.nombresProfesional, ' ', acpsy_profesionales.apellidosProfesional ) AS profesional 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_atencion ON acpsy_seguimiento.idAtencionPac = acpsy_atencion.idAtencion
+		INNER JOIN acpsy_profesionales ON acpsy_seguimiento.idProfesional = acpsy_profesionales.idProfesional
+		INNER JOIN acpsy_tipsexo ON acpsy_atencion.tipSexoAtencion = acpsy_tipsexo.idTipSexo
+		INNER JOIN acpsy_tiposeguimiento ON acpsy_seguimiento.idTipoSeguimiento = acpsy_tiposeguimiento.idTipoSeguimiento
+		INNER JOIN acpsy_motivoseguimiento ON acpsy_seguimiento.idMotSeguimiento = acpsy_motivoseguimiento.idMotSeguimiento
+		INNER JOIN acpsy_diagnosticos ON acpsy_seguimiento.idDiag1Seg = acpsy_diagnosticos.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS ACTPAC ON acpsy_seguimiento.idDiag2Seg = ACTPAC.idDiagnostico
+		LEFT JOIN acpsy_famatencion ON acpsy_seguimiento.idFamAtSeg = acpsy_famatencion.idFamiliar
+		LEFT JOIN acpsy_parentescofam ON acpsy_famatencion.idParentesco = acpsy_parentescofam.idParentesco
+		LEFT JOIN acpsy_tipsexo AS sexPaciente ON acpsy_famatencion.idTipSexo = sexPaciente.idTipSexo
+		LEFT JOIN acpsy_diagnosticos AS diagFam1 ON acpsy_seguimiento.idDiag1SegFam = diagFam1.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS ACTFAM ON acpsy_seguimiento.idDiag2SegFam = ACTFAM.idDiagnostico 
+	WHERE
+		idStatusSeg = 1 
+		AND ( acpsy_seguimiento.fRegistrSeg BETWEEN _INICIO AND _FIN ) 
+		AND acpsy_seguimiento.idProfesional = _PROFESIONAL
+	ORDER BY
+		idSeguimiento DESC,
+		fRegistrSeg DESC;
+END IF$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `REPORTE_SEGUIMIENTO_PROFESIONAL` (IN `_INICIO` VARCHAR(10), IN `_FIN` VARCHAR(10), IN `_PROFESIONAL` INT(11))  IF
+	( _INICIO = "" ) THEN
+	SELECT
+		acpsy_seguimiento.idSeguimiento,
+		date_format( acpsy_seguimiento.fRegistrSeg, '%d/%m/%Y' ) AS fecha,
+		acpsy_tiposeguimiento.detaTipSeguimiento AS tipo,
+		acpsy_motivoseguimiento.detaMotivoSef AS motivo,
+		CONCAT( acpsy_atencion.tipdocAtencion, '-', acpsy_atencion.nrodocAtencion ) AS docpaciente,
+		acpsy_atencion.historiaAtencion,
+		CONCAT( acpsy_atencion.nombAtencion, " ", acpsy_atencion.apPaternoAtencion, " ", acpsy_atencion.apMaternoAtencion ) AS nombpaciente,
+		acpsy_atencion.edadAtencion AS edadPaciente,
+		acpsy_tipsexo.detaTipSexo AS sexoPac,
+		acpsy_diagnosticos.cieDiagnostico AS diagPac,
+		ACTPAC.cieDiagnostico AS actPac,
+		acpsy_seguimiento.comunFamSeg AS comunicacion,
+		CONCAT( acpsy_famatencion.tipdocFamiliar, "-", acpsy_famatencion.ndocFamiliar ) AS docfamiliar,
+		acpsy_famatencion.nombApFamiliar,
+		acpsy_parentescofam.detaParentesco AS parentesco,
+		acpsy_famatencion.edadFamiliar,
+		sexPaciente.detaTipSexo AS sexoFam,
+		diagFam1.cieDiagnostico AS diagFam,
+		ACTFAM.cieDiagnostico AS actFam,
+		CONCAT( acpsy_profesionales.nombresProfesional, ' ', acpsy_profesionales.apellidosProfesional ) AS profesional 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_atencion ON acpsy_seguimiento.idAtencionPac = acpsy_atencion.idAtencion
+		INNER JOIN acpsy_profesionales ON acpsy_seguimiento.idProfesional = acpsy_profesionales.idProfesional
+		INNER JOIN acpsy_tipsexo ON acpsy_atencion.tipSexoAtencion = acpsy_tipsexo.idTipSexo
+		INNER JOIN acpsy_tiposeguimiento ON acpsy_seguimiento.idTipoSeguimiento = acpsy_tiposeguimiento.idTipoSeguimiento
+		INNER JOIN acpsy_motivoseguimiento ON acpsy_seguimiento.idMotSeguimiento = acpsy_motivoseguimiento.idMotSeguimiento
+		INNER JOIN acpsy_diagnosticos ON acpsy_seguimiento.idDiag1Seg = acpsy_diagnosticos.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS ACTPAC ON acpsy_seguimiento.idDiag2Seg = ACTPAC.idDiagnostico
+		LEFT JOIN acpsy_famatencion ON acpsy_seguimiento.idFamAtSeg = acpsy_famatencion.idFamiliar
+		LEFT JOIN acpsy_parentescofam ON acpsy_famatencion.idParentesco = acpsy_parentescofam.idParentesco
+		LEFT JOIN acpsy_tipsexo AS sexPaciente ON acpsy_famatencion.idTipSexo = sexPaciente.idTipSexo
+		LEFT JOIN acpsy_diagnosticos AS diagFam1 ON acpsy_seguimiento.idDiag1SegFam = diagFam1.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS ACTFAM ON acpsy_seguimiento.idDiag2SegFam = ACTFAM.idDiagnostico 
+	WHERE
+		acpsy_seguimiento.idStatusSeg = 1 
+		AND MONTH ( acpsy_seguimiento.fRegistrSeg ) = MONTH (
+		CURDATE()) 
+		AND YEAR ( acpsy_seguimiento.fRegistrSeg ) = YEAR (
+		CURDATE()) 
+		AND acpsy_seguimiento.idProfesional = _PROFESIONAL 
+	ORDER BY
+		fRegistrSeg DESC,
+		idSeguimiento DESC;
+	ELSE SELECT
+		acpsy_seguimiento.idSeguimiento,
+		date_format( acpsy_seguimiento.fRegistrSeg, '%d/%m/%Y' ) AS fecha,
+		acpsy_tiposeguimiento.detaTipSeguimiento AS tipo,
+		acpsy_motivoseguimiento.detaMotivoSef AS motivo,
+		CONCAT( acpsy_atencion.tipdocAtencion, '-', acpsy_atencion.nrodocAtencion ) AS docpaciente,
+		acpsy_atencion.historiaAtencion,
+		CONCAT( acpsy_atencion.nombAtencion, " ", acpsy_atencion.apPaternoAtencion, " ", acpsy_atencion.apMaternoAtencion ) AS nombpaciente,
+		acpsy_atencion.edadAtencion AS edadPaciente,
+		acpsy_tipsexo.detaTipSexo AS sexoPac,
+		acpsy_diagnosticos.cieDiagnostico AS diagPac,
+		ACTPAC.cieDiagnostico AS actPac,
+		acpsy_seguimiento.comunFamSeg AS comunicacion,
+		CONCAT( acpsy_famatencion.tipdocFamiliar, "-", acpsy_famatencion.ndocFamiliar ) AS docfamiliar,
+		acpsy_famatencion.nombApFamiliar,
+		acpsy_parentescofam.detaParentesco AS parentesco,
+		acpsy_famatencion.edadFamiliar,
+		sexPaciente.detaTipSexo AS sexoFam,
+		diagFam1.cieDiagnostico AS diagFam,
+		ACTFAM.cieDiagnostico AS actFam,
+		CONCAT( acpsy_profesionales.nombresProfesional, ' ', acpsy_profesionales.apellidosProfesional ) AS profesional 
+	FROM
+		acpsy_seguimiento
+		INNER JOIN acpsy_atencion ON acpsy_seguimiento.idAtencionPac = acpsy_atencion.idAtencion
+		INNER JOIN acpsy_profesionales ON acpsy_seguimiento.idProfesional = acpsy_profesionales.idProfesional
+		INNER JOIN acpsy_tipsexo ON acpsy_atencion.tipSexoAtencion = acpsy_tipsexo.idTipSexo
+		INNER JOIN acpsy_tiposeguimiento ON acpsy_seguimiento.idTipoSeguimiento = acpsy_tiposeguimiento.idTipoSeguimiento
+		INNER JOIN acpsy_motivoseguimiento ON acpsy_seguimiento.idMotSeguimiento = acpsy_motivoseguimiento.idMotSeguimiento
+		INNER JOIN acpsy_diagnosticos ON acpsy_seguimiento.idDiag1Seg = acpsy_diagnosticos.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS ACTPAC ON acpsy_seguimiento.idDiag2Seg = ACTPAC.idDiagnostico
+		LEFT JOIN acpsy_famatencion ON acpsy_seguimiento.idFamAtSeg = acpsy_famatencion.idFamiliar
+		LEFT JOIN acpsy_parentescofam ON acpsy_famatencion.idParentesco = acpsy_parentescofam.idParentesco
+		LEFT JOIN acpsy_tipsexo AS sexPaciente ON acpsy_famatencion.idTipSexo = sexPaciente.idTipSexo
+		LEFT JOIN acpsy_diagnosticos AS diagFam1 ON acpsy_seguimiento.idDiag1SegFam = diagFam1.idDiagnostico
+		LEFT JOIN acpsy_diagnosticos AS ACTFAM ON acpsy_seguimiento.idDiag2SegFam = ACTFAM.idDiagnostico 
+	WHERE
+		acpsy_seguimiento.idStatusSeg = 1 
+		AND ( acpsy_seguimiento.fRegistrSeg BETWEEN _INICIO AND _FIN ) 
+		AND acpsy_seguimiento.idProfesional = _PROFESIONAL 
+	ORDER BY
+		idSeguimiento DESC,
+		fRegistrSeg DESC;
 END IF$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `REPORTE_SEGUIMREGS` (IN `_INICIO` VARCHAR(10), IN `_FIN` VARCHAR(10))  IF
