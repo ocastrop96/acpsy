@@ -244,7 +244,12 @@ function cargarTipParen(inicior, finr) {
                     contador.push(respuesta[i][0]);
                     colores.push(colorRGB());
                 }
-                var donutChartCanvas = $('#rggTParen').get(0).getContext('2d')
+
+                // $("canvas#rgAtenAnuReg").remove();
+                // $("div.rgen1").append('<canvas id="rgAtenAnuReg" width="350" height="350"></canvas>');
+                // var ctx = document.getElementById("rgAtenAnuReg").getContext("2d");
+
+                var ctx = $('#rggTParen').get(0).getContext('2d')
                 var donutData = {
                     labels: parentesco,
                     datasets: [
@@ -267,7 +272,7 @@ function cargarTipParen(inicior, finr) {
                         position: 'left',
                     }
                 }
-                new Chart(donutChartCanvas, {
+                new Chart(ctx, {
                     type: 'doughnut',
                     data: donutData,
                     options: donutOptions
