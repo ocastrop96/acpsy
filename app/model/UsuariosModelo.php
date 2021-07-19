@@ -149,6 +149,16 @@ class UsuariosModelo
         $stmt = null;
     }
 
+    static public function mdlValidarEstado($idUsuario)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL VERIFICA_ESTADO_LOG(:idUsuario)");
+        $stmt->bindParam(":idUsuario", $idUsuario, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetch();
+        $stmt->close();
+        $stmt = null;
+    }
+
     static public function mdlEliminarUsuario($dato)
     {
         $stmt = Conexion::conectar()->prepare("CALL ELIMINAR_USUARIO(:idUsuario)");

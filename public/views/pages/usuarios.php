@@ -23,6 +23,7 @@ if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2) {
     </div>
   </section>
   <section class="content">
+    <input type="hidden" name="estatusLog" id="estatusLog" value="<?php echo $_SESSION["loginId"]; ?>">
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Módulo Usuarios &nbsp;<i class="fas fa-users-cog"></i></h3>
@@ -64,7 +65,7 @@ if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2) {
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="rgDni">N° DNI &nbsp;</label>
                 <i class="fas fa-id-card"></i> *
@@ -73,7 +74,7 @@ if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2) {
                 </div>
               </div>
             </div>
-            <div class="col-4" id="btnDNIUsuario">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4" id="btnDNIUsuario">
               <div class="form-group">
                 <label>Búsqueda:<span class="text-danger">&nbsp;*</span></label>
                 <div class="input-group">
@@ -83,7 +84,7 @@ if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2) {
             </div>
           </div>
           <div class="row">
-            <div class="col-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="rgNombres">Nombres &nbsp;</label>
                 <i class="fas fa-signature"></i> *
@@ -92,7 +93,7 @@ if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2) {
                 </div>
               </div>
             </div>
-            <div class="col-5">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-5">
               <div class="form-group">
                 <label for="rgApellidos">Apellidos &nbsp;</label>
                 <i class="fas fa-signature"></i> *
@@ -101,7 +102,7 @@ if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2) {
                 </div>
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="rgPerfil">Perfil &nbsp;</label>
                 <i class="fas fa-id-card-alt"></i> *
@@ -122,7 +123,7 @@ if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2) {
             </div>
           </div>
           <div class="row">
-            <div class="col-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="rgCorreo">Correo &nbsp;</label>
                 <i class="fas fa-at"></i> *
@@ -131,7 +132,7 @@ if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2) {
                 </div>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="rgUsuario">Usuario &nbsp;</label>
                 <i class="fas fa-user"></i> *
@@ -140,7 +141,7 @@ if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2) {
                 </div>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="rgClave">Contraseña &nbsp;</label>
                 <i class="fas fa-key"></i> *
@@ -178,7 +179,7 @@ if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2) {
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="edtDni">N° DNI &nbsp;</label>
                 <i class="fas fa-id-card"></i> *
@@ -188,7 +189,7 @@ if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2) {
                 <input type="hidden" name="idUsuario" id="idUsuario">
               </div>
             </div>
-            <div class="col-4" id="btnEdtDNIUsuario">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4" id="btnEdtDNIUsuario">
               <div class="form-group">
                 <label>Búsqueda:<span class="text-danger">&nbsp;*</span></label>
                 <div class="input-group">
@@ -198,7 +199,7 @@ if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2) {
             </div>
           </div>
           <div class="row">
-            <div class="col-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="edtNombres">Nombres &nbsp;</label>
                 <i class="fas fa-signature"></i> *
@@ -207,7 +208,7 @@ if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2) {
                 </div>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="edtApellidos">Apellidos &nbsp;</label>
                 <i class="fas fa-signature"></i> *
@@ -216,7 +217,7 @@ if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2) {
                 </div>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="edtPerfi1">Perfil &nbsp;</label>
                 <i class="fas fa-id-card-alt"></i> *
@@ -237,7 +238,7 @@ if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2) {
             </div>
           </div>
           <div class="row">
-            <div class="col-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="edtCorreo">Correo &nbsp;</label>
                 <i class="fas fa-at"></i> *
@@ -246,7 +247,7 @@ if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2) {
                 </div>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="edtUsuario">Usuario &nbsp;</label>
                 <i class="fas fa-user"></i> *
@@ -255,7 +256,7 @@ if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2) {
                 </div>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="edtClave">Contraseña &nbsp;</label>
                 <i class="fas fa-key"></i> *

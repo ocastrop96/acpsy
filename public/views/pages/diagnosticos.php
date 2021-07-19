@@ -23,6 +23,7 @@ if ($_SESSION["loginPerfil"] == 3) {
     </div>
   </section>
   <section class="content">
+    <input type="hidden" name="estatusLog" id="estatusLog" value="<?php echo $_SESSION["loginId"]; ?>">
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Módulo Diagnósticos &nbsp;<i class="fas fa-stethoscope"></i></h3>
@@ -59,7 +60,7 @@ if ($_SESSION["loginPerfil"] == 3) {
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="rgdCie">CIE 10 &nbsp;</label>
                 <i class="fas fa-hashtag"></i> *
@@ -68,7 +69,7 @@ if ($_SESSION["loginPerfil"] == 3) {
                 </div>
               </div>
             </div>
-            <div class="col-9">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-9">
               <div class="form-group">
                 <label for="rgdDescripcion">Descripción de Diagnóstico &nbsp;</label>
                 <i class="fas fa-laptop-medical"></i> *
@@ -106,7 +107,7 @@ if ($_SESSION["loginPerfil"] == 3) {
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="edtdCie">CIE 10 &nbsp;</label>
                 <i class="fas fa-hashtag"></i> *
@@ -116,7 +117,7 @@ if ($_SESSION["loginPerfil"] == 3) {
                 </div>
               </div>
             </div>
-            <div class="col-9">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-9">
               <div class="form-group">
                 <label for="edtdDescripcion">Descripción de Diagnóstico &nbsp;</label>
                 <i class="fas fa-laptop-medical"></i> *

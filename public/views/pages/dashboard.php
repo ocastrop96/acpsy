@@ -18,6 +18,7 @@
     </div>
   </section>
   <section class="content">
+    <input type="hidden" name="estatusLog" id="estatusLog" value="<?php echo $_SESSION["loginId"]; ?>">
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-4 col-12">

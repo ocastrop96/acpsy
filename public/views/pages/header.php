@@ -8,13 +8,13 @@
     <ul class="navbar-nav ml-auto">
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
+        <!-- <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="fas fa-cogs"></i>
           <span class="badge badge-warning navbar-badge">+</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+        </a> -->
+        <!-- <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <span class="dropdown-item dropdown-header">Opciones del Usuario</span>
-          <!-- <div class="dropdown-divider"></div>
+          <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
             <i class="fas fa-envelope mr-2"></i> 4 new messages
             <span class="float-right text-muted text-sm">3 mins</span>
@@ -28,10 +28,10 @@
           <a href="#" class="dropdown-item">
             <i class="fas fa-file mr-2"></i> 3 new reports
             <span class="float-right text-muted text-sm">2 days</span>
-          </a> -->
+          </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item dropdown-footer">Opciones del Usuario</a>
-        </div>
+        </div> -->
       </li>
       <li class="nav-item">
         <a class="nav-link" href="logout" role="button">

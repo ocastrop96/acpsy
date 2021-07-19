@@ -50,7 +50,7 @@ if ($_SESSION["loginPerfil"] == 1) {
               </div>
             </div>
           </div>
-          <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-5 col-xl-5">
             <div class="form-group">
               <label>Profesional:</label>
               <div class="input-group">

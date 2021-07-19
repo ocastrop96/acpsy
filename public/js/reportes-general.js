@@ -6,7 +6,28 @@ cargarSegRegs("", "");
 $("#deshacer-filtro-RG").on("click", function () {
     window.location = "reporte-general";
 });
-
+window.onbeforeunload = ValidarEstadoLog($("#estatusLog").val());
+function ValidarEstadoLog(idLog) {
+    if (idLog) {
+        var idLogUs = idLog;
+        var datos = new FormData();
+        datos.append("idUsuario4", idLogUs);
+        $.ajax({
+            url: "public/views/src/ajaxUsuarios.php",
+            method: "POST",
+            data: datos,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success: function (respuesta) {
+                if (respuesta["idEstado"] == 2) {
+                    window.location = "logout";
+                }
+            },
+        });
+    }
+}
 $("input[name='rango-rg']").daterangepicker({
     opens: 'left',
     maxSpan: {
@@ -14,6 +35,7 @@ $("input[name='rango-rg']").daterangepicker({
     },
     startDate: moment(),
     endDate: moment(),
+    maxDate: moment(),
     locale: {
         format: "DD/MM/YYYY",
         separator: " hasta ",
@@ -40,6 +62,7 @@ $("input[name='rango-rg']").daterangepicker({
         ],
         firstDay: 1,
     },
+
 }, function (start, end) {
     let inicio = start.format('YYYY-MM-DD');
     let fin = end.format('YYYY-MM-DD')
@@ -245,17 +268,47 @@ function cargarTipParen(inicior, finr) {
                     colores.push(colorRGB());
                 }
 
-                // $("canvas#rgAtenAnuReg").remove();
-                // $("div.rgen1").append('<canvas id="rgAtenAnuReg" width="350" height="350"></canvas>');
-                // var ctx = document.getElementById("rgAtenAnuReg").getContext("2d");
-
-                var ctx = $('#rggTParen').get(0).getContext('2d')
+                $("canvas#rggTParen").remove();
+                $("div.rgen3").append('<canvas id="rggTParen" width="350" height="350"></canvas>');
+                var ctx = document.getElementById("rggTParen").getContext("2d");
                 var donutData = {
                     labels: parentesco,
                     datasets: [
                         {
                             label: '# de Frecuencia',
                             data: contador,
+                            backgroundColor: colores,
+                            borderColor: colores
+                        }
+                    ]
+                }
+                var donutOptions = {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Seguimientos x Parentesco'
+                    },
+                    legend: {
+                        position: 'left',
+                    }
+                }
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: donutData,
+                    options: donutOptions
+                })
+            }
+            else {
+                $("canvas#rggTParen").remove();
+                $("div.rgen3").append('<canvas id="rggTParen" width="350" height="350"></canvas>');
+                var ctx = document.getElementById("rggTParen").getContext("2d");
+                var donutData = {
+                    labels: ['SIN DATOS'],
+                    datasets: [
+                        {
+                            label: '# de Frecuencia',
+                            data: [0],
                             backgroundColor: colores,
                             borderColor: colores
                         }
@@ -311,7 +364,9 @@ function cargarSexoAte(inicior, finr) {
                     colores.push(colorRGB());
                 }
 
-                var pieChartCanvas = $('#rggTSexParen').get(0).getContext('2d');
+                $("canvas#rggTSexParen").remove();
+                $("div.rgen4").append('<canvas id="rggTSexParen" width="350" height="350"></canvas>');
+                var ctx = document.getElementById("rggTSexParen").getContext("2d");
                 var donutData = {
                     labels: sexo,
                     datasets: [
@@ -331,7 +386,36 @@ function cargarSexoAte(inicior, finr) {
                         text: 'Seguimientos x Sexo de Familiar'
                     },
                 }
-                new Chart(pieChartCanvas, {
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: pieData,
+                    options: pieOptions
+                })
+            }
+            else {
+                $("canvas#rggTSexParen").remove();
+                $("div.rgen4").append('<canvas id="rggTSexParen" width="350" height="350"></canvas>');
+                var ctx = document.getElementById("rggTSexParen").getContext("2d");
+                var donutData = {
+                    labels: ['SIN DATOS'],
+                    datasets: [
+                        {
+                            label: '# de Seguimientos',
+                            data: [0],
+                            backgroundColor: colores,
+                        }
+                    ]
+                }
+                var pieData = donutData;
+                var pieOptions = {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Seguimientos x Sexo de Familiar'
+                    },
+                }
+                new Chart(ctx, {
                     type: 'pie',
                     data: pieData,
                     options: pieOptions
@@ -369,13 +453,14 @@ function cargarSegRegs(inicior, finr) {
                     contador.push(respuesta[i][2]);
                     colores.push(colorRGB());
                 }
-                var salesGraphChartCanvas = $('#rggSegs').get(0).getContext('2d')
+                $("canvas#rggSegs").remove();
+                $("div.rgen2").append('<canvas id="rggSegs" width="350" height="350"></canvas>');
+                var ctx = document.getElementById("rggSegs").getContext("2d");
                 var salesGraphChartData = {
                     labels: mes,
                     datasets: [
                         {
-                            // label: 'Digital Goods',
-                            fill: false,
+                            fill: true,
                             borderWidth: 2,
                             lineTension: 0,
                             spanGaps: true,
@@ -388,7 +473,6 @@ function cargarSegRegs(inicior, finr) {
                         }
                     ]
                 }
-
                 var salesGraphChartOptions = {
                     maintainAspectRatio: false,
                     responsive: true,
@@ -408,7 +492,7 @@ function cargarSegRegs(inicior, finr) {
                         }],
                         yAxes: [{
                             ticks: {
-                                stepSize: 100,
+                                stepSize: 50,
                                 fontColor: '#6A6A6A'
                             },
                             gridLines: {
@@ -423,7 +507,68 @@ function cargarSegRegs(inicior, finr) {
                         text: 'Seguimientos realizados'
                     }
                 }
-                var salesGraphChart = new Chart(salesGraphChartCanvas, {
+                var salesGraphChart = new Chart(ctx, {
+                    type: 'line',
+                    data: salesGraphChartData,
+                    options: salesGraphChartOptions
+                });
+            }
+            else{
+                $("canvas#rggSegs").remove();
+                $("div.rgen2").append('<canvas id="rggSegs" width="350" height="350"></canvas>');
+                var ctx = document.getElementById("rggSegs").getContext("2d");
+                var salesGraphChartData = {
+                    labels: ['SIN DATOS'],
+                    datasets: [
+                        {
+                            fill: true,
+                            borderWidth: 2,
+                            lineTension: 0,
+                            spanGaps: true,
+                            borderColor: '#17a2b8',
+                            pointRadius: 3,
+                            pointHoverRadius: 7,
+                            pointColor: '#17a2b8',
+                            pointBackgroundColor: '#17a2b8',
+                            data: [0]
+                        }
+                    ]
+                }
+                var salesGraphChartOptions = {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                fontColor: '#000'
+                            },
+                            gridLines: {
+                                display: false,
+                                color: '#000',
+                                drawBorder: false
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                stepSize: 50,
+                                fontColor: '#6A6A6A'
+                            },
+                            gridLines: {
+                                display: true,
+                                color: '#AFAFAF',
+                                drawBorder: false
+                            }
+                        }]
+                    },
+                    title: {
+                        display: true,
+                        text: 'Seguimientos realizados'
+                    }
+                }
+                var salesGraphChart = new Chart(ctx, {
                     type: 'line',
                     data: salesGraphChartData,
                     options: salesGraphChartOptions

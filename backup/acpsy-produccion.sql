@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 16-07-2021 a las 20:10:07
+-- Tiempo de generación: 18-07-2021 a las 18:23:48
 -- Versión del servidor: 5.7.24
 -- Versión de PHP: 7.4.15
 
@@ -1961,6 +1961,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `VALIDA_FAMILIAR` (IN `_idAtencion` 
 FROM
 	acpsy_famatencion
 WHERE idAtencion = _idAtencion AND ndocFamiliar = _ndocFamiliar$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `VERIFICA_ESTADO_LOG` (IN `_USUARIO` INT(11))  SELECT
+	acpsy_usuarios.idUsuario, 
+	acpsy_usuarios.idEstado
+FROM
+	acpsy_usuarios
+WHERE idUsuario = _USUARIO$$
 
 --
 -- Funciones

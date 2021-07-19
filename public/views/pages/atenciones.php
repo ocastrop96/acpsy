@@ -15,6 +15,7 @@
     </div>
   </section>
   <section class="content">
+  <input type="hidden" name="estatusLog" id="estatusLog" value="<?php echo $_SESSION["loginId"]; ?>">
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Módulo Atenciones &nbsp;<i class="fas fa-archive"></i></h3>
@@ -25,7 +26,7 @@
         </button>
         <button type="btn" class="ml-2 btn btn-success float-right" id="deshacer-filtro-Ate"><i class="fas fa-undo-alt"></i> Deshacer filtro
         </button>
-        <button type="button" class="btn btn-default float-right" id="rango-atencion">
+        <button type="button" class="btn btn-default float-left float-sm-right float-lg-right mt-2 mt-lg-0 mt-sm-0" id="rango-atencion">
           <span>
             <i class="fa fa-calendar-plus"></i>
             <?php
@@ -131,7 +132,7 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="rgaNCuenta">N° de Cuenta &nbsp;</label>
                 <i class="fas fa-hashtag"></i> *
@@ -142,7 +143,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-4" id="btnCuentaPac1">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4" id="btnCuentaPac1">
               <div class="form-group">
                 <label>Búsqueda:<span class="text-danger">&nbsp;*</span></label>
                 <div class="input-group">
@@ -152,7 +153,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="rgaNHC">N° de Historia &nbsp;</label>
                 <i class="fas fa-hospital-user"></i> *
@@ -161,7 +162,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="rgaFNac">F.Nacimiento</label>
                 <i class="fas fa-calendar-alt"></i>
@@ -170,7 +171,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="rgaTdoc">T.Doc &nbsp;</label>
                 <i class="fas fa-id-card"></i> *
@@ -179,7 +180,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="rgaNDoc">N.Doc &nbsp;</label>
                 <i class="fas fa-id-card"></i> *
@@ -190,7 +191,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="rgaAPaterno">Apellido Paterno &nbsp;</label>
                 <i class="fas fa-hospital-user"></i> *
@@ -199,7 +200,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="rgaAMaterno">Apellido Materno &nbsp;</label>
                 <i class="fas fa-hospital-user"></i> *
@@ -208,7 +209,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="rgaNombres">Nombres &nbsp;</label>
                 <i class="fas fa-hospital-user"></i> *
@@ -219,7 +220,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-12 col-sm-2 col-md-2 col-lg-2">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-2">
               <div class="form-group">
                 <label for="rgaEdad">Edad</label>
                 <i class="fas fa-pager"></i> *
@@ -228,7 +229,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="rgaSexo">Sexo &nbsp;</label>
                 <i class="fas fa-venus-mars"></i> *
@@ -245,7 +246,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="rgaFinancia">Financimiento &nbsp;</label>
                 <i class="fas fa-coins"></i> *
@@ -254,7 +255,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="rgaDistrito">Distrito &nbsp;</label>
                 <i class="fas fa-search-location"></i> *
@@ -265,7 +266,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6">
               <div class="form-group">
                 <label for="rgaEstadoPac">Estado Paciente &nbsp;</label>
                 <i class="fas fa-user-injured"></i> *
@@ -282,7 +283,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6">
               <div class="form-group">
                 <label for="rgaCama">Cama &nbsp;</label>
                 <i class="fas fa-procedures"></i> *
@@ -293,7 +294,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="rgaFIngServicio">Fecha de Ingreso &nbsp;</label>
                 <i class="fas fa-calendar-alt"></i> *
@@ -302,7 +303,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-8">
               <div class="form-group">
                 <label for="rgaServicio">Servicio Ingresado &nbsp;</label>
                 <i class="fas fa-hospital-alt"></i> *
@@ -339,7 +340,7 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-12 col-sm-2 col-md-2 col-lg-2">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-2">
             <div class="form-group">
               <label for="fCuenta">Filtro &nbsp;</label>
               <i class="fas fa-filter"></i> *
@@ -351,7 +352,7 @@
               </div>
             </div>
           </div>
-          <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-3">
             <div class="form-group">
               <label for="">N° de DNI o HC &nbsp;</label>
               <i class="fas fa-hashtag"></i> *
@@ -360,7 +361,7 @@
               </div>
             </div>
           </div>
-          <div class="col-12 col-sm-2 col-md-2 col-lg-2">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-2">
             <div class="form-group">
               <label>Buscar cuenta</label>
               <div class="input-group">
@@ -390,7 +391,7 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="edtaCorrelativo">N° de Atención &nbsp;</label>
                 <i class="fas fa-hashtag"></i> *
@@ -401,7 +402,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="edtaNCuenta">N° de Cuenta &nbsp;</label>
                 <i class="fas fa-hashtag"></i> *
@@ -413,7 +414,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-4" id="btnCuentaPac2">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4" id="btnCuentaPac2">
               <div class="form-group">
                 <label>Búsqueda:<span class="text-danger">&nbsp;*</span></label>
                 <div class="input-group">
@@ -423,7 +424,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="edtaNHC">N° de Historia &nbsp;</label>
                 <i class="fas fa-hospital-user"></i> *
@@ -432,7 +433,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="edtaFNac">F.Nacimiento</label>
                 <i class="fas fa-calendar-alt"></i>
@@ -441,7 +442,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="edtaTdoc">T.Doc &nbsp;</label>
                 <i class="fas fa-id-card"></i> *
@@ -450,7 +451,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="edtaNDoc">N.Doc &nbsp;</label>
                 <i class="fas fa-id-card"></i> *
@@ -461,7 +462,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="edtaAPaterno">Apellido Paterno &nbsp;</label>
                 <i class="fas fa-hospital-user"></i> *
@@ -470,7 +471,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="edtaAMaterno">Apellido Materno &nbsp;</label>
                 <i class="fas fa-hospital-user"></i> *
@@ -479,7 +480,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="edtaNombres">Nombres &nbsp;</label>
                 <i class="fas fa-hospital-user"></i> *
@@ -490,7 +491,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-12 col-sm-2 col-md-2 col-lg-2">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-2">
               <div class="form-group">
                 <label for="edtaEdad">Edad</label>
                 <i class="fas fa-pager"></i> *
@@ -499,7 +500,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="edtaSexo">Sexo &nbsp;</label>
                 <i class="fas fa-venus-mars"></i> *
@@ -516,7 +517,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
               <div class="form-group">
                 <label for="edtaFinancia">Financimiento &nbsp;</label>
                 <i class="fas fa-coins"></i> *
@@ -525,7 +526,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="edtaDistrito">Distrito &nbsp;</label>
                 <i class="fas fa-search-location"></i> *
@@ -536,7 +537,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6">
               <div class="form-group">
                 <label for="edtaEstadoPac">Estado Paciente &nbsp;</label>
                 <i class="fas fa-user-injured"></i> *
@@ -553,7 +554,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6">
               <div class="form-group">
                 <label for="edtaCama">Cama &nbsp;</label>
                 <i class="fas fa-procedures"></i> *
@@ -564,7 +565,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
               <div class="form-group">
                 <label for="edtaFIngServicio">Fecha de Ingreso &nbsp;</label>
                 <i class="fas fa-calendar-alt"></i> *
@@ -573,7 +574,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-8">
               <div class="form-group">
                 <label for="edtaServicio">Servicio Ingresado &nbsp;</label>
                 <i class="fas fa-hospital-alt"></i> *
@@ -609,7 +610,7 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-12 col-sm-2 col-md-2 col-lg-2">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-2">
             <div class="form-group">
               <label for="fCuenta2">Filtro &nbsp;</label>
               <i class="fas fa-filter"></i> *
@@ -621,7 +622,7 @@
               </div>
             </div>
           </div>
-          <div class="col-12 col-sm-3 col-md-3 col-lg-3">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-3">
             <div class="form-group">
               <label for="">N° de Cuenta &nbsp;</label>
               <i class="fas fa-hashtag"></i> *
@@ -630,7 +631,7 @@
               </div>
             </div>
           </div>
-          <div class="col-12 col-sm-2 col-md-2 col-lg-2">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-2">
             <div class="form-group">
               <label>Buscar cuenta</label>
               <div class="input-group">

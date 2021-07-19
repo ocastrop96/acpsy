@@ -57,6 +57,15 @@ class ajaxUsuarios
     }
     // Desbloquear Usuario
 
+    // Validar Estado de Usuario
+    public $idUsuario4;
+    public function ajaxValidaEstado()
+    {
+        $valor = $this->idUsuario4;
+        $respuesta = UsuariosModelo::mdlValidarEstado($valor);
+        echo json_encode($respuesta);
+    }
+    // Validar Estado de Usuario
 }
 // Validar Cuenta Login
 if (isset($_POST["validarCuentaLog"])) {
@@ -93,3 +102,9 @@ if (isset($_POST["idUsuario3"])) {
     $list1->ajaxDesbloquearUsuario();
 }
 // Desbloquear Usuario
+// Validar Estado
+if (isset($_POST["idUsuario4"])) {
+    $list2 = new ajaxUsuarios();
+    $list2->idUsuario4 = $_POST["idUsuario4"];
+    $list2->ajaxValidaEstado();
+}
