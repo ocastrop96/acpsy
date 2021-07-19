@@ -1,7 +1,3 @@
-// $(window).load(function () {
-//     ValidarEstadoLog($("#estatusLog").val());
-// });
-
 window.onbeforeunload = ValidarEstadoLog($("#estatusLog").val());
 function ValidarEstadoLog(idLog) {
     if (idLog) {
