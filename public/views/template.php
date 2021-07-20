@@ -112,19 +112,18 @@ session_start();
   }
   ?>
   <!-- Scripts JS Propios -->
-  <script type="text/javascript" src="public/js/main.js"></script>
-  <script type="text/javascript" src="public/js/dashboard.js"></script>
-  <script type="text/javascript" src="public/js/login.js"></script>
-  <script type="text/javascript" src="public/js/usuarios.js"></script>
-  <script type="text/javascript" src="public/js/profesionales.js"></script>
-  <script type="text/javascript" src="public/js/diagnosticos.js"></script>
-  <script type="text/javascript" src="public/js/atenciones.js"></script>
-  <script type="text/javascript" src="public/js/familiares.js"></script>
-  <script type="text/javascript" src="public/js/seguimiento.js"></script>
-  <script type="text/javascript" src="public/js/reportes-general.js"></script>
-  <script type="text/javascript" src="public/js/reportes-jefatura.js"></script>
-  <script type="text/javascript" src="public/js/reportes-profesional.js"></script>
-
+  <script type="text/javascript" src="public/js/main.min.js"></script>
+  <script type="text/javascript" src="public/js/dashboard.min.js"></script>
+  <script type="text/javascript" src="public/js/login.min.js"></script>
+  <script type="text/javascript" src="public/js/usuarios.min.js"></script>
+  <script type="text/javascript" src="public/js/profesionales.min.js"></script>
+  <script type="text/javascript" src="public/js/diagnosticos.min.js"></script>
+  <script type="text/javascript" src="public/js/atenciones.min.js"></script>
+  <script type="text/javascript" src="public/js/familiares.min.js"></script>
+  <script type="text/javascript" src="public/js/seguimiento.min.js"></script>
+  <script type="text/javascript" src="public/js/reportes-general.min.js"></script>
+  <script type="text/javascript" src="public/js/reportes-jefatura.min.js"></script>
+  <script type="text/javascript" src="public/js/reportes-profesional.min.js"></script>
   <!-- Scripts JS Propios -->
 </body>
 
