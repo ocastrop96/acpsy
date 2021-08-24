@@ -1,5 +1,5 @@
 <?php
-if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2) {
+if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2 || $_SESSION["loginPerfil"] == 4) {
   echo '<script>
     window.location = "dashboard";
   </script>';

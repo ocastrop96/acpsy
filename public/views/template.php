@@ -93,9 +93,12 @@ session_start();
         $_GET["ruta"] == "atenciones" ||
         $_GET["ruta"] == "familiares" ||
         $_GET["ruta"] == "seguimiento" ||
+        $_GET["ruta"] == "monitoreo" ||
+        $_GET["ruta"] == "pacientes" ||
         $_GET["ruta"] == "reporte-general" ||
         $_GET["ruta"] == "reporte-jefatura" ||
         $_GET["ruta"] == "reporte-profesional" ||
+        $_GET["ruta"] == "reporte-control" ||
         $_GET["ruta"] == "logout"
       ) {
         include "pages/" . $_GET["ruta"] . ".php";

@@ -11,10 +11,9 @@
         <img src="public/views/resources/img/logo-usuario-psico.jpg" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="dashboard" class="d-block font-weight-bolder">Hola! <br><?php echo $_SESSION["loginNombres"]; ?></a>
+        <a href="dashboard" class="d-block font-weight-bolder">Hola! <br><?php echo $_SESSION["loginNombres"]; ?><br></a><p class="font-italic"><?php echo $_SESSION["loginPerfilDesc"]; ?></p>
       </div>
     </div>
-
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-item">
@@ -72,6 +71,23 @@
             </p>
           </a>
         </li>
+        <li class="nav-header">Supervisión</li>
+        <li class="nav-item">
+        <a href="monitoreo" class="nav-link">
+          <i class="nav-icon fab fa-watchman-monitoring"></i>
+          <p>
+            Monitoreo
+          </p>
+        </a>
+      </li>
+      <li class="nav-item">
+      <a href="pacientes" class="nav-link">
+        <i class="nav-icon fas fa-procedures"></i>
+        <p>
+          Pacientes
+        </p>
+      </a>
+    </li>
         <li class="nav-header">Reportes</li>
         <li class="nav-item">
           <a href="reporte-general" class="nav-link">
@@ -89,6 +105,14 @@
             </p>
           </a>
         </li>
+        <li class="nav-item">
+        <a href="reporte-control" class="nav-link">
+          <i class="nav-icon fas fa-project-diagram"></i>
+          <p>
+            Control
+          </p>
+        </a>
+      </li>
           ';
         } elseif ($_SESSION["loginPerfil"] == 2) {
           echo '
@@ -135,6 +159,23 @@
             </p>
           </a>
         </li>
+        <li class="nav-header">Supervisión</li>
+        <li class="nav-item">
+        <a href="monitoreo" class="nav-link">
+          <i class="nav-icon fab fa-watchman-monitoring"></i>
+          <p>
+            Monitoreo
+          </p>
+        </a>
+      </li>
+      <li class="nav-item">
+      <a href="pacientes" class="nav-link">
+        <i class="nav-icon fas fa-procedures"></i>
+        <p>
+          Pacientes
+        </p>
+      </a>
+    </li>
         <li class="nav-header">Reportes</li>
         <li class="nav-item">
           <a href="reporte-general" class="nav-link">
@@ -151,7 +192,52 @@
               Jefatura
             </p>
           </a>
-        </li>';
+        </li>
+        <li class="nav-item">
+        <a href="reporte-control" class="nav-link">
+          <i class="nav-icon fas fa-project-diagram"></i>
+          <p>
+            Control
+          </p>
+        </a>
+      </li>';
+        } elseif ($_SESSION["loginPerfil"] == 3) {
+          echo '
+          <li class="nav-header">Acompañamiento</li>
+          <li class="nav-item">
+            <a href="atenciones" class="nav-link">
+              <i class="nav-icon fas fa-archive"></i>
+              <p>
+                Atenciones
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="familiares" class="nav-link">
+              <i class="nav-icon fas fa-chalkboard-teacher"></i>
+              <p>
+                Familiares
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="seguimiento" class="nav-link">
+              <i class="nav-icon fas fa-diagnoses"></i>
+              <p>
+                Seguimiento
+              </p>
+            </a>
+          </li>
+          <li class="nav-header">Reportes</li>
+          <li class="nav-item">
+            <a href="reporte-profesional" class="nav-link">
+              <i class="nav-icon fas fa-chart-bar"></i>
+              <p>
+                Profesional
+              </p>
+            </a>
+          </li>
+            ';
         } else {
           echo '
         <li class="nav-header">Acompañamiento</li>
@@ -179,12 +265,37 @@
             </p>
           </a>
         </li>
+        <li class="nav-header">Supervisión</li>
+        <li class="nav-item">
+        <a href="monitoreo" class="nav-link">
+          <i class="nav-icon fab fa-watchman-monitoring"></i>
+          <p>
+            Monitoreo
+          </p>
+        </a>
+      </li>
+      <li class="nav-item">
+      <a href="pacientes" class="nav-link">
+        <i class="nav-icon fas fa-procedures"></i>
+        <p>
+          Pacientes
+        </p>
+      </a>
+    </li>
         <li class="nav-header">Reportes</li>
         <li class="nav-item">
           <a href="reporte-profesional" class="nav-link">
             <i class="nav-icon fas fa-chart-bar"></i>
             <p>
               Profesional
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="reporte-control" class="nav-link">
+            <i class="nav-icon fas fa-project-diagram"></i>
+            <p>
+              Control
             </p>
           </a>
         </li>

@@ -24,8 +24,10 @@ class DatatableUsuarios
                 $perfil = "<i class='fas fa-user-cog'></i>&nbsp" . $usuarios[$i]["detallePerfil"] . "";
             } else if ($usuarios[$i]["idPerfil"] == 2) {
                 $perfil = "<i class='fas fa-user-tie'></i>&nbsp" . $usuarios[$i]["detallePerfil"] . "";
-            } else {
+            } else if ($usuarios[$i]["idPerfil"] == 3) {
                 $perfil = "<i class='fas fa-hospital-user'></i>&nbsp" . $usuarios[$i]["detallePerfil"] . "";
+            }else {
+                $perfil = "<i class='fas fa-tasks'></i>&nbsp" . $usuarios[$i]["detallePerfil"] . "";
             }
             // Botones de Estado
             if (($usuarios[$i]["idEstado"] != 2)) {

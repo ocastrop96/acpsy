@@ -21,6 +21,7 @@ class UsuariosControlador
                             $_SESSION["loginId"] = $rptLogin["idUsuario"];
                             $_SESSION["loginIdCard"] = $rptLogin["dniUsuario"];
                             $_SESSION["loginPerfil"] = $rptLogin["idPerfil"];
+                            $_SESSION["loginPerfilDesc"] = $rptLogin["detallePerfil"];
                             $_SESSION["loginNombres"] = $rptLogin["nombresUsuario"];
                             $_SESSION["loginIdProf"] = $rptLogin["idProfesional"];
                             $_SESSION["loginNombProf"] = $rptLogin["profesional"];
