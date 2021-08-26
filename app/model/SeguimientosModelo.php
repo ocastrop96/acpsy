@@ -145,6 +145,53 @@ class SeguimientosModelo
         $stmt->close();
         $stmt = null;
     }
+    static public function mdlListarMonitoreoF($fechaInicialMonit, $fechaFinalMonit)
+    {
+        if ($fechaInicialMonit == null) {
+            $stmt = Conexion::conectar()->prepare("CALL LISTAR_SEGUIMIENTOS_MONITOREO()");
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } else if ($fechaInicialMonit == $fechaFinalMonit) {
+
+            $stmt = Conexion::conectar()->prepare("CALL LISTAR_SEGUIMIENTOS_MONITOREO_FECHAS(:fechaFinalMonit,:fechaFinalMonit);");
+            $stmt->bindParam(":fechaFinalMonit", $fechaInicialMonit, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } else {
+            $fechaActual = new DateTime();
+            $fechaActual->add(new DateInterval("P1D"));
+            $fechaActualMasUno = $fechaActual->format("Y-m-d");
+
+            $fechaFinalMonit2 = new DateTime($fechaFinalMonit);
+            $fechaFinalMonit2->add(new DateInterval("P1D"));
+            $fechaFinalMonitMasUno = $fechaFinalMonit2->format("Y-m-d");
+
+            if ($fechaFinalMonitMasUno == $fechaActualMasUno) {
+                $stmt = Conexion::conectar()->prepare("CALL LISTAR_SEGUIMIENTOS_MONITOREO_FECHAS(:fechaInicialMonit,:fechaFinalMonitMasUno)");
+                $stmt->bindParam(":fechaInicialMonit", $fechaInicialMonit, PDO::PARAM_STR);
+                $stmt->bindParam(":fechaFinalMonitMasUno", $fechaFinalMonitMasUno, PDO::PARAM_STR);
+            } else {
+                $stmt = Conexion::conectar()->prepare("CALL LISTAR_SEGUIMIENTOS_MONITOREO_FECHAS(:fechaInicialMonit,:fechaFinalMonit)");
+                $stmt->bindParam(":fechaInicialMonit", $fechaInicialMonit, PDO::PARAM_STR);
+                $stmt->bindParam(":fechaFinalMonit", $fechaFinalMonit, PDO::PARAM_STR);
+            }
+            $stmt->execute();
+            return $stmt->fetchAll();
+        }
+
+        //Cerramos la conexion por seguridad
+        $stmt->close();
+        $stmt = null;
+    }
+    static public function mdlListarHistorialPaciente($idPaciente)
+    {
+        $stmt = Conexion::conectar()->prepare("CALL LISTAR_HISTORIAL_PACIENTE(:idPaciente)");
+        $stmt->bindParam(":idPaciente", $idPaciente, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt = null;
+    }
     static public function mdlListarTiposSeguimiento()
     {
         $stmt = Conexion::conectar()->prepare("CALL LISTAR_TIPO_SEGUIMIENTO()");

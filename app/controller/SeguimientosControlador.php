@@ -11,6 +11,17 @@ class SeguimientosControlador
         $rptListSegF = SeguimientosModelo::mdlListarSeguimientosF($fechaInicialSeg, $fechaFinalSeg,$Profesional);
         return $rptListSegF;
     }
+
+    static public function ctrListarMonitoreoF($fechaInicialMonit, $fechaFinalMonit)
+    {
+        $rptListMonitF = SeguimientosModelo::mdlListarMonitoreoF($fechaInicialMonit, $fechaFinalMonit);
+        return $rptListMonitF;
+    }
+
+    static public function ctrListarrHistorialAtencion($idPaciente){
+        $rptListHistorial = SeguimientosModelo::mdlListarHistorialPaciente($idPaciente);
+        return $rptListHistorial;
+    }
     static public function ctrListarTipoSeguimiento()
     {
         $rptSexo = SeguimientosModelo::mdlListarTiposSeguimiento();

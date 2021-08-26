@@ -15,9 +15,7 @@ class AjaxFamiliares
         $stmt->execute();
         $data = array();
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $data[] = array("id" => $row['idAtencion'], "text" => $row['cuentaAtencion'] . ' || ' . $row['tipdocAtencion'] . '-' . $row['nrodocAtencion'] . ' - ' . $row['paciente']);
-
-            // $data[] = array("id" => $row['idAtencion'], "text" => $row['cuentaAtencion'] . ' - ' . $row['paciente']. ' - ' . $row['detaEstadoPacAtencion']);
+            $data[] = array("id" => $row['idAtencion'], "text" => 'F. INGRESO - ' . $row['fIngresoAtencion'] .' || N° CUENTA-' . $row['cuentaAtencion'] . ' || ' . $row['tipdocAtencion'] . '-' . $row['nrodocAtencion'] . ' - ' . $row['paciente']. ' || ESTADO : ' . $row['detaEstadoPacAtencion']);
         }
         echo json_encode($data);
     }
@@ -31,7 +29,7 @@ class AjaxFamiliares
         $stmt->execute();
         $data = array();
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $data[] = array("id" => $row['idAtencion'], "text" => $row['cuentaAtencion'] . ' || ' . $row['tipdocAtencion'] . '-' . $row['nrodocAtencion'] . ' - ' . $row['paciente'] . ' || ESTADO : ' . $row['detaEstadoPacAtencion']);
+            $data[] = array("id" => $row['idAtencion'], "text" => 'F. INGRESO - ' . $row['fIngresoAtencion'] . ' || N° CUENTA-' . $row['cuentaAtencion'] . ' || ' . $row['tipdocAtencion'] . '-' . $row['nrodocAtencion'] . ' - ' . $row['paciente'] . ' || ESTADO : ' . $row['detaEstadoPacAtencion']);
         }
         echo json_encode($data);
     }

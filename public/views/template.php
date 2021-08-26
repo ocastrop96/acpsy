@@ -124,6 +124,8 @@ session_start();
   <script type="text/javascript" src="public/js/atenciones.min.js"></script>
   <script type="text/javascript" src="public/js/familiares.min.js"></script>
   <script type="text/javascript" src="public/js/seguimiento.min.js"></script>
+  <script type="text/javascript" src="public/js/monitoreo.js"></script>
+  <script type="text/javascript" src="public/js/pacientes.js"></script>
   <script type="text/javascript" src="public/js/reportes-general.min.js"></script>
   <script type="text/javascript" src="public/js/reportes-jefatura.min.js"></script>
   <script type="text/javascript" src="public/js/reportes-profesional.min.js"></script>
