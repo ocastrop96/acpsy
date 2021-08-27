@@ -1,19 +1,19 @@
-$("#deshacer-filtro-PAC").on("click", function () {
-    window.location = "pacientes";
-});
 $(".datatablesPacientesMont").DataTable({
     deferRender: true,
     retrieve: true,
     processing: true,
     paging: true,
     lengthChange: false,
-    searching: false,
+    searching: true,
     ordering: false,
-    info: false,
+    info: true,
     autoWidth: false,
     language: {
         url: "public/views/resources/js/dataTables.spanish.lang",
     },
+});
+$("#deshacer-filtro-PAC").on("click", function () {
+    window.location = "pacientes";
 });
 $("#pacBusqueda").select2(
     {
@@ -58,21 +58,8 @@ $("#pacBusqueda").select2(
     }
 );
 $("#pacBusqueda").on("change", function () {
-    var data = $(this).val();
-    if (data != '' || data != 0) {
-        mostrarHistorialPaciente(data);
-    }
-});
-
-function mostrarHistorialPaciente(idPac) {
-    $.ajax({
-        url: "public/views/src/ajaxAtenciones.php",
-        method: "POST",
-        dataType: "html",
-        data: { idPac: idPac }
-    }).done(function (respuesta) {
-        $("#dataHistorial").html(respuesta);
-    }).fail(function () {
-        console.log("error");
-    })
-}
+    let paciente = $(this).val();
+    window.location =
+        "index.php?ruta=pacientes&idPaciente=" +
+        paciente;
+})

@@ -23,7 +23,6 @@ if ($_SESSION["loginPerfil"] == 3 || $_SESSION["loginPerfil"] == 2 || $_SESSION[
     </div>
   </section>
   <section class="content">
-    <input type="hidden" name="estatusLog" id="estatusLog" value="<?php echo $_SESSION["loginId"]; ?>">
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Módulo Usuarios &nbsp;<i class="fas fa-users-cog"></i></h3>

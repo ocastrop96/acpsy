@@ -3,10 +3,10 @@ seguimientosxTipo("", "", 0);
 seguimientosxDiagPac("", "", 0);
 seguimientosxDiagFam("", "", 0);
 
-$("#deshacer-filtro-RJ").on("click", function () {
-    window.location = "reporte-jefatura";
+$("#deshacer-filtro-RC").on("click", function () {
+    window.location = "reporte-control";
 });
-$("input[name='rango-rj']").daterangepicker({
+$("input[name='rango-rc']").daterangepicker({
     opens: 'left',
     maxSpan: {
         days: 30,
@@ -43,10 +43,10 @@ $("input[name='rango-rj']").daterangepicker({
 }, function (start, end) {
     let inicio = start.format('YYYY-MM-DD');
     let fin = end.format('YYYY-MM-DD');
-    let profesional = $("#rjProfesional").val();
+    let profesional = $("#rcProfesional").val();
 
-    $('#rango-rj').attr('inicio', inicio);
-    $('#rango-rj').attr('fin', fin);
+    $('#rango-rc').attr('inicio', inicio);
+    $('#rango-rc').attr('fin', fin);
     $(".rseg1").attr("href", "public/views/docs/rp-seguimientos-jefatura.php?reporte=reporte&inicio=" + inicio + "&fin=" + fin + "&profesional=" + profesional);
     seguimientosXProfesional(inicio, fin, profesional);
     seguimientosxTipo(inicio, fin, profesional);
@@ -54,10 +54,10 @@ $("input[name='rango-rj']").daterangepicker({
     seguimientosxDiagFam(inicio, fin, profesional);
 });
 
-$("#rjProfesional").on("change", function () {
+$("#rcProfesional").on("change", function () {
     let profesional = $(this).val();
-    let inicio = $("#rango-rj").attr("inicio");
-    let fin = $("#rango-rj").attr("fin");
+    let inicio = $("#rango-rc").attr("inicio");
+    let fin = $("#rango-rc").attr("fin");
     $(".rseg1").attr("href", "public/views/docs/rp-seguimientos-jefatura.php?reporte=reporte&inicio=" + inicio + "&fin=" + fin + "&profesional=" + profesional);
     seguimientosXProfesional(inicio, fin, profesional);
     seguimientosxTipo(inicio, fin, profesional);

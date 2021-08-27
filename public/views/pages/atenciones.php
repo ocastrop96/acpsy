@@ -15,7 +15,6 @@
     </div>
   </section>
   <section class="content">
-  <input type="hidden" name="estatusLog" id="estatusLog" value="<?php echo $_SESSION["loginId"]; ?>">
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Módulo Atenciones &nbsp;<i class="fas fa-archive"></i></h3>

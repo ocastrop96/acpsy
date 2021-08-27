@@ -23,7 +23,6 @@ if ($_SESSION["loginPerfil"] == 3) {
     </div>
   </section>
   <section class="content">
-    <input type="hidden" name="estatusLog" id="estatusLog" value="<?php echo $_SESSION["loginId"]; ?>">
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Módulo Profesionales &nbsp;<i class="fas fa-id-card-alt"></i></h3>
