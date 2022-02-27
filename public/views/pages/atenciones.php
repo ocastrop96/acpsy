@@ -204,7 +204,7 @@
                 <label for="rgaAMaterno">Apellido Materno &nbsp;</label>
                 <i class="fas fa-hospital-user"></i> *
                 <div class="input-group">
-                  <input type="text" name="rgaAMaterno" id="rgaAMaterno" class="form-control" placeholder="Ingrese Apellido Materno" required autocomplete="off" autofocus="autofocus" readonly>
+                  <input type="text" name="rgaAMaterno" id="rgaAMaterno" class="form-control" placeholder="Ingrese Apellido Materno" autocomplete="off" autofocus="autofocus" readonly>
                 </div>
               </div>
             </div>
@@ -475,7 +475,7 @@
                 <label for="edtaAMaterno">Apellido Materno &nbsp;</label>
                 <i class="fas fa-hospital-user"></i> *
                 <div class="input-group">
-                  <input type="text" name="edtaAMaterno" id="edtaAMaterno" class="form-control" required autocomplete="off" autofocus="autofocus" readonly>
+                  <input type="text" name="edtaAMaterno" id="edtaAMaterno" class="form-control" autocomplete="off" autofocus="autofocus" readonly>
                 </div>
               </div>
             </div>

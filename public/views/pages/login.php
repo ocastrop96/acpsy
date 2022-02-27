@@ -28,7 +28,7 @@
                                 <span class="fas fa-key"></span>
                             </div>
                         </div>
-                        <input type="password" class="form-control" placeholder="Ingrese contraseña" id="usuarioPass" name="usuarioPass" required autocomplete="off" minlength="8" maxlength="8">
+                        <input type="password" class="form-control" placeholder="Ingrese contraseña" id="usuarioPass" name="usuarioPass" required autocomplete="off">
                     </div>
                     <div class="row">
                         <div class="col-8 ml-5">

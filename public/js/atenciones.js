@@ -218,9 +218,6 @@ $("#btnRegAte").on("click", function () {
             rgaAPaterno: {
                 required: true,
             },
-            rgaAMaterno: {
-                required: true,
-            },
             rgaNombres: {
                 required: true,
             },
@@ -265,9 +262,6 @@ $("#btnRegAte").on("click", function () {
                 required: "Dato requerido",
             },
             rgaAPaterno: {
-                required: "Dato requerido",
-            },
-            rgaAMaterno: {
                 required: "Dato requerido",
             },
             rgaNombres: {
@@ -331,9 +325,6 @@ $("#btnEdtAte").on("click", function () {
             edtaAPaterno: {
                 required: true,
             },
-            edtaAMaterno: {
-                required: true,
-            },
             edtaNombres: {
                 required: true,
             },
@@ -378,9 +369,6 @@ $("#btnEdtAte").on("click", function () {
                 required: "Dato requerido",
             },
             edtaAPaterno: {
-                required: "Dato requerido",
-            },
-            edtaAMaterno: {
                 required: "Dato requerido",
             },
             edtaNombres: {
